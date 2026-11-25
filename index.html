@@ -496,7 +496,7 @@ const KIDS=[{id:'k1',name:'Aarav Sharma',grade:6,age:11,adm:'VIB-2019-0456',dob:
 const ROSTER=[['Aarav Sharma',6,'B',11],['Diya Patel',6,'B',11],['Kabir Singh',6,'B',12],['Ananya Iyer',6,'B',11],['Vihaan Gupta',6,'B',11],['Sara Khan',6,'B',12],['Reyansh Nair',6,'B',11],['Ishita Das',6,'B',11],['Arjun Reddy',3,'A',8],['Zara Mehta',6,'B',11],['Rohan Joshi',6,'B',12],['Tara Bose',6,'B',11]];
 
 const S={
- role:null, scope:false,
+ role:'parent', scope:false,
  f:{q:'',cat:[],theme:[],mode:[],aud:[],grade:'',city:'',price:'',avail:'',quick:'',from:'',to:''},
  sort:'date',
  docs:{k1:false}, // medical cert uploaded?
@@ -602,7 +602,7 @@ function hdr(){
   <a onclick="go('#/profile')">${ic('user')}Profile</a>
   ${links.map(([l,u,i])=>`<a onclick="go('${u}')">${ic(i)}${l}</a>`).join('')}
   ${!back?`<a onclick="go('#/notifications')">${ic('bell')}Notifications</a>`:''}
-  <a onclick="go('#/guide')">${ic('book')}Flow guide</a><hr><a onclick="logout()">${ic('back')}Logout</a></div>`:'';
+  <a onclick="go('#/guide')">${ic('book')}Flow guide</a></div>`:'';
  return `<header class="hdr"><div class="hdr-in">
   ${back?`<button class="menu-btn" onclick="$('#side').classList.toggle('open')">${ic('menu',22)}</button>`:''}
   <a class="logo" onclick="go(HOME[S.role])" title="OSE Hub">OS<i>E</i><small>HUB</small></a>
@@ -628,12 +628,12 @@ function shell(crumb,body){
  const h=location.hash||'';
  if(BACK(S.role)){
   const nav=NAV[S.role].map(([l,u,i,c])=>`<a href="${u}" class="${(h===u||(u!=='#/admin'&&h.startsWith(u+'/')))?'on':''}">${ic(i)}<span>${l}</span>${c?`<span class="cnt">${c}</span>`:''}</a>`).join('');
-  return `${hdr()}<div class="bo"><aside class="bo-side" id="side"><div class="sect">${ROLES[S.role].label}</div>${nav}<div class="sect" style="margin-top:14px">Help</div><a href="#/guide" class="${h==='#/guide'?'on':''}">${ic('book')}<span>Flow guide</span></a><a onclick="logout()">${ic('back')}<span>Logout</span></a></aside><main class="bo-main">${body}</main></div>${dock()}`;
+  return `${hdr()}<div class="bo"><aside class="bo-side" id="side"><div class="sect">${ROLES[S.role].label}</div>${nav}<div class="sect" style="margin-top:14px">Help</div><a href="#/guide" class="${h==='#/guide'?'on':''}">${ic('book')}<span>Flow guide</span></a></aside><main class="bo-main">${body}</main></div>${dock()}`;
  }
  return `${hdr()}<main class="wrap-c page">${body}</main>${footer()}${dock()}`;
 }
 function setRole(r){S.role=r;S.reg=null;S.mega=S.um=false;go(HOME[r]);render()}
-function logout(){S.role=null;S.um=false;go('#/login')}
+function logout(){setRole('parent')}
 function hsearch(v){S.f.q=v;clearTimeout(window._qt);window._qt=setTimeout(()=>{if(!location.hash.startsWith('#/events'))go('#/events');else render();setTimeout(()=>{const i=$('#hq');if(i){i.focus();i.setSelectionRange(i.value.length,i.value.length)}},0)},250)}
 function pickCat(c){S.f.cat=c?[c]:[];S.mega=false;if(location.hash==='#/events')render();else go('#/events')}
 window.addEventListener('click',()=>{if(S.mega||S.um){S.mega=S.um=false;render()}});
@@ -1241,9 +1241,8 @@ function vGuide(){const F=(steps)=>`<div class="flow">${steps.map(([l,h,r])=>`<a
 
 /* ================= ROUTER ================= */
 function render(){
- const h=location.hash||'#/login';
- if(!S.role&&h!=='#/login'){location.hash='#/login';return}
- if(h==='#/login'){$('#root').innerHTML=vLogin();return}
+ const h=location.hash||'#/home';
+ if(h==='#/login'||!location.hash){location.replace('#/home');return}
  const [,a,b,c]=h.split('/');let out;
  switch(a){
   case 'home':out=vHome();break;
