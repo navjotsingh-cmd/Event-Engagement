@@ -3,273 +3,400 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Events & Engagements</title>
+<title>Events & Engagements – OSE Hub</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --navy:#1f3864; --navy-2:#2a4a80; --primary:#2f5bd3; --primary-50:#eef3ff; --primary-100:#dbe5ff;
-  --accent:#f59e0b; --bg:#f4f6fb; --surface:#fff; --text:#1b2333; --muted:#667085; --border:#e4e8f0;
-  --green:#15803d; --green-50:#e8f7ee; --red:#c62828; --red-50:#fdecec; --amber:#b45309; --amber-50:#fff5e1;
-  --violet:#6d28d9; --violet-50:#f1ebff; --radius:12px; --shadow:0 1px 2px rgba(16,24,40,.06),0 1px 3px rgba(16,24,40,.08);
+  --primary:#2F55E4; --primary-dark:#2344C4; --primary-50:#EDF1FF; --primary-100:#DCE4FF;
+  --orange:#F2542D; --purple:#5B36E8; --navy:#26357A; --accent:#F2542D;
+  --text:#1A1A1A; --muted:#6B7078; --field:#8A8F98; --border:#E8EAEE; --line:#D9DDE6; --soft:#F6F7F9;
+  --bg:#fff; --surface:#fff;
+  --green:#1F7A3A; --green-50:#E7F5EC; --red:#E5484D; --red-50:#FDECEC; --amber:#C2410C; --amber-50:#FFF1EA;
+  --violet:#5B36E8; --violet-50:#F0ECFF; --pink:#D6336C; --pink-50:#FDEBF3;
+  --radius:14px; --shadow:0 1px 2px rgba(20,30,60,.06),0 6px 20px rgba(20,30,60,.06);
+  --display:"Anton",Impact,"Arial Narrow",sans-serif; --body:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --gut:clamp(16px,5.6vw,88px);
   color-scheme:light;
 }
 *{box-sizing:border-box}
-html,body{margin:0;height:100%}
-body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5}
+html,body{margin:0}
+body{font-family:var(--body);background:#fff;color:var(--text);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
 a{color:var(--primary);text-decoration:none;cursor:pointer}
-button{font:inherit;cursor:pointer}
+button{font:inherit;cursor:pointer;color:inherit}
 input,select,textarea{font:inherit;color:inherit}
-h1,h2,h3,h4{margin:0;line-height:1.25}
-h1{font-size:22px;font-weight:700} h2{font-size:18px;font-weight:600} h3{font-size:15px;font-weight:600} h4{font-size:13px;font-weight:600}
+h1,h2,h3,h4{margin:0;line-height:1.25;font-weight:500}
+h1{font-size:30px;letter-spacing:-.01em} h2{font-size:19px} h3{font-size:16px} h4{font-size:13px;font-weight:600}
 p{margin:0}
-.svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+code{background:var(--soft);padding:1px 5px;border-radius:4px}
+.svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
 
-/* Shell */
-.app{display:grid;grid-template-columns:248px 1fr;min-height:100vh}
-.side{background:var(--navy);color:#cfd8ea;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow:auto}
-.brand{display:flex;align-items:center;gap:10px;padding:18px 18px 14px;color:#fff}
-.logo{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--accent),#f97316);display:grid;place-items:center;font-weight:700;color:#fff}
-.brand small{display:block;color:#9fb0d1;font-size:11px;font-weight:500}
-.side .sect{padding:10px 18px 4px;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#8193b8}
-.nav a{display:flex;align-items:center;gap:10px;padding:9px 18px;margin:1px 10px;border-radius:8px;color:#cfd8ea;font-weight:500}
-.nav a:hover{background:rgba(255,255,255,.07);color:#fff}
-.nav a.on{background:rgba(255,255,255,.13);color:#fff}
-.nav a .cnt{margin-left:auto;background:var(--accent);color:#1b2333;border-radius:10px;font-size:11px;padding:0 7px;font-weight:600}
-.side-foot{margin-top:auto;padding:14px 18px;border-top:1px solid rgba(255,255,255,.08);font-size:12px}
-.side-foot label{display:flex;align-items:center;gap:8px;cursor:pointer}
-.main{min-width:0;display:flex;flex-direction:column}
-.top{height:60px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;padding:0 24px;position:sticky;top:0;z-index:20}
-.top .crumb{color:var(--muted);font-size:13px}
-.top .crumb b{color:var(--text);font-weight:600}
-.top .sp{flex:1}
-.iconbtn{position:relative;width:38px;height:38px;border-radius:10px;border:1px solid var(--border);background:var(--surface);display:grid;place-items:center;color:var(--text)}
-.iconbtn .dot{position:absolute;top:7px;right:8px;width:8px;height:8px;border-radius:50%;background:var(--red);border:2px solid #fff}
-.rolesel{display:flex;align-items:center;gap:8px;border:1px solid var(--border);border-radius:10px;padding:4px 6px 4px 4px;background:var(--surface)}
-.rolesel .av{width:30px;height:30px;border-radius:8px;background:var(--primary-100);color:var(--primary);display:grid;place-items:center;font-weight:700;font-size:12px}
-.rolesel select{border:0;background:transparent;font-weight:600;outline:none;max-width:190px}
-.menu-btn{display:none}
-.content{padding:24px;max-width:1320px;width:100%;margin:0 auto}
-.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:20px;flex-wrap:wrap}
+/* ---------- Header ---------- */
+.hdr{position:sticky;top:0;z-index:40;background:#fff;border-bottom:1px solid var(--border)}
+.hdr-in{height:56px;display:flex;align-items:center;gap:28px;padding:0 var(--gut)}
+.logo{display:inline-flex;align-items:flex-end;font-weight:700;font-size:34px;letter-spacing:-.04em;line-height:1;color:var(--primary);flex:none}
+.logo i{font-style:normal;color:var(--orange)}
+.logo small{font-size:9.5px;letter-spacing:.02em;color:var(--orange);margin-left:1px;margin-bottom:2px;font-weight:700}
+.hsearch{flex:1;max-width:556px;display:flex;align-items:center;gap:10px;border:1px solid #C9CDD5;border-radius:10px;padding:0 14px;height:40px;color:var(--muted)}
+.hsearch input{border:0;outline:none;flex:1;height:100%;background:transparent;color:var(--text)}
+.hnav{display:flex;align-items:center;gap:22px;margin-left:auto;height:100%}
+.hnav>a,.hnav>.dd>button{color:#4A4F57;font-weight:400;font-size:14.5px;height:56px;display:flex;align-items:center;gap:4px;border:0;background:none;border-bottom:2px solid transparent;padding:0;white-space:nowrap}
+.hnav>a:hover,.hnav>.dd>button:hover{color:var(--text)}
+.hnav>a.on,.hnav>.dd>button.on{color:var(--primary);border-bottom-color:var(--primary)}
+.dd{position:relative;height:100%;display:flex;align-items:center}
+.uchip{display:flex;align-items:center;gap:8px;border:1px solid var(--border);border-radius:999px;padding:4px 12px 4px 4px;background:#fff;font-weight:500}
+.uchip .av{width:32px;height:32px;border-radius:50%;background:var(--primary);color:#fff;display:grid;place-items:center;font-size:12px;font-weight:700}
+.bellbtn{position:relative;width:38px;height:38px;border-radius:50%;border:1px solid var(--border);background:#fff;display:grid;place-items:center}
+.bellbtn .dot{position:absolute;top:8px;right:9px;width:8px;height:8px;border-radius:50%;background:var(--orange);border:2px solid #fff}
+.menu{position:absolute;top:52px;right:0;background:#fff;border:1px solid var(--border);border-radius:12px;box-shadow:0 12px 32px rgba(20,30,60,.14);padding:6px;min-width:210px;z-index:50}
+.menu a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;color:var(--text)}
+.menu a:hover{background:var(--soft)}
+.menu hr{border:0;border-top:1px solid var(--border);margin:6px 0}
+.mega{position:absolute;top:56px;left:50%;transform:translateX(-62%);width:min(940px,92vw);background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:0 18px 40px rgba(20,30,60,.16);padding:24px;display:grid;grid-template-columns:1fr 1fr;gap:6px 36px;z-index:50}
+.mega h4{font-size:15px;font-weight:600;margin-bottom:2px}
+.mega .grp{padding:8px 0}
+.mega .grp p{color:var(--muted);font-size:12.5px}
+.mega a.it{display:block;padding:9px 12px;border-radius:8px;color:var(--text)}
+.mega a.it:hover,.mega a.it.on{background:var(--primary-50)}
+.mega a.it b{display:flex;align-items:center;gap:6px;font-weight:500;font-size:14px}
+.mega a.it.on b{color:var(--primary)}
+.mega a.it span{display:block;color:var(--muted);font-size:12px}
+.new{background:var(--orange);color:#fff;font-size:9.5px;font-weight:700;border-radius:4px;padding:0 5px;letter-spacing:.02em}
+.menu-btn{display:none;border:0;background:none;padding:6px}
+
+/* ---------- Page / layout ---------- */
+.wrap-c{padding:0 var(--gut)}
+.page{padding-top:22px;padding-bottom:64px;min-height:70vh}
+.crumbs{display:flex;flex-wrap:wrap;gap:8px;align-items:center;color:var(--muted);font-size:13.5px;margin-bottom:16px}
+.crumbs a{color:var(--muted)} .crumbs a:hover{color:var(--text)} .crumbs b{color:var(--text);font-weight:500}
+.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:22px;flex-wrap:wrap}
 .page-head p{color:var(--muted);margin-top:4px}
+.sec-title{text-align:center;font-size:clamp(30px,3.6vw,46px);font-weight:500;letter-spacing:-.025em;margin:56px 0 28px}
+.sec-sub{text-align:center;color:var(--muted);margin:-18px 0 28px;font-size:15px}
 
-/* Components */
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
-.pad{padding:18px} .pad-l{padding:22px}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:9px;padding:9px 14px;font-weight:600;border:1px solid transparent;white-space:nowrap}
-.btn-p{background:var(--primary);color:#fff} .btn-p:hover{background:#244bb8}
-.btn-o{background:var(--surface);color:var(--text);border-color:var(--border)} .btn-o:hover{background:#f8f9fc}
+/* ---------- Back-office layout (admin / ops) ---------- */
+.bo{display:grid;grid-template-columns:244px 1fr;min-height:calc(100vh - 57px)}
+.bo-side{border-right:1px solid var(--border);padding:18px 12px;background:#fff;position:sticky;top:57px;height:calc(100vh - 57px);overflow:auto}
+.bo-side .sect{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--field);padding:10px 12px 6px;font-weight:600}
+.bo-side a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:9px;color:#3F444C;font-weight:500;margin-bottom:2px}
+.bo-side a:hover{background:var(--soft)}
+.bo-side a.on{background:var(--primary-50);color:var(--primary)}
+.bo-side a .cnt{margin-left:auto;background:var(--orange);color:#fff;border-radius:10px;font-size:11px;padding:0 7px;font-weight:600}
+.bo-main{background:var(--soft);padding:24px 32px 64px;min-width:0}
+
+/* ---------- Generic components ---------- */
+.card{background:#fff;border:1px solid var(--border);border-radius:var(--radius)}
+.pad{padding:16px} .pad-l{padding:22px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:10px;padding:9px 16px;font-weight:500;border:1px solid transparent;white-space:nowrap;font-size:14px}
+.btn-p{background:var(--primary);color:#fff} .btn-p:hover{background:var(--primary-dark)}
+.btn-o{background:#fff;color:var(--text);border-color:var(--line)} .btn-o:hover{background:var(--soft)}
 .btn-g{background:transparent;color:var(--primary);padding:6px 8px}
 .btn-d{background:var(--red);color:#fff}
 .btn-s{background:var(--green);color:#fff}
-.btn-sm{padding:6px 10px;font-size:13px;border-radius:8px}
-.btn-lg{padding:12px 18px;font-size:15px}
-.btn[disabled]{opacity:.5;cursor:not-allowed}
+.btn-w{background:#fff;color:var(--text);font-weight:600;letter-spacing:.03em;text-transform:uppercase;font-size:13px;border-radius:999px;padding:9px 18px}
+.btn-sm{padding:6px 11px;font-size:13px;border-radius:8px}
+.btn-lg{padding:12px 22px;font-size:15px}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
 .w100{width:100%}
-.pill{display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:500;background:#eef1f6;color:#3b4456;white-space:nowrap}
-.pill.blue{background:var(--primary-50);color:var(--primary)} .pill.green{background:var(--green-50);color:var(--green)}
-.pill.red{background:var(--red-50);color:var(--red)} .pill.amber{background:var(--amber-50);color:var(--amber)}
-.pill.violet{background:var(--violet-50);color:var(--violet)} .pill.dark{background:var(--navy);color:#fff}
-.pill.accent{background:#fff1d6;color:#92400e}
-.scope{display:none;font-size:10px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;padding:1px 6px;border-radius:4px;background:#fde68a;color:#78350f;vertical-align:middle;margin-left:6px}
+.pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;font-size:12.5px;font-weight:500;background:#EEF0F4;color:#3B4048;white-space:nowrap}
+.pill.blue{background:#E6ECFF;color:#3550C8} .pill.green{background:var(--green-50);color:var(--green)}
+.pill.red{background:var(--red-50);color:#C0322B} .pill.amber{background:var(--amber-50);color:var(--amber)}
+.pill.violet{background:var(--violet-50);color:var(--violet)} .pill.pink{background:var(--pink-50);color:var(--pink)}
+.pill.dark{background:var(--navy);color:#fff} .pill.accent{background:#FFF1EA;color:#C2410C}
+.scope{display:none;font-size:9.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:1px 6px;border-radius:4px;background:#FDE68A;color:#78350F;vertical-align:middle;margin-left:6px;line-height:1.5}
 body.show-scope .scope{display:inline-block}
 .row{display:flex;gap:12px;align-items:center} .wrap{flex-wrap:wrap} .between{justify-content:space-between}
 .col{display:flex;flex-direction:column;gap:12px}
 .grid{display:grid;gap:16px}
 .g2{grid-template-columns:repeat(2,minmax(0,1fr))} .g3{grid-template-columns:repeat(3,minmax(0,1fr))} .g4{grid-template-columns:repeat(4,minmax(0,1fr))}
-.muted{color:var(--muted)} .small{font-size:12px} .b{font-weight:600}
+.muted{color:var(--muted)} .small{font-size:12.5px} .b{font-weight:600}
 .mt8{margin-top:8px}.mt12{margin-top:12px}.mt16{margin-top:16px}.mt24{margin-top:24px}.mb8{margin-bottom:8px}.mb12{margin-bottom:12px}.mb16{margin-bottom:16px}
-.divider{height:1px;background:var(--border);margin:16px 0}
+.divider{height:1px;background:var(--divider);margin:16px 0}
 .field{display:flex;flex-direction:column;gap:6px}
-.field label{font-size:12px;font-weight:600;color:#344054}
-.inp{border:1px solid var(--border);border-radius:9px;padding:9px 12px;background:#fff;outline:none;width:100%}
+.field label{font-size:13px;font-weight:500;color:#2B2F36}
+.req{color:var(--red)}
+.inp{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#fff;outline:none;width:100%;min-height:42px}
 .inp:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-50)}
-textarea.inp{min-height:84px;resize:vertical}
+.inp:disabled{background:var(--soft);color:#4A4F57}
+textarea.inp{min-height:88px;resize:vertical}
 .check{display:flex;gap:10px;align-items:flex-start;cursor:pointer}
 .check input{margin-top:3px;width:16px;height:16px;accent-color:var(--primary)}
-.toggle{position:relative;width:38px;height:22px;flex:none}
+.toggle{position:relative;width:38px;height:22px;flex:none;display:inline-block}
 .toggle input{opacity:0;width:0;height:0}
-.toggle span{position:absolute;inset:0;background:#cdd3df;border-radius:22px;transition:.2s;cursor:pointer}
+.toggle span{position:absolute;inset:0;background:#CDD2DB;border-radius:22px;transition:.2s;cursor:pointer}
 .toggle span:before{content:"";position:absolute;width:16px;height:16px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s}
 .toggle input:checked+span{background:var(--primary)} .toggle input:checked+span:before{transform:translateX(16px)}
 .tabs{display:flex;gap:4px;border-bottom:1px solid var(--border);margin-bottom:18px;overflow-x:auto}
-.tabs button{background:none;border:0;padding:10px 14px;font-weight:600;color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap}
+.tabs button{background:none;border:0;padding:10px 14px;font-weight:500;color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap}
 .tabs button.on{color:var(--primary);border-color:var(--primary)}
-.seg{display:inline-flex;background:#eef1f6;border-radius:9px;padding:3px}
-.seg button{border:0;background:none;padding:6px 12px;border-radius:7px;font-weight:600;color:var(--muted)}
-.seg button.on{background:#fff;color:var(--text);box-shadow:var(--shadow)}
+.seg{display:inline-flex;background:var(--soft);border:1px solid var(--border);border-radius:10px;padding:3px}
+.seg button{border:0;background:none;padding:6px 12px;border-radius:8px;font-weight:500;color:var(--muted)}
+.seg button.on{background:#fff;color:var(--text);box-shadow:0 1px 3px rgba(20,30,60,.12)}
 table.t{width:100%;border-collapse:collapse}
-.t th{text-align:left;font-size:12px;font-weight:600;color:var(--muted);padding:10px 12px;background:#f8f9fc;border-bottom:1px solid var(--border);white-space:nowrap}
-.t td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
+.t th{text-align:left;font-size:12.5px;font-weight:600;color:var(--muted);padding:11px 14px;background:var(--soft);border-bottom:1px solid var(--border);white-space:nowrap}
+.t td{padding:12px 14px;border-bottom:1px solid var(--border);vertical-align:middle}
 .t tr:last-child td{border-bottom:0}
 .tbl-wrap{overflow-x:auto}
 .kpi{padding:16px 18px}
-.kpi .v{font-size:24px;font-weight:700;margin-top:4px}
-.kpi .l{color:var(--muted);font-size:12px;font-weight:500}
-.kpi .d{font-size:12px;margin-top:2px}
+.kpi .v{font-size:26px;font-weight:500;margin-top:4px;letter-spacing:-.01em}
+.kpi .l{color:var(--muted);font-size:12.5px;font-weight:500}
+.kpi .d{font-size:12.5px;margin-top:2px}
 .up{color:var(--green)} .down{color:var(--red)}
-.bar{height:8px;background:#eef1f6;border-radius:8px;overflow:hidden}
+.bar{height:7px;background:#EDEFF3;border-radius:8px;overflow:hidden}
 .bar i{display:block;height:100%;background:var(--primary);border-radius:8px}
-.bar.warn i{background:var(--accent)} .bar.full i{background:var(--red)} .bar.ok i{background:var(--green)}
-.alert{display:flex;gap:10px;padding:12px 14px;border-radius:10px;border:1px solid}
-.alert.info{background:var(--primary-50);border-color:var(--primary-100);color:#1e3a8a}
-.alert.warn{background:var(--amber-50);border-color:#fcd9a0;color:#7c2d12}
-.alert.err{background:var(--red-50);border-color:#f6c2c2;color:#7f1d1d}
-.alert.ok{background:var(--green-50);border-color:#b9e6c9;color:#14532d}
-.empty{padding:36px;text-align:center;color:var(--muted)}
-.avatar{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:13px;flex:none}
-
-/* Event cards */
-.ev-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
-.ev{display:flex;flex-direction:column;overflow:hidden;cursor:pointer;transition:.15s}
-.ev:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(16,24,40,.1)}
-.ev-ban{height:118px;position:relative;padding:12px;display:flex;flex-direction:column;justify-content:space-between;color:#fff}
-.ev-ban .flags{display:flex;gap:6px;flex-wrap:wrap}
-.ev-ban .flags .pill{background:rgba(255,255,255,.92)}
-.ev-ban .big{font-size:12px;font-weight:600;opacity:.95;display:flex;gap:8px;align-items:center}
-.ev-body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:10px;flex:1}
-.ev-body h3{font-size:15.5px}
-.meta{display:flex;flex-direction:column;gap:5px;font-size:13px;color:#475467}
-.meta div{display:flex;gap:8px;align-items:flex-start}
-.meta .svg{margin-top:2px;color:var(--muted);width:14px;height:14px}
-.ev-foot{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:8px;padding-top:10px;border-top:1px dashed var(--border)}
-.price{font-weight:700;font-size:16px}
-.th-Sports{background:linear-gradient(135deg,#0f766e,#14b8a6)} .th-Psychology{background:linear-gradient(135deg,#6d28d9,#a78bfa)}
-.th-Cultural{background:linear-gradient(135deg,#c2410c,#fb923c)} .th-STEM{background:linear-gradient(135deg,#1d4ed8,#60a5fa)}
-.th-Nutrition{background:linear-gradient(135deg,#4d7c0f,#a3e635)} .th-Wellness{background:linear-gradient(135deg,#0e7490,#67e8f9)}
-.th-PerformingArts{background:linear-gradient(135deg,#be185d,#f472b6)}
-
-/* Filters */
-.disc{display:grid;grid-template-columns:260px 1fr;gap:20px;align-items:start}
-.filters{position:sticky;top:80px}
-.filters .fg{padding:14px 16px;border-bottom:1px solid var(--border)}
-.filters .fg:last-child{border-bottom:0}
-.filters h4{margin-bottom:8px}
+.bar.warn i{background:var(--orange)} .bar.full i{background:var(--red)} .bar.ok i{background:var(--green)}
+.alert{display:flex;gap:10px;padding:12px 14px;border-radius:12px;border:1px solid}
+.alert.info{background:var(--primary-50);border-color:var(--primary-100);color:#1E3A8A}
+.alert.warn{background:var(--amber-50);border-color:#FBD3BF;color:#7C2D12}
+.alert.err{background:var(--red-50);border-color:#F6C2C2;color:#7F1D1D}
+.alert.ok{background:var(--green-50);border-color:#B9E6C9;color:#14532D}
+.empty{padding:40px;text-align:center;color:var(--muted)}
+.avatar{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:13px;flex:none}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
-.chip{border:1px solid var(--border);background:#fff;border-radius:999px;padding:4px 10px;font-size:12.5px;font-weight:500;color:#344054}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:5px 12px;font-size:13px;color:#3B4048}
 .chip.on{background:var(--primary);border-color:var(--primary);color:#fff}
-.searchbar{display:flex;align-items:center;gap:8px;border:1px solid var(--border);border-radius:10px;padding:0 12px;background:#fff;flex:1;min-width:220px}
+.searchbar{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:10px;padding:0 12px;background:#fff;flex:1;min-width:220px}
 .searchbar input{border:0;outline:none;padding:10px 0;width:100%;background:transparent}
+.ev-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px}
+.price{font-weight:600;font-size:21px;letter-spacing:-.01em}
+.th-Sports{background:linear-gradient(135deg,#12A150,#0A6E37)} .th-Psychology{background:linear-gradient(135deg,#5B36E8,#7C5CFF)}
+.th-Cultural{background:linear-gradient(135deg,#F2542D,#FF8A3D)} .th-STEM{background:linear-gradient(135deg,#1E2A78,#2F55E4)}
+.th-Nutrition{background:linear-gradient(135deg,#2F7D32,#4CAF50)} .th-Wellness{background:linear-gradient(135deg,#0B7285,#22B8CF)}
+.th-PerformingArts{background:linear-gradient(135deg,#C2185B,#EC407A)}
 
-/* Detail */
-.hero{border-radius:16px;padding:26px;color:#fff;position:relative;overflow:hidden}
-.hero h1{font-size:26px;margin:10px 0 8px}
-.hero .pill{background:rgba(255,255,255,.2);color:#fff}
-.detail{display:grid;grid-template-columns:1fr 340px;gap:20px;margin-top:20px;align-items:start}
-.sticky{position:sticky;top:80px}
-.sec{margin-bottom:18px}
-.sec h2{margin-bottom:12px;display:flex;align-items:center;gap:8px}
-.kv{display:grid;grid-template-columns:150px 1fr;gap:8px 14px;font-size:13.5px}
+/* ---------- Poster + event card (OSE Hub style) ---------- */
+.poster{position:relative;overflow:hidden;border-radius:14px 14px 0 0;aspect-ratio:323/280;color:#fff}
+.poster .phead{position:absolute;left:16px;top:14px;font-family:var(--display);font-size:clamp(30px,3.1vw,46px);line-height:.98;text-transform:uppercase;letter-spacing:.005em;z-index:2;max-width:70%}
+.poster .ptag{position:absolute;right:14px;top:14px;border-left:2px solid rgba(255,255,255,.9);padding-left:10px;font-weight:700;font-size:13px;z-index:2;line-height:1.2}
+.poster .art{position:absolute;right:0;bottom:0;width:62%;height:62%;z-index:1}
+.poster .pstatus{position:absolute;left:12px;bottom:12px;background:#fff;border-radius:999px;padding:3px 11px;font-size:12.5px;font-weight:500;z-index:3}
+.st-green{color:var(--green)} .st-orange{color:#C2410C} .st-grey{color:#5B6068} .st-amber{color:#B45309}
+.poster.lg{border-radius:14px;aspect-ratio:924/460}
+.poster.lg .phead{font-size:clamp(40px,6vw,86px);left:clamp(20px,3vw,44px);top:clamp(20px,4vw,44px);max-width:62%}
+.poster.lg .ptag{font-size:14px;right:18px;top:18px}
+.poster.sm{border-radius:10px;aspect-ratio:200/140}
+.poster.sm .phead{font-size:18px;left:8px;top:8px}
+.poster.sm .ptag,.poster.sm .pstatus{display:none}
+.ecard{background:#fff;border:1px solid #C9CDD5;border-radius:14px;display:flex;flex-direction:column;cursor:pointer;transition:box-shadow .15s,transform .15s}
+.ecard:hover{box-shadow:0 10px 28px rgba(20,30,60,.12);transform:translateY(-2px)}
+.ecard .eb{padding:12px 10px 14px;display:flex;flex-direction:column;gap:10px;flex:1}
+.ecard h3{font-size:16px;font-weight:500;line-height:1.3}
+.ttl-row{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.ico-btns{display:flex;gap:14px;color:#2B2F36;padding-top:2px}
+.ico-btns button{border:0;background:none;padding:0;display:grid}
+.ico-btns .liked{color:var(--red)} .ico-btns .liked .svg{fill:var(--red)}
+.meta{display:flex;flex-direction:column;gap:6px;font-size:14px;color:#4A4F57}
+.meta div{display:flex;gap:10px;align-items:flex-start}
+.meta .svg{margin-top:2px;color:#6B7078;width:16px;height:16px}
+.ecard .pr{margin-top:auto;padding-top:6px;display:flex;align-items:baseline;gap:6px}
+.ecard .pr small{font-size:12px;color:#3B4048}
+
+/* ---------- Home ---------- */
+.hero{display:flex;gap:24px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:22px var(--gut) 0;scroll-padding:0 var(--gut)}
+.hero::-webkit-scrollbar{display:none}
+.slide{flex:0 0 min(1120px,86vw);aspect-ratio:1120/320;border-radius:16px;scroll-snap-align:start;position:relative;overflow:hidden;color:#fff;padding:clamp(20px,4vw,56px);display:flex;flex-direction:column;justify-content:center}
+.slide small{font-weight:700;letter-spacing:.06em;font-size:13px;opacity:.95}
+.slide h2{font-family:var(--display);font-size:clamp(34px,5vw,64px);line-height:1;margin:8px 0 10px;text-transform:uppercase;max-width:60%}
+.slide p{opacity:.95;max-width:46%;font-size:14.5px}
+.slide .btn-w{margin-top:18px;align-self:flex-start}
+.slide .art{position:absolute;right:4%;bottom:0;height:92%;width:34%}
+.dots{display:flex;justify-content:center;gap:6px;margin-top:14px}
+.dots button{width:8px;height:8px;border-radius:8px;border:0;background:#D0D4DC;padding:0}
+.dots button.on{width:22px;background:var(--purple)}
+.band{background:var(--purple);padding:40px 0 34px;margin-top:64px;color:#fff}
+.band h2{text-align:center;font-size:clamp(26px,3vw,40px);font-weight:500;letter-spacing:-.02em;margin-bottom:24px}
+.catrow{display:flex;gap:14px;overflow-x:auto;padding:0 var(--gut);scroll-snap-type:x mandatory;scrollbar-width:none}
+.catrow::-webkit-scrollbar{display:none}
+.catcard{flex:0 0 190px;min-height:190px;border-radius:12px;padding:16px;color:var(--text);display:flex;flex-direction:column;justify-content:flex-end;scroll-snap-align:start;cursor:pointer}
+.catcard .n{font-size:12px;color:var(--muted);margin-bottom:auto;font-weight:600}
+.catcard b{font-size:17px;font-weight:500;line-height:1.2;margin-bottom:6px}
+.catcard p{font-size:12px;color:#4A4F57}
+.catcard a{font-size:12.5px;font-weight:600;color:var(--purple);margin-top:8px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,172px));gap:16px;justify-content:center}
+.stat{border-radius:12px;padding:18px 16px}
+.stat .v{font-size:26px;margin:6px 0 4px}
+.stat .l{font-size:13px;font-weight:500;color:#2B2F36}
+.foot{background:#0F1430;color:#C9CDE0;margin-top:72px;padding:44px var(--gut) 28px}
+.foot .logo small,.foot .logo i{color:var(--orange)}
+.foot .logo{color:#fff}
+.foot a{color:#C9CDE0}
+.foot h4{color:#fff;margin-bottom:10px;font-size:14px}
+.foot .cols{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:28px}
+.foot .cols div a{display:block;padding:3px 0;font-size:13.5px}
+
+/* ---------- Listing ---------- */
+.lbar{display:flex;gap:12px;align-items:center;margin-bottom:14px}
+.fbtn{display:inline-flex;align-items:center;gap:8px;background:var(--primary);color:#fff;border:0;border-radius:10px;padding:0 20px;height:44px;font-weight:500;font-size:15px;flex:none}
+.fbtn .n{background:#fff;color:var(--primary);border-radius:10px;font-size:11px;padding:0 6px;font-weight:700}
+.catchips{display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;flex:1;scroll-behavior:smooth}
+.catchips::-webkit-scrollbar{display:none}
+.catchips button{display:inline-flex;align-items:center;gap:9px;border:1px solid #2B2F36;background:#fff;border-radius:10px;height:44px;padding:0 20px;font-size:15px;white-space:nowrap;flex:none}
+.catchips button.on{background:var(--primary-50);border-color:var(--primary);color:var(--primary)}
+.chev{border:0;background:none;color:var(--primary);padding:6px;flex:none}
+
+/* ---------- Detail ---------- */
+.detail{display:grid;grid-template-columns:minmax(0,1fr) 384px;gap:36px;align-items:start}
+.sticky{position:sticky;top:76px}
+.side-card{background:#FAFAFB;border:1px solid var(--border);border-radius:14px;padding:22px}
+.side-card h2{font-size:21px;line-height:1.35;font-weight:500}
+.side-card .meta{gap:14px;font-size:14px;color:#2B2F36}
+.side-card .meta .svg{width:18px;height:18px;color:#2B2F36}
+.sec{padding:22px 0;border-top:1px solid var(--divider)}
+.sec h2{font-size:22px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.sec ul{margin:8px 0 0;padding-left:20px;color:#4A4F57;line-height:1.9}
+.sec p{color:#4A4F57}
+.kv{display:grid;grid-template-columns:160px 1fr;gap:8px 14px;font-size:14px}
 .kv dt{color:var(--muted)} .kv dd{margin:0;font-weight:500}
 .agenda-item{display:grid;grid-template-columns:110px 1fr auto;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
 .agenda-item:last-child{border:0}
-.mapbox{height:170px;border-radius:10px;background:repeating-linear-gradient(45deg,#e8eef8,#e8eef8 10px,#f1f5fb 10px,#f1f5fb 20px);display:grid;place-items:center;color:var(--muted);position:relative}
-.mapbox .pin{width:34px;height:34px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:var(--red);display:grid;place-items:center}
-.faq{border:1px solid var(--border);border-radius:10px;margin-bottom:8px}
-.faq summary{padding:12px 14px;cursor:pointer;font-weight:600;list-style:none;display:flex;justify-content:space-between}
+.mapbox{height:170px;border-radius:12px;background:repeating-linear-gradient(45deg,#EDF1FA,#EDF1FA 10px,#F5F7FC 10px,#F5F7FC 20px);display:grid;place-items:center;color:var(--muted);position:relative}
+.mapbox .pin{width:32px;height:32px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:var(--orange)}
+.faq{border:1px solid var(--border);border-radius:12px;margin-bottom:8px;background:#fff}
+.faq summary{padding:13px 16px;cursor:pointer;font-weight:500;list-style:none;display:flex;justify-content:space-between}
 .faq summary::after{content:"+";color:var(--muted)} .faq[open] summary::after{content:"–"}
-.faq p{padding:0 14px 12px;color:#475467}
+.faq p{padding:0 16px 13px;color:#4A4F57}
+.vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.vcard{border:1px solid var(--line);border-radius:10px;padding:12px;cursor:pointer;background:#fff;display:flex;flex-direction:column;gap:6px}
+.vcard.on{border-color:var(--primary);background:#F3F6FF;box-shadow:0 0 0 1px var(--primary)}
+.vcard.off{opacity:.5;cursor:not-allowed}
+.vcard .top{display:flex;align-items:center;gap:8px}
+.vcard .top input{width:16px;height:16px;accent-color:var(--primary);margin:0}
+.vcard .top b{font-weight:600}
+.vcard .sub{color:var(--muted);font-size:12.5px;padding-left:24px}
+.vcard .bot{display:flex;justify-content:space-between;border-top:1px solid var(--divider);padding-top:8px;margin-top:4px;font-size:12.5px;color:var(--muted)}
+.vcard .bot b{color:var(--text);font-size:14px}
+.dashed{border:1px dashed var(--line);border-radius:10px;padding:22px;text-align:center;color:var(--muted)}
+.selline{display:flex;justify-content:space-between;font-size:13px;color:#4A4F57;padding:3px 0}
 
-/* Stepper */
-.stepper{display:flex;gap:0;margin-bottom:22px;overflow-x:auto;padding-bottom:4px}
-.step{display:flex;align-items:center;gap:8px;flex:1;min-width:120px;font-size:13px;font-weight:600;color:var(--muted)}
-.step .n{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:#e9edf4;color:var(--muted);font-size:12px;flex:none}
-.step.on{color:var(--text)} .step.on .n{background:var(--primary);color:#fff}
-.step.done .n{background:var(--green);color:#fff}
-.step:not(:last-child)::after{content:"";flex:1;height:2px;background:#e3e7ef;margin:0 8px;min-width:12px}
-.step.done:not(:last-child)::after{background:var(--green)}
+/* ---------- Registration ---------- */
+.evsum{border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:22px}
+.evsum .in{display:grid;grid-template-columns:200px 1fr 1fr;gap:18px;margin-top:14px;align-items:start}
+.evsum .meta{gap:10px}
+.stepper{display:flex;align-items:center;gap:0;margin:6px 0 24px;overflow-x:auto}
+.step{display:flex;align-items:center;gap:10px;flex:1;min-width:150px}
+.step .n{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line);color:var(--muted);font-size:13px;flex:none;background:#fff}
+.step small{display:block;font-size:10.5px;color:var(--field);letter-spacing:.05em;text-transform:uppercase}
+.step span{font-size:13.5px;color:var(--muted)}
+.step.on .n{background:var(--primary);border-color:var(--primary);color:#fff}
+.step.on span{color:var(--text);font-weight:500}
+.step.done .n{background:var(--green);border-color:var(--green);color:#fff}
+.step.done span{color:var(--text)}
+.step:not(:last-child)::after{content:"";flex:1;height:1px;background:var(--line);margin:0 14px;min-width:20px}
+.regbar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--border);box-shadow:0 -6px 20px rgba(20,30,60,.06);z-index:30}
+.regbar .in{display:flex;align-items:center;justify-content:flex-end;gap:18px;height:64px;padding:0 var(--gut)}
+.regbar .tot{text-align:right;line-height:1.1}
+.regbar .tot b{font-size:22px;font-weight:500}
+.regbar .tot small{display:block;color:var(--muted);font-size:11.5px}
+.vvsteps{display:flex;flex-direction:column;gap:2px}
 .vsteps{display:flex;flex-direction:column;gap:2px}
-.vsteps button{display:flex;align-items:center;gap:10px;text-align:left;border:0;background:none;padding:9px 10px;border-radius:8px;font-weight:600;color:var(--muted)}
+.vsteps button{display:flex;align-items:center;gap:10px;text-align:left;border:0;background:none;padding:9px 10px;border-radius:9px;font-weight:500;color:var(--muted)}
 .vsteps button.on{background:var(--primary-50);color:var(--primary)}
-.vsteps button .n{width:22px;height:22px;border-radius:50%;background:#e9edf4;display:grid;place-items:center;font-size:11px;flex:none}
+.vsteps button .n{width:22px;height:22px;border-radius:50%;background:#E9EDF4;display:grid;place-items:center;font-size:11px;flex:none}
 .vsteps button.on .n{background:var(--primary);color:#fff}
 .vsteps button.done .n{background:var(--green);color:#fff}
 .status-track{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.status-track .s{display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;color:var(--muted)}
-.status-track .s i{width:10px;height:10px;border-radius:50%;background:#d0d5dd}
+.status-track .s{display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:500;color:var(--muted)}
+.status-track .s i{width:10px;height:10px;border-radius:50%;background:#D0D5DD}
 .status-track .s.on{color:var(--text)} .status-track .s.on i{background:var(--green)}
-.status-track .s.cur i{background:var(--accent);box-shadow:0 0 0 4px #fde9c4}
-.status-track .ln{width:24px;height:2px;background:#d0d5dd}
-
-.pcard{border:1px solid var(--border);border-radius:12px;padding:14px;display:flex;gap:12px;align-items:flex-start}
-.pcard.sel{border-color:var(--primary);background:#fafbff;box-shadow:0 0 0 3px var(--primary-50)}
-.pcard.bad{background:#fffafa}
+.status-track .s.cur i{background:var(--orange);box-shadow:0 0 0 4px #FDE3D9}
+.status-track .ln{width:24px;height:2px;background:#D0D5DD}
+.pcard{border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;gap:12px;align-items:flex-start;background:#fff}
+.pcard.sel{border-color:var(--primary);background:#F7F9FF;box-shadow:0 0 0 1px var(--primary)}
+.pcard.bad{background:#FFFBFB}
 .issue{display:flex;gap:8px;align-items:center;font-size:12.5px;margin-top:6px;flex-wrap:wrap}
-.qty{display:inline-flex;align-items:center;border:1px solid var(--border);border-radius:9px;overflow:hidden}
-.qty button{border:0;background:#f8f9fc;width:32px;height:32px;font-size:16px}
+.qty{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.qty button{border:0;background:var(--soft);width:32px;height:32px;font-size:16px}
 .qty span{width:36px;text-align:center;font-weight:600}
 .paym{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.paym button{border:1px solid var(--border);background:#fff;border-radius:10px;padding:12px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:4px}
+.paym button{border:1px solid var(--line);background:#fff;border-radius:10px;padding:12px;font-weight:500;display:flex;flex-direction:column;align-items:center;gap:4px}
 .paym button.on{border-color:var(--primary);background:var(--primary-50);color:var(--primary)}
 .sumline{display:flex;justify-content:space-between;padding:6px 0}
-.pass{border-radius:16px;overflow:hidden;border:1px solid var(--border);background:#fff;max-width:360px}
-.pass-top{background:var(--navy);color:#fff;padding:16px 18px}
+.formsec{font-size:15px;font-weight:600;margin:4px 0 12px}
+.pass{border-radius:16px;overflow:hidden;border:1px solid var(--border);background:#fff;max-width:360px;width:100%}
+.pass-top{background:var(--primary);color:#fff;padding:16px 18px}
 .pass-mid{padding:16px 18px;display:flex;flex-direction:column;align-items:center;gap:10px;border-bottom:2px dashed var(--border)}
 .pass-bot{padding:14px 18px;font-size:12.5px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.pass-bot b{display:block;font-size:13px}
+.pass-bot b{display:block;font-size:13px;font-weight:600}
 
-/* Modal + toast */
-.modal-bg{position:fixed;inset:0;background:rgba(15,23,42,.45);display:none;align-items:center;justify-content:center;z-index:100;padding:16px}
+/* ---------- Modal / toast / dock ---------- */
+.modal-bg{position:fixed;inset:0;background:rgba(15,20,40,.45);display:none;align-items:center;justify-content:center;z-index:100;padding:16px}
 .modal-bg.on{display:flex}
-.modal{background:#fff;border-radius:16px;max-width:560px;width:100%;max-height:90vh;overflow:auto;box-shadow:0 20px 60px rgba(0,0,0,.25)}
-.modal-h{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
-.modal-b{padding:20px}
-.modal-f{padding:14px 20px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px}
-.toasts{position:fixed;bottom:20px;right:20px;display:flex;flex-direction:column;gap:8px;z-index:200}
-.toast{background:#111827;color:#fff;padding:11px 16px;border-radius:10px;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,.2);display:flex;gap:8px;align-items:center;animation:tin .2s}
+.modal{background:#fff;border-radius:16px;max-width:600px;width:100%;max-height:90vh;overflow:auto;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.modal-h{padding:18px 22px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.modal-h h2{font-size:19px;font-weight:600}
+.modal-b{padding:22px}
+.modal-f{padding:14px 22px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px}
+.iconbtn{position:relative;width:36px;height:36px;border-radius:10px;border:1px solid var(--border);background:#fff;display:grid;place-items:center}
+.toasts{position:fixed;bottom:84px;right:20px;display:flex;flex-direction:column;gap:8px;z-index:200}
+.toast{background:#15171C;color:#fff;padding:11px 16px;border-radius:10px;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,.2);display:flex;gap:8px;align-items:center;animation:tin .2s}
 @keyframes tin{from{opacity:0;transform:translateY(8px)}}
+.dock{position:fixed;left:16px;bottom:16px;z-index:60;background:#15171C;color:#fff;border-radius:12px;padding:8px 10px;display:flex;align-items:center;gap:10px;font-size:12.5px;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.dock select{background:#2A2E38;color:#fff;border:0;border-radius:7px;padding:4px 6px;font-size:12.5px}
+.dock a{color:#9DB3FF}
+.dock label{display:flex;align-items:center;gap:6px;cursor:pointer}
+.dock .toggle{transform:scale(.8)}
+.dock.min .opt{display:none}
 
-/* Check-in */
-.scanner{aspect-ratio:1;max-width:340px;border-radius:18px;background:#0b1220;position:relative;overflow:hidden;margin:0 auto;display:grid;place-items:center}
+/* ---------- Ops ---------- */
+.scanner{aspect-ratio:1;max-width:340px;border-radius:18px;background:#0B1220;position:relative;overflow:hidden;margin:0 auto;display:grid;place-items:center}
 .scanner .frame{width:62%;aspect-ratio:1;border:3px solid rgba(255,255,255,.85);border-radius:14px;position:relative}
-.scanner .laser{position:absolute;left:8%;right:8%;height:2px;background:#22c55e;box-shadow:0 0 12px #22c55e;animation:scan 2s infinite ease-in-out}
+.scanner .laser{position:absolute;left:8%;right:8%;height:2px;background:#22C55E;box-shadow:0 0 12px #22C55E;animation:scan 2s infinite ease-in-out}
 @keyframes scan{0%,100%{top:10%}50%{top:88%}}
 .feed div{display:flex;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid var(--border);font-size:13px}
-.live-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#ef4444;animation:pulse 1.4s infinite}
+.live-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--red);animation:pulse 1.4s infinite}
 @keyframes pulse{50%{opacity:.3}}
-
-/* Charts */
 .bars{display:flex;align-items:flex-end;gap:10px;height:180px;padding-top:10px}
 .bars .b{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end;min-width:0}
 .bars .b i{display:block;width:100%;max-width:38px;background:var(--primary);border-radius:6px 6px 0 0}
 .bars .b span{font-size:11px;color:var(--muted);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .bars .b em{font-style:normal;font-size:11px;font-weight:600}
 .hbar{display:grid;grid-template-columns:150px 1fr 60px;gap:10px;align-items:center;padding:6px 0;font-size:13px}
-
-/* Guide */
 .flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
-.flow a{background:var(--primary-50);color:var(--primary);padding:6px 10px;border-radius:8px;font-weight:600;font-size:12.5px}
+.flow a{background:var(--primary-50);color:var(--primary);padding:6px 10px;border-radius:8px;font-weight:500;font-size:12.5px}
 .flow .arr{color:var(--muted)}
 
-/* Login */
+/* ---------- Login ---------- */
 .login{min-height:100vh;display:grid;grid-template-columns:1.1fr 1fr}
-.login-l{background:linear-gradient(150deg,var(--navy),#2f5bd3);color:#fff;padding:48px;display:flex;flex-direction:column;justify-content:space-between}
+.login-l{position:relative;overflow:hidden;background:linear-gradient(135deg,#F2542D,#FF8A3D);color:#fff;padding:48px;display:flex;flex-direction:column;justify-content:space-between}
+.login-l h1{font-family:var(--display);font-size:clamp(44px,5vw,72px);line-height:1;text-transform:uppercase;font-weight:400}
 .login-r{display:grid;place-items:center;padding:32px}
 .rolegrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.rolegrid button{border:1px solid var(--border);background:#fff;border-radius:10px;padding:10px;text-align:left;font-weight:600;font-size:13px}
+.rolegrid button{border:1px solid var(--line);background:#fff;border-radius:10px;padding:10px;text-align:left;font-weight:500;font-size:13px}
 .rolegrid button.on{border-color:var(--primary);background:var(--primary-50);color:var(--primary)}
 .rolegrid small{display:block;font-weight:400;color:var(--muted);font-size:11.5px}
 
-@media (max-width:1100px){.detail{grid-template-columns:1fr}.sticky{position:static}.g4{grid-template-columns:repeat(2,1fr)}}
-@media (max-width:900px){
-  .app{grid-template-columns:1fr}
-  .side{position:fixed;left:0;top:0;bottom:0;width:260px;z-index:60;transform:translateX(-100%);transition:.2s}
-  .side.open{transform:none}
+@media (max-width:1100px){.detail{grid-template-columns:1fr}.sticky{position:static}.g4{grid-template-columns:repeat(2,1fr)}.evsum .in{grid-template-columns:140px 1fr}.evsum .in>:last-child{grid-column:2}}
+@media (max-width:980px){
+  .hsearch{display:none}
+  .hnav>a,.hnav>.dd.hide-sm{display:none}
+  .bo{grid-template-columns:1fr}
+  .bo-side{position:fixed;left:0;top:57px;bottom:0;width:260px;height:auto;z-index:45;transform:translateX(-100%);transition:.2s;box-shadow:0 10px 30px rgba(0,0,0,.15)}
+  .bo-side.open{transform:none}
   .menu-btn{display:grid}
-  .disc{grid-template-columns:1fr}.filters{position:static}
   .g3,.g2{grid-template-columns:1fr}
   .login{grid-template-columns:1fr}.login-l{display:none}
-  .top .crumb{display:none}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .foot .cols{grid-template-columns:1fr 1fr}
+  .slide p{max-width:70%}
+  .mega{grid-template-columns:1fr;transform:translateX(-50%);left:50%;position:fixed;top:56px}
 }
 @media (max-width:600px){
-  .content{padding:16px}.top{padding:0 16px}
+  .hdr-in{gap:12px}
+  .uchip .nm{display:none}
+  .bo-main{padding:16px}
   .g4{grid-template-columns:1fr 1fr}
   .kv{grid-template-columns:1fr}
   .paym{grid-template-columns:1fr}
-  .rolesel select{max-width:120px}
   .agenda-item{grid-template-columns:1fr}
   .hbar{grid-template-columns:100px 1fr 44px}
+  .slide{aspect-ratio:auto;min-height:260px}
+  .slide h2,.slide p{max-width:100%}
+  .slide .art{opacity:.25}
+  .evsum .in{grid-template-columns:1fr}.evsum .in>:last-child{grid-column:auto}
+  .regbar .in{justify-content:space-between}
+  .dock .opt{display:none}
 }
+
 </style>
 </head>
 <body>
@@ -347,7 +474,7 @@ const NAV={
  volunteer:[['Check-in','#/checkin','scan'],['Roster Lookup','#/lookup','search'],['Live Monitor','#/live','activity']],
  admin:[['Dashboard','#/admin','home'],['Events','#/admin/events','grid'],['Create Event','#/admin/create','plus'],['Communications','#/admin/comms','send'],['Live Event Control','#/live','activity'],['Post-Event','#/admin/post','award'],['Exceptions','#/admin/exceptions','refresh',6],['Reports & Audit','#/admin/reports','chart'],['Settings','#/admin/settings','sliders']]
 };
-const HOME={parent:'#/events',student:'#/events',coach:'#/coach',partner:'#/coach',speaker:'#/speaker',volunteer:'#/checkin',admin:'#/admin'};
+const HOME={parent:'#/home',student:'#/home',coach:'#/coach',partner:'#/coach',speaker:'#/speaker',volunteer:'#/checkin',admin:'#/admin'};
 
 const EVENTS=[
  {id:1,title:'VIVA Inter-School Athletics Meet 2026',cat:'Competition',theme:'Sports',mode:'Offline',aud:['Students'],grades:[4,10],reg:'Paid',fee:750,disc:['Early-bird 10%','Referral ₹100'],date:'Sat, 14 Dec 2026',d:'2026-12-14',days:1,time:'7:30 AM – 5:00 PM',venue:'Andheri Campus, Mumbai',city:'Mumbai',cap:400,left:38,hosts:[['Rahul Menon','Head Coach · AFI Level-2 certified'],['Sunita Pillai','Former national 400m finalist']],deadline:'08 Dec 2026',bring:['School ID card','Sports kit & spikes','Water bottle','Cap / sunscreen'],flags:['Featured','Trending'],vis:'Public',docs:['Medical fitness certificate'],interest:120,status:'Published',regs:362},
@@ -422,42 +549,104 @@ function elig(e,who){ // who: kid obj or 'self'
 function capInfo(e){const pct=Math.round((e.cap-e.left)/e.cap*100);return {pct,cls:e.left===0?'full':pct>85?'warn':'',txt:e.left===0?`Full · ${e.wait||0} on waitlist`:`${e.left} of ${e.cap} seats left`}}
 
 /* ================= SHELL ================= */
-function shell(crumb,body){
- const r=ROLES[S.role];const h=location.hash||'';
- const nav=NAV[S.role].map(([l,u,i,c])=>`<a href="${u}" class="${(h===u||(u!=='#/admin'&&h.startsWith(u+'/'))||(u==='#/events'&&h.startsWith('#/event/')))?'on':''}">${ic(i)}<span>${l}</span>${c?`<span class="cnt">${c}</span>`:''}</a>`).join('');
- return `<div class="app">
- <aside class="side" id="side">
-  <div class="brand"><div class="logo">E</div><div><div style="font-weight:700">Events &amp; Engagements</div><small>Osehub Portal</small></div></div>
-  <div class="sect">${r.label}</div>
-  <nav class="nav">${nav}</nav>
-  <div class="sect" style="margin-top:12px">Prototype</div>
-  <nav class="nav"><a href="#/guide" class="${h==='#/guide'?'on':''}">${ic('book')}<span>Flow guide</span></a><a onclick="logout()">${ic('back')}<span>Sign out</span></a></nav>
-  <div class="side-foot"><label><span class="toggle"><input type="checkbox" ${S.scope?'checked':''} onchange="S.scope=this.checked;document.body.classList.toggle('show-scope',S.scope)"><span></span></span>Show scope tags</label><div class="small" style="margin-top:6px;color:#8193b8">Highlights “Partially in scope” items from the E&amp;E mapping.</div></div>
- </aside>
- <div class="main">
-  <header class="top">
-   <button class="iconbtn menu-btn" onclick="$('#side').classList.toggle('open')">${ic('menu')}</button>
-   <div class="crumb">Events &amp; Engagements / <b>${crumb}</b></div>
-   <div class="sp"></div>
-   ${S.role!=='volunteer'&&S.role!=='admin'?`<button class="iconbtn" onclick="go('#/notifications')" title="Notifications">${ic('bell')}<span class="dot"></span></button>`:''}
-   <div class="rolesel"><div class="av">${r.ini}</div><select onchange="setRole(this.value)" title="Switch role (prototype)">${Object.entries(ROLES).map(([k,v])=>`<option value="${k}" ${k===S.role?'selected':''}>${v.label}</option>`).join('')}</select></div>
-  </header>
-  <main class="content">${body}</main>
- </div></div>`;
+const POSTER={
+ 1:{h:'Run.|Jump.|Conquer.',bg:['#12A150','#0A6E37'],c:'#FFD23F',art:'track'},
+ 2:{h:'Mindful|Parents.|Happy Kids.',bg:['#5B36E8','#8063FF'],c:'#FFFFFF',art:'heart'},
+ 3:{h:'Three|Days of|Colour',bg:['#F2542D','#FF8A3D'],c:'#FFE14D',art:'sun'},
+ 4:{h:'Build.|Code.|Compete.',bg:['#1A2470','#2F55E4'],c:'#7FE3FF',art:'gear'},
+ 5:{h:'Fuel|Right.|Play Bright.',bg:['#256B2A','#43A047'],c:'#FFE14D',art:'apple'},
+ 6:{h:'Step|Inside|Our World',bg:['#1A9BE8','#0B66B8'],c:'#FFFFFF',art:'building'},
+ 7:{h:'Clean|Shores.|Clear Minds.',bg:['#0E8A8A','#14B1B1'],c:'#FFFFFF',art:'waves'},
+ 8:{h:'Run|For A|Reason',bg:['#B71C1C','#E53935'],c:'#FFD23F',art:'track'},
+ 9:{h:'Little|Feet.|Big Stage.',bg:['#B0124F','#EC407A'],c:'#FFE14D',art:'note'},
+ 10:{h:'Breathe.|Stretch.|Reset.',bg:['#0B7285','#22B8CF'],c:'#FFFFFF',art:'sun'}
+};
+const TODAY=new Date(2026,10,25);
+function parseD(s){const [d,m,y]=s.split(' ');return new Date(+y,'JanFebMarAprMayJunJulAugSepOctNovDec'.indexOf(m)/3,+d)}
+function daysLeft(e){return Math.round((parseD(e.deadline)-TODAY)/864e5)}
+function regStatus(e){const d=daysLeft(e);if(e.left===0)return ['Waitlist open','amber'];if(d<0)return ['Registration closed','grey'];if(d<=7)return [`Closes in ${d} day${d===1?'':'s'}`,'orange'];return ['Registration open','green']}
+function art(t){const W='rgba(255,255,255,.95)';const A={
+ track:`<svg class="art" viewBox="0 0 200 200" preserveAspectRatio="xMaxYMax meet"><g fill="${W}">${[40,80,120,160].map((y,i)=>`<rect x="${40+i*8}" y="${y}" width="200" height="22" rx="11" opacity=".9"/><circle cx="${90+i*25}" cy="${y+11}" r="8" fill="#1A2470"/>`).join('')}</g></svg>`,
+ heart:`<svg class="art" viewBox="0 0 200 200" preserveAspectRatio="xMaxYMax meet"><circle cx="120" cy="140" r="70" fill="${W}" opacity=".18"/><path d="M130 175 C 60 125 70 75 105 75 C 120 75 128 85 130 95 C 132 85 140 75 155 75 C 190 75 200 125 130 175Z" fill="#FF6B8B"/><circle cx="60" cy="70" r="16" fill="#FFD23F"/></svg>`,
+ sun:`<svg class="art" viewBox="0 0 200 200" preserveAspectRatio="xMaxYMax meet"><circle cx="140" cy="120" r="54" fill="#FFD23F"/>${[0,45,90,135,180,225,270,315].map(a=>`<rect x="136" y="38" width="8" height="26" rx="4" fill="${W}" transform="rotate(${a} 140 120)"/>`).join('')}<path d="M0 200 Q 60 150 120 185 T 220 170 V200Z" fill="${W}" opacity=".85"/></svg>`,
+ gear:`<svg class="art" viewBox="0 0 200 200" preserveAspectRatio="xMaxYMax meet"><circle cx="135" cy="135" r="58" fill="none" stroke="${W}" stroke-width="22" stroke-dasharray="18 12"/><circle cx="135" cy="135" r="22" fill="#7FE3FF"/><rect x="20" y="40" width="54" height="54" rx="10" fill="none" stroke="#7FE3FF" stroke-width="6"/><path d="M36 67h22M47 56v22" stroke="#7FE3FF" stroke-width="6" stroke-linecap="round"/></svg>`,
+ apple:`<svg class="art" viewBox="0 0 200 200" preserveAspectRatio="xMaxYMax meet"><circle cx="130" cy="135" r="58" fill="#E53935"/><circle cx="105" cy="115" r="14" fill="#fff" opacity=".45"/><path d="M130 78 q 4 -24 26 -30 q -4 26 -26 30Z" fill="#9CCC65"/><rect x="127" y="62" width="6" height="22" rx="3" fill="#5D4037"/></svg>`,
+ building:`<svg class="art" viewBox="0 0 200 200" preserveAspectRatio="xMaxYMax meet"><path d="M50 90 L125 45 L200 90Z" fill="${W}"/><rect x="58" y="90" width="134" height="12" fill="${W}"/>${[70,100,130,160].map(x=>`<rect x="${x}" y="108" width="14" height="70" rx="3" fill="${W}"/>`).join('')}<rect x="50" y="180" width="150" height="20" fill="${W}"/><circle cx="125" cy="72" r="7" fill="#FFD23F"/></svg>`,
+ waves:`<svg class="art" viewBox="0 0 200 200" preserveAspectRatio="xMaxYMax meet"><circle cx="150" cy="60" r="22" fill="#FFD23F"/>${[110,145,180].map(y=>`<path d="M0 ${y} q 25 -22 50 0 t 50 0 t 50 0 t 50 0" fill="none" stroke="${W}" stroke-width="14" stroke-linecap="round"/>`).join('')}</svg>`,
+ note:`<svg class="art" viewBox="0 0 200 200" preserveAspectRatio="xMaxYMax meet"><g fill="${W}"><rect x="120" y="40" width="10" height="110" rx="5"/><rect x="170" y="25" width="10" height="110" rx="5"/><path d="M120 40 L180 25 L180 50 L120 65Z"/><ellipse cx="108" cy="152" rx="24" ry="18"/><ellipse cx="158" cy="137" rx="24" ry="18"/></g><circle cx="60" cy="150" r="14" fill="#FFD23F"/></svg>`,
+ trophy:`<svg class="art" viewBox="0 0 200 200" preserveAspectRatio="xMaxYMax meet"><path d="M70 30h100v40a50 50 0 0 1-100 0z" fill="#FFD23F" stroke="#1A1A1A" stroke-width="8"/><path d="M70 45H48a22 22 0 0 0 22 30M170 45h22a22 22 0 0 1-22 30" fill="none" stroke="#1A1A1A" stroke-width="8"/><rect x="110" y="118" width="20" height="30" fill="#FFD23F" stroke="#1A1A1A" stroke-width="6"/><rect x="88" y="146" width="64" height="22" rx="4" fill="#1A1A1A"/><polygon points="120,48 126,62 141,62 129,71 133,85 120,77 107,85 111,71 99,62 114,62" fill="#fff"/></svg>`
+ };return A[t]||A.sun}
+function poster(e,size){const p=POSTER[e.id]||{h:e.cat,bg:['#2F55E4','#5B36E8'],c:'#fff',art:'sun'};const [st,sc]=regStatus(e);
+ return `<div class="poster ${size||''}" style="background:linear-gradient(140deg,${p.bg[0]},${p.bg[1]})"><span class="ptag">${e.theme==='Performing Arts'?'Performing Arts':e.cat}</span><div class="phead" style="color:${p.c}">${p.h.split('|').join('<br>')}</div>${art(p.art)}${size==='lg'?'':`<span class="pstatus st-${sc}">${st}</span>`}</div>`}
+const LIKED=new Set([3]);
+function like(id,ev_){ev_.stopPropagation();LIKED.has(id)?LIKED.delete(id):LIKED.add(id);toast(LIKED.has(id)?'Added to wishlist':'Removed from wishlist','star');render()}
+function share(ev_){ev_.stopPropagation();toast('Link copied to clipboard','copy')}
+const HEART='<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>';
+const SHARE='<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>';
+const icoBtns=id=>`<div class="ico-btns"><button class="${LIKED.has(id)?'liked':''}" onclick="like(${id},event)" title="Wishlist"><svg class="svg" style="width:22px;height:22px" viewBox="0 0 24 24">${HEART}</svg></button><button onclick="share(event)" title="Share"><svg class="svg" style="width:20px;height:20px" viewBox="0 0 24 24">${SHARE}</svg></button></div>`;
+const audPills=e=>`${e.grades?pill(`Gr ${e.grades[0]} – ${e.grades[1]}`,'blue'):pill('All ages','blue')}${e.aud.map(a=>pill(a,a==='Parents'?'pink':a==='Students'?'violet':'')).join('')}`;
+const unitOf=e=>e.aud.includes('Students')?'per student':'per person';
+
+function crumbs(arr){return `<div class="crumbs">${arr.map((c,i)=>i===arr.length-1?`<b>${c[0]}</b>`:`<a onclick="${c[1][0]==='!'?c[1].slice(1):"go('"+c[1]+"')"}">${c[0]}</a><span>→</span>`).join('')}</div>`}
+const BACK=r=>r==='admin'||r==='volunteer';
+function hdr(){
+ const r=ROLES[S.role];const h=location.hash||'';const back=BACK(S.role);
+ const links=NAV[S.role].filter(([,u])=>u!=='#/events'&&u!=='#/notifications');
+ const onEv=h.startsWith('#/events')||h.startsWith('#/event/')||h.startsWith('#/register');
+ const mega=S.mega?`<div class="mega" onclick="event.stopPropagation()">
+  <div><div class="grp"><h4>Events &amp; Engagements</h4><p>Competitions, showcases, seminars and community events across campuses.</p></div>
+  ${OPTS.cat.slice(0,5).map(c=>`<a class="it ${S.f.cat.includes(c)?'on':''}" onclick="pickCat('${c}')"><b>${c}${c==='Festival'?' <span class="new">NEW</span>':''}</b><span>${CATDESC[c]}</span></a>`).join('')}</div>
+  <div>${OPTS.cat.slice(5).map(c=>`<a class="it ${S.f.cat.includes(c)?'on':''}" onclick="pickCat('${c}')"><b>${c}</b><span>${CATDESC[c]}</span></a>`).join('')}
+  <a class="it" onclick="pickCat('')"><b>View all events →</b><span>Browse every upcoming event</span></a></div></div>`:'';
+ const um=S.um?`<div class="menu" onclick="event.stopPropagation()">
+  <a onclick="go('#/profile')">${ic('user')}Profile</a>
+  ${links.map(([l,u,i])=>`<a onclick="go('${u}')">${ic(i)}${l}</a>`).join('')}
+  ${!back?`<a onclick="go('#/notifications')">${ic('bell')}Notifications</a>`:''}
+  <a onclick="go('#/guide')">${ic('book')}Flow guide</a><hr><a onclick="logout()">${ic('back')}Logout</a></div>`:'';
+ return `<header class="hdr"><div class="hdr-in">
+  ${back?`<button class="menu-btn" onclick="$('#side').classList.toggle('open')">${ic('menu',22)}</button>`:''}
+  <a class="logo" onclick="go(HOME[S.role])" title="OSE Hub">OS<i>E</i><small>HUB</small></a>
+  <label class="hsearch">${ic('search')}<input id="hq" placeholder="Search for events" value="${S.f.q.replace(/"/g,'&quot;')}" oninput="hsearch(this.value)"></label>
+  <nav class="hnav">
+   <div class="dd hide-sm"><button class="${onEv?'on':''}" onclick="event.stopPropagation();S.um=false;S.mega=!S.mega;render()">All Events <svg class="svg" style="width:14px" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>${mega}</div>
+   ${links.slice(0,back?0:3).map(([l,u])=>`<a href="${u}" class="${h===u||h.startsWith(u+'/')?'on':''}">${l}</a>`).join('')}
+   ${back?'':`<a onclick="toast('Enquiry form opened','msg')">Enquire Now</a>`}
+   ${back?'':`<button class="bellbtn" onclick="go('#/notifications')" title="Notifications">${ic('bell')}<span class="dot"></span></button>`}
+   <div class="dd"><button class="uchip" onclick="event.stopPropagation();S.mega=false;S.um=!S.um;render()"><span class="av">${r.ini}</span><span class="nm">${r.name}</span><svg class="svg" style="width:14px" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>${um}</div>
+  </nav></div></header>`;
 }
-function setRole(r){S.role=r;S.reg=null;go(HOME[r]);render()}
-function logout(){S.role=null;go('#/login')}
+function footer(){return `<footer class="foot"><div class="cols"><div><span class="logo">OS<i>E</i><small>HUB</small></span><p class="mt12" style="max-width:320px;font-size:13.5px">Events, competitions and engagement programmes for students, parents and schools across India.</p><p class="mt12 small">support@osehub.com · +91 22 4000 1234</p></div>
+ <div><h4>Events</h4>${['Competitions','Showcases','Seminars & Webinars','Festivals'].map(x=>`<a onclick="go('#/events')">${x}</a>`).join('')}</div>
+ <div><h4>For you</h4><a onclick="go('#/my')">My events</a><a onclick="go('#/profile')">Profile</a><a onclick="go('#/notifications')">Notifications</a></div>
+ <div><h4>Help</h4><a>FAQs</a><a>Refund policy</a><a>Code of conduct</a><a>Privacy</a></div></div>
+ <div class="small mt24" style="opacity:.6">© 2026 OSE Hub · Events &amp; Engagements prototype</div></footer>`}
+function dock(){return `<div class="dock ${S.dockMin?'min':''}"><b style="cursor:pointer" onclick="S.dockMin=!S.dockMin;render()" title="Collapse">⚙ Prototype</b>
+ <span class="opt row" style="gap:10px"><select onchange="setRole(this.value)" title="Switch role">${Object.entries(ROLES).map(([k,v])=>`<option value="${k}" ${k===S.role?'selected':''}>${v.label}</option>`).join('')}</select>
+ <label><span class="toggle"><input type="checkbox" ${S.scope?'checked':''} onchange="S.scope=this.checked;document.body.classList.toggle('show-scope',S.scope)"><span></span></span>Scope tags</label>
+ <a onclick="go('#/guide')">Flow guide</a></span></div>`}
+function shell(crumb,body){
+ const h=location.hash||'';
+ if(BACK(S.role)){
+  const nav=NAV[S.role].map(([l,u,i,c])=>`<a href="${u}" class="${(h===u||(u!=='#/admin'&&h.startsWith(u+'/')))?'on':''}">${ic(i)}<span>${l}</span>${c?`<span class="cnt">${c}</span>`:''}</a>`).join('');
+  return `${hdr()}<div class="bo"><aside class="bo-side" id="side"><div class="sect">${ROLES[S.role].label}</div>${nav}<div class="sect" style="margin-top:14px">Help</div><a href="#/guide" class="${h==='#/guide'?'on':''}">${ic('book')}<span>Flow guide</span></a><a onclick="logout()">${ic('back')}<span>Logout</span></a></aside><main class="bo-main">${body}</main></div>${dock()}`;
+ }
+ return `${hdr()}<main class="wrap-c page">${body}</main>${footer()}${dock()}`;
+}
+function setRole(r){S.role=r;S.reg=null;S.mega=S.um=false;go(HOME[r]);render()}
+function logout(){S.role=null;S.um=false;go('#/login')}
+function hsearch(v){S.f.q=v;clearTimeout(window._qt);window._qt=setTimeout(()=>{if(!location.hash.startsWith('#/events'))go('#/events');else render();setTimeout(()=>{const i=$('#hq');if(i){i.focus();i.setSelectionRange(i.value.length,i.value.length)}},0)},250)}
+function pickCat(c){S.f.cat=c?[c]:[];S.mega=false;if(location.hash==='#/events')render();else go('#/events')}
+window.addEventListener('click',()=>{if(S.mega||S.um){S.mega=S.um=false;render()}});
 
 /* ================= LOGIN ================= */
 let loginRole='parent';
 function vLogin(){
- return `<div class="login"><div class="login-l"><div class="row"><div class="logo">E</div><b style="font-size:18px">Osehub Portal</b></div>
- <div><h1 style="font-size:34px;line-height:1.2">Events &amp; Engagements</h1><p style="opacity:.85;margin-top:12px;max-width:440px;font-size:15px">Discover competitions, showcases, seminars and festivals. Register your family, pay securely, and carry your pass – all in one place.</p>
- <div class="row wrap mt24">${['Competitions','Seminars','Festivals','Webinars','Open Houses','Community Service'].map(x=>`<span class="pill" style="background:rgba(255,255,255,.15);color:#fff">${x}</span>`).join('')}</div></div>
- <div class="small" style="opacity:.7">Interactive prototype · role-based access</div></div>
- <div class="login-r"><div class="card pad-l" style="width:100%;max-width:440px">
-  <h2>Sign in</h2><p class="muted mt8">Secure portal login. Access is based on your role.</p>
-  <div class="field mt16"><label>Email or mobile</label><input class="inp" value="neha.sharma@example.com"></div>
+ return `<div class="login"><div class="login-l"><span class="logo" style="color:#fff">OS<i style="color:#1A1A1A">E</i><small style="color:#1A1A1A">HUB</small></span>
+ <div style="position:relative;z-index:2"><div class="small b" style="letter-spacing:.06em">EVENTS &amp; ENGAGEMENTS</div><h1 class="mt8">Compete.<br>Perform.<br>Belong.</h1><p style="opacity:.95;margin-top:14px;max-width:420px;font-size:15px">Discover competitions, showcases, seminars and festivals. Register your family, pay securely and carry your pass — all in one place.</p></div>
+ <div class="small" style="opacity:.85;position:relative;z-index:2">Interactive prototype · role-based access</div>${art('trophy').replace('class="art"','class="art" style="position:absolute;right:0;bottom:0;width:48%;height:60%;opacity:.95"')}</div>
+ <div class="login-r"><div style="width:100%;max-width:420px">
+  <h1>Sign in</h1><p class="muted mt8">Secure portal login. What you see depends on your role.</p>
+  <div class="field mt24"><label>Email or mobile</label><input class="inp" value="neha.sharma@example.com"></div>
   <div class="field mt12"><label>Password</label><input class="inp" type="password" value="password"></div>
   <div class="field mt16"><label>Continue as (prototype role switch)</label><div class="rolegrid">${Object.entries(ROLES).map(([k,v])=>`<button class="${k===loginRole?'on':''}" onclick="loginRole='${k}';render()">${v.label}<small>${v.name}</small></button>`).join('')}</div></div>
   <button class="btn btn-p w100 btn-lg mt16" onclick="setRole(loginRole)">Sign in</button>
@@ -465,14 +654,42 @@ function vLogin(){
  </div></div></div>`;
 }
 
+/* ================= HOME ================= */
+const CATDESC={Competition:'Inter-school leagues and championships',Showcase:'Exhibitions, recitals and student showcases',Seminar:'Expert talks for parents and educators',Webinar:'Live online sessions from anywhere',Festival:'Multi-day cultural celebrations','Open House':'Campus tours and admissions sessions','Community Service':'Volunteer drives and outreach',Fundraiser:'Runs, fairs and charity events','Engagement Activity':'Parent & student community activities'};
+const CATBG=['#EFEAFF','#FDE8E8','#E6F0FF','#FFF4DA','#E7F0FF','#EFEAFF','#FDE8EF','#E3F3EE','#FFF0E6'];
+let heroIx=0;
+function vHome(){
+ const pub=visibleEvents().slice().sort((a,b)=>a.d.localeCompare(b.d));
+ const slides=[
+  ['COMPETITIONS &amp; SHOWCASES','Compete. Win. Repeat.','Inter-school athletics, robotics and performing-arts showcases across campuses.','View competitions',"pickCat('Competition')",'linear-gradient(120deg,#FF5A2B,#FF8A3D)','trophy'],
+  ['RANG · GOREGAON CAMPUS','Three days of colour','Annual Cultural Festival on 19 – 21 Dec. Registration closes 16 Dec.','Register now',"go('#/event/3')",'linear-gradient(120deg,#B0124F,#EC407A)','note'],
+  ['SEMINARS &amp; WEBINARS','Learn from the experts','Parenting, psychology and nutrition sessions — online and on campus.','View sessions',"pickCat('Seminar')",'linear-gradient(120deg,#5B36E8,#8063FF)','heart'],
+  ['COMMUNITY','Give back. Grow together.','Beach clean-ups, charity runs and volunteer drives for families.','Explore',"pickCat('Community Service')",'linear-gradient(120deg,#0E8A8A,#14B1B1)','waves']];
+ return shell('Home',`<div style="margin:-22px calc(var(--gut) * -1) 0">
+  <div class="hero" id="hero" onscroll="heroDots()">${slides.map(s=>`<div class="slide" style="background:${s[5]}"><small>${s[0]}</small><h2>${s[1]}</h2><p>${s[2]}</p><button class="btn btn-w" onclick="${s[4]}">${s[3]}</button>${art(s[6])}</div>`).join('')}</div>
+  <div class="dots">${slides.map((_,i)=>`<button class="${i===heroIx?'on':''}" onclick="heroGo(${i})"></button>`).join('')}</div></div>
+ ${S.drafts.length&&S.role==='parent'?`<div class="alert warn mt24">${ic('file')}<span>You have an unfinished registration for <b>${ev(S.drafts[0].ev).title}</b>. <a onclick="resumeDraft()">Resume registration${P()}</a></span></div>`:''}
+ <h2 class="sec-title">What's coming up next</h2>
+ <div class="ev-grid">${pub.slice(0,4).map(evCard).join('')}</div>
+ <div class="band" style="margin-left:calc(var(--gut) * -1);margin-right:calc(var(--gut) * -1)"><h2>Explore by category</h2>
+  <div class="catrow">${OPTS.cat.map((c,i)=>`<div class="catcard" style="background:${CATBG[i]}" onclick="pickCat('${c}')"><span class="n">${String(i+1).padStart(2,'0')}</span><b>${c}</b><p>${CATDESC[c]}</p><a>Explore →</a></div>`).join('')}</div></div>
+ <h2 class="sec-title">Trending</h2>
+ <div class="ev-grid">${pub.filter(e=>e.flags.includes('Trending')||e.flags.includes('Popular')).slice(0,4).map(evCard).join('')}</div>
+ <h2 class="sec-title">Proven Results Backed</h2><p class="sec-sub">Bringing families, students and schools together all year round.</p>
+ <div class="stats">${[['users','2 Lakh+','Parents &amp; students engaged','#EFEAFF'],['calendar','120+','Events this academic year','#E3F3EE'],['map','15+','Cities across India','#FDE8E8'],['home','150+','Schools in our network','#E7F0FF']].map(([i,v,l,bg])=>`<div class="stat" style="background:${bg}">${ic(i,18)}<div class="v">${v}</div><div class="l">${l}</div></div>`).join('')}</div>`);
+}
+function heroGo(i){const h=$('#hero');const s=h.children[i];h.scrollTo({left:s.offsetLeft-h.offsetLeft-parseFloat(getComputedStyle(h).paddingLeft),behavior:'smooth'})}
+function heroDots(){const h=$('#hero');const w=h.children[0].offsetWidth+24;const i=Math.round(h.scrollLeft/w);if(i!==heroIx){heroIx=i;document.querySelectorAll('.dots button').forEach((b,k)=>b.classList.toggle('on',k===i))}}
+
 /* ================= DISCOVERY ================= */
 const OPTS={cat:['Competition','Showcase','Seminar','Webinar','Festival','Open House','Community Service','Fundraiser','Engagement Activity'],theme:['Sports','Performing Arts','Wellness','Psychology','Nutrition','STEM','Cultural'],mode:['Online','Offline','Hybrid'],aud:['Students','Parents','Coaches','Public']};
+const CATICON={Competition:'award',Showcase:'star',Seminar:'users',Webinar:'video',Festival:'star','Open House':'home','Community Service':'shield',Fundraiser:'trend','Engagement Activity':'activity'};
+const EMPTYF=()=>({q:'',cat:[],theme:[],mode:[],aud:[],grade:'',city:'',price:'',avail:'',quick:'',from:'',to:''});
 function visibleEvents(){
  const f=S.f;let list=EVENTS.filter(e=>e.status==='Published');
- // role-based visibility
  if(S.role==='student')list=list.filter(e=>e.aud.includes('Students')&&(!e.grades||(6>=e.grades[0]&&6<=e.grades[1])));
  if(S.role==='partner')list=list.filter(e=>e.vis==='Public');
- if(S.role!=='parent'&&S.role!=='admin')list=list.filter(e=>e.vis!=='Parents-only'||S.role==='coach'&&false);
+ if(S.role!=='parent'&&S.role!=='admin')list=list.filter(e=>e.vis!=='Parents-only');
  if(f.q){const q=f.q.toLowerCase();list=list.filter(e=>(e.title+e.cat+e.theme+e.venue+e.hosts.map(h=>h[0]).join()).toLowerCase().includes(q))}
  ['cat','theme','mode'].forEach(k=>{if(f[k].length)list=list.filter(e=>f[k].includes(e[k]))});
  if(f.aud.length)list=list.filter(e=>e.aud.some(a=>f.aud.includes(a)));
@@ -487,248 +704,255 @@ function visibleEvents(){
  if(S.sort==='price')list.sort((a,b)=>a.fee-b.fee);
  return list;
 }
-function tog(k,v){const a=S.f[k];const i=a.indexOf(v);i>-1?a.splice(i,1):a.push(v);render()}
 function setF(k,v){S.f[k]=v;render()}
 function evCard(e){
- const c=capInfo(e);
- return `<div class="card ev" onclick="go('#/event/${e.id}')">
- <div class="ev-ban ${thc(e.theme)}"><div class="flags">${e.flags.map(f=>`<span class="pill ${f==='Featured'?'accent':f==='Trending'?'red':'blue'}">${ic(f==='Featured'?'star':f==='Trending'?'trend':'users',12)}${f}</span>`).join('')}${e.vis!=='Public'?`<span class="pill">${ic('lock',12)}${e.vis}</span>`:''}</div>
- <div class="big">${e.cat} · ${e.theme}</div></div>
- <div class="ev-body">
-  <h3>${e.title}</h3>
-  <div class="row wrap" style="gap:6px">${pill(e.mode,e.mode==='Online'?'violet':'blue')}${e.aud.map(a=>pill(a)).join('')}${e.grades?pill(`Gr ${e.grades[0]}–${e.grades[1]}`):''}${pill(e.reg,e.reg==='Free'?'green':'')}</div>
+ return `<article class="ecard" onclick="go('#/event/${e.id}')">${poster(e)}
+ <div class="eb"><div class="ttl-row"><h3>${e.title}</h3>${icoBtns(e.id)}</div>
+  <div class="row wrap" style="gap:6px">${audPills(e)}</div>
   <div class="meta">
-   <div>${ic('calendar')}<span>${e.date} · ${e.time} IST${e.days>1?P():''}</span></div>
-   <div>${ic(e.mode==='Online'?'video':'pin')}<span>${e.venue}</span></div>
-   <div>${ic('user')}<span>${e.hosts[0][0]} – <span class="muted">${e.hosts[0][1]}</span>${P()}</span></div>
-   <div>${ic('clock')}<span>Register by <b>${e.deadline}</b></span></div>
-   ${e.bring.length?`<div>${ic('brief')}<span class="muted">Bring: ${e.bring.slice(0,2).join(', ')}${e.bring.length>2?'…':''}</span></div>`:''}
+   <div>${ic('calendar')}<span>Event Date: ${e.date}${e.days>1?P():''}</span></div>
+   <div>${ic('calendar')}<span>Register by ${e.deadline}</span></div>
+   <div>${ic(e.mode==='Online'?'video':'pin')}<span>${e.mode==='Online'?e.venue:e.city+' · '+e.mode}</span></div>
+   ${e.left>0&&e.left<40?`<div style="color:#C2410C">${ic('trend')}<span>Only ${e.left} seats left${P()}</span></div>`:''}
   </div>
-  <div><div class="row between small mb8"><span class="${e.left===0?'down b':''}">${c.txt}${P()}</span><span class="muted">${c.pct}% filled</span></div><div class="bar ${c.cls}"><i style="width:${c.pct}%"></i></div></div>
-  <div class="ev-foot"><div><div class="price">${e.fee?inr(e.fee):'Free'}</div>${e.disc.length?`<div class="row wrap" style="gap:4px;margin-top:4px">${e.disc.map(d=>`<span class="pill amber" style="font-size:11px">${ic('tag',11)}${d}</span>`).join('')}</div>`:''}</div>
-  <button class="btn ${e.left===0?'btn-o':'btn-p'} btn-sm" onclick="event.stopPropagation();go('#/event/${e.id}')">${e.left===0?'Join waitlist':'View & register'}</button></div>
- </div></div>`;
+  <div class="pr"><span class="price">${e.fee?inr(e.fee):'Free'}</span><small>${e.fee?'onwards '+unitOf(e):'registration required'}</small></div>
+ </div></article>`;
 }
+let fDraft=null;
+function openFilters(){fDraft=JSON.parse(JSON.stringify(S.f));const f=fDraft;
+ const SEL=(l,k,opts,multi)=>`<div class="field"><label>${l}</label><select class="inp" onchange="fDraft.${k}=${multi?'this.value?[this.value]:[]':'this.value'}"><option value="">Select ${l}</option>${opts.map(o=>{const v=Array.isArray(o)?o[0]:o,t=Array.isArray(o)?o[1]:o;return `<option value="${v}" ${(multi?f[k].includes(v):f[k]==v)?'selected':''}>${t}</option>`}).join('')}</select></div>`;
+ modal('Filters',`<div class="grid g2" style="gap:16px 20px">
+  ${SEL('Category','cat',OPTS.cat,1)}${SEL('Theme / Discipline','theme',OPTS.theme,1)}
+  ${SEL('Mode','mode',OPTS.mode,1)}${SEL('Audience','aud',OPTS.aud,1)}
+  ${SEL('Age / Grade','grade',[...Array(12)].map((_,i)=>[i+1,'Grade '+(i+1)]))}${SEL('City / Campus','city',['Mumbai','Pune','Bengaluru','Online'])}
+  <div class="field"><label>From date</label><input type="date" class="inp" value="${f.from}" onchange="fDraft.from=this.value"></div><div class="field"><label>To date</label><input type="date" class="inp" value="${f.to}" onchange="fDraft.to=this.value"></div>
+  ${SEL('Entry fee','price',[['Free','Free'],['Paid','Paid']])}${SEL('Availability','avail',[['Open','Seats available'],['Waitlist','Waitlist only']])}
+  ${SEL('Highlight','quick',['Featured','Popular','Trending'])}</div>`,
+ `<button class="btn btn-o btn-lg" style="min-width:120px" onclick="S.f=Object.assign(EMPTYF(),{q:S.f.q});closeModal();render()">Reset</button><button class="btn btn-p btn-lg" style="min-width:140px" onclick="S.f=fDraft;closeModal();render()">Apply All</button>`)}
 function vEvents(){
  const list=visibleEvents();const f=S.f;
- const chipGroup=(k,arr)=>`<div class="chips">${arr.map(v=>`<button class="chip ${f[k].includes(v)?'on':''}" onclick="tog('${k}','${v}')">${v}</button>`).join('')}</div>`;
- const filters=`<div class="card filters">
-  <div class="fg row between"><h3>Filters</h3><a class="small" onclick="S.f={q:'',cat:[],theme:[],mode:[],aud:[],grade:'',city:'',price:'',avail:'',quick:'',from:'',to:''};render()">Clear all</a></div>
-  <div class="fg"><h4>Category / Type</h4>${chipGroup('cat',OPTS.cat)}</div>
-  <div class="fg"><h4>Theme / Discipline</h4>${chipGroup('theme',OPTS.theme)}</div>
-  <div class="fg"><h4>Mode</h4>${chipGroup('mode',OPTS.mode)}</div>
-  <div class="fg"><h4>Audience${P()}</h4>${chipGroup('aud',OPTS.aud)}</div>
-  <div class="fg grid g2" style="gap:10px"><div class="field"><label>Age / Grade</label><select class="inp" onchange="setF('grade',this.value)"><option value="">Any</option>${[...Array(12)].map((_,i)=>`<option ${f.grade==i+1?'selected':''} value="${i+1}">Grade ${i+1}</option>`).join('')}</select></div>
-  <div class="field"><label>City / Campus</label><select class="inp" onchange="setF('city',this.value)"><option value="">Any</option>${['Mumbai','Pune','Bengaluru','Online'].map(c=>`<option ${f.city===c?'selected':''}>${c}</option>`).join('')}</select></div></div>
-  <div class="fg grid g2" style="gap:10px"><div class="field"><label>From</label><input type="date" class="inp" value="${f.from}" onchange="setF('from',this.value)"></div><div class="field"><label>To</label><input type="date" class="inp" value="${f.to}" onchange="setF('to',this.value)"></div></div>
-  <div class="fg"><h4>Price</h4><div class="seg">${['','Free','Paid'].map(p=>`<button class="${f.price===p?'on':''}" onclick="setF('price','${p}')">${p||'All'}</button>`).join('')}</div></div>
-  <div class="fg"><h4>Availability${P()}</h4><div class="seg">${['','Open','Waitlist'].map(p=>`<button class="${f.avail===p?'on':''}" onclick="setF('avail','${p}')">${p||'All'}</button>`).join('')}</div></div>
- </div>`;
- const featured=EVENTS.filter(e=>e.flags.includes('Featured')&&e.status==='Published'&&visibleEvents().includes(e));
- return shell('Discover Events',`
- <div class="page-head"><div><h1>Discover events</h1><p>${S.role==='student'?'Showing events open to students in <b>Grade 6</b>.':'Competitions, showcases, seminars, festivals and more across campuses.'}</p></div>
- ${S.drafts.length&&S.role==='parent'?`<div class="alert warn" style="padding:8px 12px">${ic('file')}<span>You have an unfinished registration for <b>${ev(S.drafts[0].ev).title}</b>. <a onclick="resumeDraft()">Resume${P()}</a></span></div>`:''}</div>
- <div class="row wrap mb16">
-  <div class="searchbar">${ic('search')}<input placeholder="Search events, hosts, venues…" value="${f.q}" oninput="S.f.q=this.value;clearTimeout(window._qt);window._qt=setTimeout(()=>{render();const i=document.querySelector('.searchbar input');i.focus();i.setSelectionRange(i.value.length,i.value.length)},250)"></div>
-  <div class="seg">${['','Featured','Popular','Trending'].map(q=>`<button class="${f.quick===q?'on':''}" onclick="setF('quick','${q}')">${q||'All'}</button>`).join('')}</div>
-  <select class="inp" style="width:auto" onchange="S.sort=this.value;render()"><option value="date" ${S.sort==='date'?'selected':''}>Sort: Date</option><option value="popular" ${S.sort==='popular'?'selected':''}>Sort: Most popular</option><option value="price" ${S.sort==='price'?'selected':''}>Sort: Price</option></select>
- </div>
- <div class="disc">${filters}<div>
-  <div class="row between mb12"><span class="muted"><b style="color:var(--text)">${list.length}</b> events found</span>${S.role==='parent'?`<span class="small muted">${ic('users',13)} 120 people from your school showed interest this week${P()}</span>`:''}</div>
-  ${list.length?`<div class="ev-grid">${list.map(evCard).join('')}</div>`:`<div class="card empty">${ic('search',28)}<p class="mt8">No events match these filters.</p></div>`}
- </div></div>`);
+ const nF=['cat','theme','mode','aud'].reduce((a,k)=>a+f[k].length,0)+['grade','city','price','avail','quick','from','to'].filter(k=>f[k]).length;
+ const title=f.cat.length===1?f.cat[0]+(f.cat[0].endsWith('s')?'':'s'):'Events & Engagements';
+ return shell('Discover Events',`${crumbs(f.cat.length===1?[['Home',HOME[S.role]],['Events & Engagements',"!pickCat('')"],[f.cat[0]]]:[['Home',HOME[S.role]],['Events & Engagements']])}
+ <h1 class="mb16">${title.replace('&','&amp;')}</h1>
+ ${S.role==='student'?`<div class="alert info mb16">${ic('user')}<span>Showing events open to students in <b>Grade 6</b>.</span></div>`:''}
+ <div class="lbar"><button class="fbtn" onclick="openFilters()">${ic('sliders')}Filters${nF?`<span class="n">${nF}</span>`:''}</button>
+  <div class="catchips" id="cc">${OPTS.cat.map(c=>`<button class="${f.cat.includes(c)?'on':''}" onclick="S.f.cat=S.f.cat.includes('${c}')?[]:['${c}'];render()">${ic(CATICON[c])}${c}</button>`).join('')}</div>
+  <button class="chev" onclick="$('#cc').scrollBy({left:300})">${ic('chev',20)}</button></div>
+ <div class="row between mb16 wrap"><span class="muted">Showing ${list.length} event${list.length===1?'':'s'}${f.q?` for “${f.q}”`:''}</span>
+  <div class="row"><div class="seg">${['','Featured','Popular','Trending'].map(q=>`<button class="${f.quick===q?'on':''}" onclick="setF('quick','${q}')">${q||'All'}</button>`).join('')}</div>
+  <select class="inp" style="width:auto;min-height:36px;padding:6px 10px" onchange="S.sort=this.value;render()"><option value="date" ${S.sort==='date'?'selected':''}>Sort: Date</option><option value="popular" ${S.sort==='popular'?'selected':''}>Sort: Most popular</option><option value="price" ${S.sort==='price'?'selected':''}>Sort: Price</option></select></div></div>
+ ${list.length?`<div class="ev-grid">${list.map(evCard).join('')}</div>`:`<div class="card empty">${ic('search',28)}<p class="mt8">No events match these filters.</p><button class="btn btn-o mt12" onclick="S.f=EMPTYF();render()">Clear filters</button></div>`}
+ ${S.role==='parent'&&list.length?`<p class="small muted mt24" style="text-align:center">${ic('users',13)} 120 people from your school showed interest in events this week${P()}</p>`:''}`);
 }
 
 /* ================= EVENT DETAIL ================= */
 let agendaDay=0;
+const SESS={3:['All 3 days (19 – 21 Dec)','Day 1 · Fri 19 Dec','Day 2 · Sat 20 Dec','Day 3 · Sun 21 Dec']};
+function ticketTypes(e){const t=[];const st=e.aud.includes('Students');
+ if(st||e.aud.includes('Public'))t.push({k:'student',tag:st?'Student':'General',tc:'violet',n:st?'Student pass':'General pass',p:e.fee,cap:4,sub:e.grades?`Grades ${e.grades[0]} – ${e.grades[1]}`:'Open to all',inc:st?'Kit + certificate':'Entry'});
+ if(e.aud.includes('Parents')||(e.aud.includes('Public')&&st))t.push({k:'parent',tag:'Parent',tc:'pink',n:st?'Parent / extra pass':'Parent pass',p:st?Math.round(e.fee*.4):e.fee,cap:2,sub:'Parents / guardians',inc:st?'Spectator entry':'Attendee entry'});
+ if(e.id===3)t.push({k:'work',tag:'Add-on',tc:'amber',n:'Workshop add-on',p:350,cap:2,sub:'Day 3 art workshop',inc:'Materials included',partial:true});
+ return t}
+function selVars(id){if(!S.vsel)S.vsel={};if(!S.vsel[id]){const T=ticketTypes(ev(id));S.vsel[id]=T.length===1?[T[0].k]:[]}return S.vsel[id]}
+function togVar(id,k){const a=selVars(id);const i=a.indexOf(k);i>-1?a.splice(i,1):a.push(k);render()}
 function vEvent(id){
  const e=ev(id);if(!e)return shell('Event',`<div class="card empty">Event not found</div>`);
- const c=capInfo(e);const ag=AGENDA[e.id]||[[['Reporting','Check-in & seating','Entrance'],[e.time.split('–')[0],'Main session','Main hall'],['','Q&A and closing','Main hall']]];
- const regBtn=()=>{
-  if(S.role==='coach')return `<button class="btn btn-p w100 btn-lg" onclick="go('#/bulk/${e.id}')">${ic('users')}Register students (bulk)</button><button class="btn btn-o w100 mt8" onclick="toast('Registered as volunteer – pending admin approval')">Register myself as volunteer${P()}</button>`;
-  if(S.role==='partner')return `<button class="btn btn-p w100 btn-lg" onclick="go('#/bulk/${e.id}')">${ic('users')}Register a group</button>`;
-  if(S.role==='speaker'||S.role==='volunteer')return `<div class="alert info small">${ic('alert')}Registration is for parents, students &amp; schools.</div>`;
-  if(S.role==='admin')return `<button class="btn btn-p w100" onclick="go('#/admin/create')">${ic('edit')}Edit event</button>`;
-  if(e.left===0)return `<button class="btn btn-p w100 btn-lg" onclick="startReg(${e.id})">Check eligibility &amp; join waitlist</button><p class="small muted mt8">You’ll be notified with a time-limited offer when a seat opens.${P()}</p>`;
-  return `<button class="btn btn-p w100 btn-lg" onclick="startReg(${e.id})">${e.fee?'Register now':'Register for free'}</button>`;
+ const c=capInfo(e);const [st,sc]=regStatus(e);const T=ticketTypes(e);const sv=selVars(e.id);
+ const ag=AGENDA[e.id]||[[['Reporting','Check-in & seating','Entrance'],[e.time.split('–')[0].trim(),'Main session','Main hall'],['Close','Q&A and closing','Main hall']]];
+ const consumer=['parent','student'].includes(S.role);
+ const minP=Math.min(...T.map(t=>t.p));
+ const selTxt=T.filter(t=>sv.includes(t.k));
+ const cta=()=>{
+  if(S.role==='coach')return `<button class="btn btn-p btn-lg" onclick="go('#/bulk/${e.id}')">Register students</button><button class="btn btn-o mt8" onclick="toast('Volunteer request sent for admin approval')">Volunteer at this event${P()}</button>`;
+  if(S.role==='partner')return `<button class="btn btn-p btn-lg" onclick="go('#/bulk/${e.id}')">Register a group</button>`;
+  if(S.role==='admin')return `<button class="btn btn-p btn-lg" onclick="S.createStep=0;go('#/admin/create')">Edit event</button>`;
+  if(!consumer)return `<div class="alert info small">${ic('alert')}Registration is open to parents, students and schools.</div>`;
+  return `<button class="btn btn-p btn-lg" style="min-width:180px" ${sv.length?'':'disabled'} onclick="startReg(${e.id})">${e.left===0?'Join waitlist':'Register'}</button>`;
  };
- return shell(e.title,`
- <a class="small" onclick="history.back()">${ic('back',13)} Back to events</a>
- <div class="hero ${thc(e.theme)} mt12">
-  <div class="row wrap" style="gap:6px">${e.flags.map(f=>pill(f)).join('')}${pill(e.cat)}${pill(e.theme)}${pill(e.mode)}${pill(ic('lock',11)+' '+e.vis)}</div>
-  <h1>${e.title}</h1>
-  <div class="row wrap" style="gap:18px;opacity:.95">${ic('calendar')} ${e.date} · ${e.time} IST <span>${ic(e.mode==='Online'?'video':'pin')} ${e.venue}</span></div>
-  <div class="mt12 small" style="opacity:.9">${ic('users',13)} ${e.interest} people from your school showed interest${P()}</div>
- </div>
- <div class="detail">
- <div>
-  <div class="card pad-l sec"><h2>Overview</h2>
-   <p style="color:#475467">${descr(e)}</p>
-   <h4 class="mt16 mb8">Who should attend</h4><p style="color:#475467">${e.aud.join(', ')}${e.grades?` in Grades ${e.grades[0]}–${e.grades[1]}`:''}. ${e.aud.includes('Parents')?'Parents and guardians looking to engage with the school community.':'Students keen to showcase their talent and learn from peers.'}</p>
-  </div>
-  <div class="card pad-l sec"><h2>Category, mode &amp; eligibility</h2>
-   <dl class="kv"><dt>Category / Type</dt><dd>${e.cat}</dd><dt>Theme</dt><dd>${e.theme}</dd><dt>Mode</dt><dd>${e.mode}</dd><dt>Audience</dt><dd>${e.aud.join(', ')}</dd><dt>Age / Grade</dt><dd>${e.grades?`Grades ${e.grades[0]} – ${e.grades[1]}`:'All ages (adults)'}</dd><dt>Registration type</dt><dd>${e.reg}${P()}</dd><dt>Visibility</dt><dd>${e.vis}</dd>${e.docs.length?`<dt>Required documents</dt><dd>${e.docs.join(', ')}</dd>`:''}</dl>
-  </div>
-  <div class="card pad-l sec"><h2>Schedule &amp; agenda${e.days>1?P():''}</h2>
+ return shell(e.title,`${crumbs([['Home',HOME[S.role]],['Events & Engagements','#/events'],[e.cat,'#/events'],[e.title]])}
+ <div class="detail"><div>
+  ${poster(e,'lg')}
+  ${consumer?`<div class="mt24">
+   ${SESS[e.id]?`<div class="field" style="max-width:420px"><label>Day / Session<span class="req">*</span></label><select class="inp" onchange="S.sess=this.value">${SESS[e.id].map(s=>`<option>${s}</option>`).join('')}</select></div>`:''}
+   <div class="field mt16"><label>Passes<span class="req">*</span>${P()}</label><div class="small muted">${T.length} option${T.length>1?'s':''} for this event. Select one or more — you’ll choose who attends next.</div>
+   ${T.length>1?`<label class="check small mt8"><input type="checkbox" ${sv.length===T.length?'checked':''} onchange="S.vsel[${e.id}]=this.checked?${JSON.stringify(T.map(t=>t.k)).replace(/"/g,"'")}:[];render()">Select all</label>`:''}
+   <div class="vgrid mt8">${T.map(t=>`<label class="vcard ${sv.includes(t.k)?'on':''}"><div class="top"><input type="checkbox" ${sv.includes(t.k)?'checked':''} onchange="togVar(${e.id},'${t.k}')">${pill(t.tag,t.tc)}<b>${t.n}</b>${t.partial?P():''}</div><div class="sub">${t.sub} · max ${t.cap} per family</div><div class="bot"><span>${t.inc}</span><span>${t.p?`<b>${inr(t.p)}</b> / pass`:'<b>Free</b>'}</span></div></label>`).join('')}</div></div></div>`:''}
+  <div class="sec mt24"><h2>Overview</h2><p>${descr(e)}</p>
+   <h3 class="mt16">Who should attend</h3><p class="mt8">${e.aud.join(', ')}${e.grades?` in Grades ${e.grades[0]} – ${e.grades[1]}`:''}. ${e.aud.includes('Parents')?'Parents and guardians who want to engage with the school community.':'Students keen to showcase their talent and learn from peers.'}</p>
+   <h3 class="mt16">What participants get</h3><ul><li>E-pass with QR code for quick entry</li><li>Reminders 7 days, 1 day and 1 hour before the event</li><li>E-certificate of participation${e.cat==='Competition'?', merit certificates for winners':''}</li><li>Photo gallery access (with media consent)${P()}</li></ul></div>
+  <div class="sec"><h2>Eligibility &amp; passes</h2><div class="card tbl-wrap"><table class="t"><tr><th>Pass</th><th>Eligibility</th><th>Includes</th><th>Price</th></tr>${T.map(t=>`<tr><td><b>${t.n}</b></td><td>${t.sub}</td><td>${t.inc}</td><td>${t.p?inr(t.p):'Free'}</td></tr>`).join('')}</table></div>
+   <dl class="kv mt16"><dt>Category / Theme</dt><dd>${e.cat} · ${e.theme}</dd><dt>Mode</dt><dd>${e.mode}</dd><dt>Registration type</dt><dd>${e.reg}${P()}</dd><dt>Visibility</dt><dd>${e.vis}</dd>${e.docs.length?`<dt>Required documents</dt><dd>${e.docs.join(', ')}</dd>`:''}</dl>
+   <p class="small muted mt12">Each participant is checked individually for age/grade, audience and required documents. Family cap: max 4 passes.${P()}</p></div>
+  <div class="sec"><h2>Schedule &amp; agenda${e.days>1?P():''}</h2>
    ${ag.length>1?`<div class="seg mb12">${ag.map((_,i)=>`<button class="${agendaDay===i?'on':''}" onclick="agendaDay=${i};render()">Day ${i+1}</button>`).join('')}</div>`:''}
    ${(ag[agendaDay]||ag[0]).map(a=>`<div class="agenda-item"><b>${a[0]}</b><div>${a[1]}</div><span class="muted small">${a[2]}</span></div>`).join('')}
-   <button class="btn btn-o btn-sm mt12" onclick="toast('Programme brochure (PDF) downloaded','download')">${ic('download')}Programme brochure (PDF)</button>
-  </div>
-  <div class="card pad-l sec"><h2>Speakers &amp; hosts${P()}</h2><div class="grid g2">
-   ${e.hosts.map(h=>`<div class="row" style="align-items:flex-start"><div class="avatar" style="background:var(--violet-50);color:var(--violet)">${h[0].split(' ').map(x=>x[0]).slice(0,2).join('')}</div><div><b>${h[0]}</b><div class="small muted">${h[1]}</div></div></div>`).join('')}</div></div>
-  <div class="card pad-l sec"><h2>${e.mode==='Online'?'Online meeting':'Venue &amp; access'}${P()}</h2>
-   ${e.mode==='Online'?`<div class="alert info">${ic('lock')}<div><b>Secure join link</b><div class="small">The meeting link becomes visible in <i>My Events</i> after you register and sign in. It is also shared in your confirmation.</div></div></div>`:
-   `<div class="grid g2"><div class="mapbox"><div class="pin"></div><span class="small" style="position:absolute;bottom:8px">Map preview</span></div><dl class="kv" style="grid-template-columns:110px 1fr"><dt>Venue</dt><dd>${e.venue}</dd><dt>Entry gates</dt><dd>Gate A (parents), Gate B (participants)</dd><dt>Reporting</dt><dd>45 min before start</dd><dt>Parking</dt><dd>Basement P2 · limited</dd><dt>Accessibility</dt><dd>Ramp access, wheelchair seating</dd></dl></div>`}
-  </div>
-  <div class="card pad-l sec"><h2>Fees &amp; discounts</h2>
-   ${e.fee?`<table class="t"><tr><th>Ticket / pass</th><th>Price</th><th>Includes</th></tr><tr><td>Student pass</td><td>${inr(e.fee)}</td><td>Participation kit, certificate</td></tr><tr><td>Parent / extra pass</td><td>${inr(Math.round(e.fee*0.4))}</td><td>Spectator entry</td></tr>${e.id===3?`<tr><td>Workshop add-on${P()}</td><td>${inr(350)}</td><td>Day 3 art workshop</td></tr>`:''}</table>
-   <div class="row wrap mt12">${e.disc.map(d=>pill(ic('tag',12)+' '+d,'amber')).join('')}${e.instal?pill('Instalments available'+P(),'violet'):''}</div>`:`<p>This event is <b>free</b>. Registration is still required to confirm your seat.</p>`}
-  </div>
-  ${e.bring.length?`<div class="card pad-l sec"><h2>What to bring &amp; requirements</h2><div class="grid g2">${e.bring.map(b=>`<div class="row">${ic('check')}<span>${b}</span></div>`).join('')}</div><p class="small muted mt12">Dress code: school sports uniform / smart casuals unless specified.</p></div>`:''}
-  <div class="card pad-l sec"><h2>Policies</h2>
-   <details class="faq"><summary>Refund &amp; cancellation policy</summary><p>100% refund up to 7 days before the event; 50% between 3–7 days; event credit within 72 hours. No-shows are non-refundable.</p></details>
-   <details class="faq"><summary>Media &amp; photography</summary><p>Photos may be taken for school publications. Galleries are shared only for participants whose guardians gave media consent.</p></details>
-   <details class="faq"><summary>Code of conduct</summary><p>Participants and guests are expected to be respectful, follow staff instructions and adhere to campus safety guidelines.</p></details>
-  </div>
-  <div class="card pad-l sec"><h2>FAQs &amp; support</h2>
+   <button class="btn btn-o btn-sm mt12" onclick="toast('Programme brochure (PDF) downloaded','download')">${ic('download')}Programme brochure (PDF)</button></div>
+  <div class="sec"><h2>Speakers &amp; hosts${P()}</h2><div class="grid g2">${e.hosts.map(h=>`<div class="row" style="align-items:flex-start"><div class="avatar" style="background:var(--violet-50);color:var(--violet)">${h[0].split(' ').map(x=>x[0]).slice(0,2).join('')}</div><div><b style="font-weight:500">${h[0]}</b><div class="small muted">${h[1]}</div></div></div>`).join('')}</div></div>
+  <div class="sec"><h2>${e.mode==='Online'?'Online meeting':'Venue &amp; access'}${P()}</h2>
+   ${e.mode==='Online'?`<div class="alert info">${ic('lock')}<div><b>Secure join link</b><div class="small">The meeting link appears in My Events after you register and sign in. It is also shared in your confirmation.</div></div></div>`:
+   `<div class="grid g2"><div class="mapbox"><div class="pin"></div></div><dl class="kv" style="grid-template-columns:110px 1fr"><dt>Venue</dt><dd>${e.venue}</dd><dt>Entry gates</dt><dd>Gate A (parents), Gate B (participants)</dd><dt>Reporting</dt><dd>45 min before start</dd><dt>Parking</dt><dd>Basement P2 · limited</dd><dt>Access</dt><dd>Ramp access, wheelchair seating</dd></dl></div>`}</div>
+  ${e.bring.length?`<div class="sec"><h2>What to bring</h2><div class="grid g2">${e.bring.map(b=>`<div class="row">${ic('check')}<span>${b}</span></div>`).join('')}</div><p class="small muted mt12">Dress code: school sports uniform / smart casuals unless specified.</p></div>`:''}
+  <div class="sec"><h2>Policies</h2>
+   <details class="faq"><summary>Refund &amp; cancellation</summary><p>100% refund up to 7 days before the event; 50% between 3–7 days; event credit within 72 hours. No-shows are non-refundable.</p></details>
+   <details class="faq"><summary>Media &amp; photography</summary><p>Photos may be taken for school publications. Galleries are shared only with families who gave media consent.</p></details>
+   <details class="faq"><summary>Code of conduct</summary><p>Participants and guests are expected to be respectful, follow staff instructions and adhere to campus safety guidelines.</p></details></div>
+  <div class="sec"><h2>FAQs &amp; support</h2>
    <details class="faq"><summary>Can I register more than one child?</summary><p>Yes. Each child is checked for eligibility individually. Family caps apply (max 4 passes).</p></details>
    <details class="faq"><summary>I lost my pass. What do I do?</summary><p>Re-download it any time from My Events, or request a re-issue with ID validation.</p></details>
-   <div class="row wrap mt12">${pill(ic('phone',12)+' +91 22 4000 1234','blue')}${pill(ic('msg',12)+' events@osehub.example','blue')}</div>
-  </div>
+   <div class="row wrap mt12">${pill(ic('phone',12)+' +91 22 4000 1234','blue')}${pill(ic('msg',12)+' support@osehub.com','blue')}</div></div>
  </div>
- <div class="sticky"><div class="card pad-l">
-  <div class="row between"><div><div class="muted small">${e.fee?'Starts from':'Entry'}</div><div style="font-size:26px;font-weight:700">${e.fee?inr(e.fee):'Free'}</div></div>${pill(e.reg,e.reg==='Free'?'green':'blue')}</div>
-  ${e.disc.length?`<div class="row wrap mt8" style="gap:4px">${e.disc.map(d=>pill(d,'amber')).join('')}</div>`:''}
+ <aside class="sticky"><div class="side-card">
+  <span class="pill ${sc==='green'?'green':sc==='grey'?'':'accent'}">${st}</span>
+  <div class="ttl-row mt12"><h2>${e.title}</h2>${icoBtns(e.id)}</div>
+  <div class="row wrap mt12" style="gap:6px">${audPills(e)}</div>
+  <div class="meta mt16">
+   <div>${ic('calendar')}<span>Event Date: ${e.date}<br><span class="small muted">${e.time} IST</span></span></div>
+   <div>${ic('file')}<span>Registration closes ${e.deadline}<br><span class="small muted">${daysLeft(e)} days left to register</span></span></div>
+   <div>${ic('users')}<span>${e.mode} · ${e.reg}<br><span class="small muted">${T.length} pass type${T.length>1?'s':''} · ${e.left===0?`full · ${e.wait||0} on waitlist`:`${e.left} of ${e.cap} seats left`}${P()}</span></span></div>
+   <div>${ic(e.mode==='Online'?'video':'pin')}<span>${e.venue}${e.mode!=='Online'?`<br><a class="small" onclick="toast('Opening maps…','map')">Get directions ↗</a>`:''}</span></div>
+  </div>
+  <div class="bar ${c.cls} mt16"><i style="width:${c.pct}%"></i></div>
+  ${selTxt.length&&consumer?`<div class="divider"></div>${selTxt.map(t=>`<div class="selline"><span>${t.n}</span><span>${t.p?'from '+inr(t.p):'Free'}</span></div>`).join('')}`:''}
   <div class="divider"></div>
-  <div class="row between small mb8"><span class="${e.left===0?'down b':''}">${c.txt}</span><span>${c.pct}%</span></div><div class="bar ${c.cls}"><i style="width:${c.pct}%"></i></div>
-  ${e.left>0&&e.left<40?`<p class="small mt8" style="color:var(--amber)">${ic('trend',12)} Seats filling fast</p>`:''}
-  <div class="meta mt16"><div>${ic('clock')}<span>Registration closes <b>${e.deadline}</b></span></div><div>${ic('users')}<span>Max 4 passes per family${P()}</span></div></div>
-  <div class="mt16">${regBtn()}</div>
-  <div class="row mt12" style="justify-content:center;gap:16px"><a class="small" onclick="toast('Added to calendar','calendar')">${ic('calendar',13)} Add to calendar</a><a class="small" onclick="toast('Link copied','copy')">${ic('copy',13)} Share</a></div>
- </div></div>
- </div>`);
+  <div class="row" style="align-items:baseline;gap:6px"><span class="price" style="font-size:24px">${minP?inr(minP):'Free'}</span><span class="small">${minP?'per pass onwards':'registration required'}</span></div>
+  ${e.disc.length?`<div class="row wrap mt8" style="gap:6px">${e.disc.map(d=>pill(ic('tag',11)+' '+d,'amber')).join('')}${e.instal?pill('Instalments'+P(),'violet'):''}</div>`:''}
+  <div class="col mt16" style="gap:0;align-items:flex-start">${cta()}</div>
+  ${consumer?`<p class="small muted mt12">${sv.length?(e.left===0?'This event is full — eligible participants join the waitlist and get a time-limited offer when a seat opens.':'Next: choose who’s attending and check eligibility.'):'Select at least one pass to register.'}</p>`:''}
+ </div></aside></div>`);
 }
-function descr(e){return {Competition:'A full-day inter-school competition bringing together young athletes across campuses. Students compete in age-group categories with certified officials, medals and certificates for all participants.',Seminar:'An interactive session on raising balanced, digitally healthy children. Learn practical strategies on screen-time, online safety and emotional wellbeing from an expert child psychologist.',Festival:'Three days of music, dance, drama, food and crafts celebrating our diverse cultures. Open to families and the wider community, with performances by students from all grades.',Showcase:'Students present their creations to peers, parents and an expert jury. A celebration of learning-by-doing with feedback from industry mentors.',Webinar:'A practical webinar for parents and coaches on everyday nutrition, hydration and recovery for school-age athletes.','Open House':'Tour the campus, meet faculty, and learn about curriculum, co-curriculars and admissions for the upcoming academic year.','Community Service':'Join students and parents for a morning of cleaning our shoreline and learning about marine conservation.',Fundraiser:'A fun 5K run open to all, with proceeds supporting scholarships for underprivileged students.','Engagement Activity':'A relaxed morning yoga session for parents to unwind, connect and recharge.'}[e.cat]}
+function descr(e){return {Competition:'A full-day inter-school competition bringing together young athletes across campuses. Students compete in age-group categories with certified officials, medals and certificates for every participant.',Seminar:'An interactive session on raising balanced, digitally healthy children. Learn practical strategies on screen-time, online safety and emotional wellbeing from an expert child psychologist.',Festival:'Three days of music, dance, drama, food and crafts celebrating our diverse cultures. Open to families and the wider community, with performances by students from all grades.',Showcase:'Students present their creations to peers, parents and an expert jury — a celebration of learning-by-doing with feedback from mentors.',Webinar:'A practical webinar for parents and coaches on everyday nutrition, hydration and recovery for school-age athletes.','Open House':'Tour the campus, meet faculty, and learn about curriculum, co-curriculars and admissions for the upcoming academic year.','Community Service':'Join students and parents for a morning of cleaning our shoreline and learning about marine conservation.',Fundraiser:'A fun 5K run open to all, with proceeds supporting scholarships for underprivileged students.','Engagement Activity':'A relaxed morning yoga session for parents to unwind, connect and recharge.'}[e.cat]}
 
 /* ================= REGISTRATION (Parent / Student) ================= */
-const REG_STEPS=['Participants','Tickets','Details','Consents','Review & Pay'];
-function startReg(id){const e=ev(id);S.reg={ev:id,step:0,sel:[],tix:{},promo:'',promoOk:null,pay:'UPI',plan:'full',cons:{tc:false,waiver:false,coc:false,media:false},em:{name:'Rohit Sharma',rel:'Father',ph:'+91 98200 12345'},result:null};
+const REG_STEPS=['Participants','Details & consents','Review & pay'];
+function startReg(id,vars){const e=ev(id);S.reg={ev:id,step:0,vars:vars||[...selVars(id)],sel:[],addon:1,promo:'',promoOk:null,pay:'UPI',plan:'full',cons:{tc:false,waiver:false,coc:false,media:false},em:{name:'Rohit Sharma',rel:'Father',ph:'+91 98200 12345'},result:null,open:true};
  if(S.role==='student')S.reg.sel=['k1'];go('#/register')}
-function resumeDraft(){const d=S.drafts[0];S.reg={ev:d.ev,step:4,sel:['k1','k2'],tix:{student:2},promo:'',promoOk:null,pay:'UPI',plan:'full',cons:{tc:true,waiver:true,coc:true,media:true},em:{name:'Rohit Sharma',rel:'Father',ph:'+91 98200 12345'},result:null};go('#/register');toast('Draft restored – continue where you left off','file')}
+function resumeDraft(){const d=S.drafts[0];startReg(d.ev,['student']);Object.assign(S.reg,{step:2,sel:['k1','k2'],cons:{tc:true,waiver:true,coc:true,media:true}});render();toast('Draft restored – continue where you left off','file')}
 function people(){return S.role==='student'?[KIDS[0]]:[{id:'self',name:ROLES.parent.name,grade:null,ini:'NS',adult:true},...KIDS]}
-function ticketTypes(e){const t=[];if(e.aud.includes('Students')||e.aud.includes('Public'))t.push({k:'student',n:'Student pass',p:e.fee,cap:4,desc:'Participation + kit + certificate'});
- if(e.aud.includes('Parents')||e.aud.includes('Public'))t.push({k:'parent',n:e.aud.includes('Students')?'Parent / extra pass':'Parent pass',p:e.aud.includes('Students')?Math.round(e.fee*.4):e.fee,cap:2,desc:e.aud.includes('Students')?'Spectator entry':'Attendee entry'});
- if(e.id===3)t.push({k:'work',n:'Workshop add-on',p:350,cap:2,desc:'Day 3 art workshop',partial:true});return t}
-function calc(){const r=S.reg,e=ev(r.ev);let sub=0;ticketTypes(e).forEach(t=>sub+=(r.tix[t.k]||0)*t.p);let disc=0;
+function regTix(){const r=S.reg,e=ev(r.ev),T=ticketTypes(e);const ps=people().filter(p=>r.sel.includes(p.id));const kids=ps.filter(p=>!p.adult).length,ad=ps.length-kids;const hasP=T.some(t=>t.k==='parent');const t={};
+ if(r.vars.includes('student'))t.student=kids+(hasP?0:ad);
+ if(r.vars.includes('parent'))t.parent=ad;
+ if(r.vars.includes('work'))t.work=r.addon;
+ return t}
+function allowed(p){const r=S.reg,T=ticketTypes(ev(r.ev));const hasP=T.some(t=>t.k==='parent');if(p.adult)return hasP?r.vars.includes('parent'):r.vars.includes('student');return r.vars.includes('student')}
+function calc(){const r=S.reg,e=ev(r.ev);const tx=regTix();let sub=0,n=0;ticketTypes(e).forEach(t=>{sub+=(tx[t.k]||0)*t.p;n+=(tx[t.k]||0)});let disc=0;
  if(r.promoOk==='EARLY10')disc=Math.round(sub*.1);if(r.promoOk==='REF100')disc=Math.min(100,sub);if(r.promoOk==='SIB15')disc=Math.round(sub*.15);
- const total=sub-disc;return {sub,disc,total,now:r.plan==='part'?Math.round(total*.4):total}}
+ const total=sub-disc;return {sub,disc,total,n,now:r.plan==='part'?Math.round(total*.4):total}}
 function vRegister(){
  const r=S.reg;if(!r)return shell('Registration',`<div class="card empty">No registration in progress. <a href="#/events">Browse events</a></div>`);
  const e=ev(r.ev);
  if(r.result)return r.result==='ok'?vConfirm():vFail();
- const steps=`<div class="stepper">${REG_STEPS.map((s,i)=>`<div class="step ${i<r.step?'done':i===r.step?'on':''}"><span class="n">${i<r.step?ic('check',13):i+1}</span>${s}</div>`).join('')}</div>`;
- const status=`<div class="status-track"><span class="s ${r.step<4?'cur':'on'}"><i></i>Draft${P()}</span><span class="ln"></span><span class="s ${r.step===4?'cur':''}"><i></i>Submitted (Pending Payment)</span><span class="ln"></span><span class="s"><i></i>Confirmed</span></div>`;
- let body='';const c=calc();
+ const T=ticketTypes(e);const c=calc();const tx=regTix();
+ const evsum=`<div class="evsum"><div class="row between" style="cursor:pointer" onclick="S.reg.open=!S.reg.open;render()"><h2 style="font-weight:500">Event details</h2><svg class="svg" viewBox="0 0 24 24" style="transform:rotate(${r.open?180:0}deg)"><polyline points="6 9 12 15 18 9"/></svg></div>
+  ${r.open?`<div class="in"><div>${poster(e,'sm')}</div><div><h3>${e.title}</h3><div class="meta mt8"><div>${ic('calendar')}${e.date}</div><div>${ic('calendar')}Register before ${e.deadline}</div></div></div>
+  <div class="meta" style="margin-top:28px"><div>${ic(e.mode==='Online'?'video':'pin')}${e.venue}</div>${e.mode!=='Online'?`<div>${ic('map')}<span>Gate B (participants) · Reporting 45 min before<br><a class="small">Get directions ↗</a></span></div>`:''}</div></div>
+  <div class="row wrap mt12 small" style="padding-left:min(218px,0px)"><span class="muted">Passes:</span>${T.filter(t=>r.vars.includes(t.k)).map(t=>pill(t.n,'blue')).join('')}<a onclick="go('#/event/${e.id}')">Change</a></div>`:''}</div>`;
+ const steps=`<div class="stepper">${REG_STEPS.map((s,i)=>`<div class="step ${i<r.step?'done':i===r.step?'on':''}"><span class="n">${i<r.step?ic('check',14):i+1}</span><div><small>Step ${i+1}</small><span>${s}</span></div></div>`).join('')}</div>`;
+ let body='';
  if(r.step===0){
   const full=e.left===0;
-  body=`<h2>Who is attending?</h2><p class="muted mt8 mb16">Each participant is checked for age/grade, audience, capacity and required documents.</p>
-  ${full?`<div class="alert warn mb16">${ic('alert')}<div><b>This event is full.</b> Eligible participants can join the waitlist. If a seat opens you’ll get a time-limited offer to confirm.${P()}</div></div>`:''}
-  <div class="col">${people().map(p=>{const is=elig(e,p.adult?'self':p);const sel=r.sel.includes(p.id);const blocked=is.some(i=>i.t!=='doc');
+  body=`<p class="muted mb16">Choose who’s attending. Each participant is checked for age/grade, audience, capacity and required documents.</p>
+  ${full?`<div class="alert warn mb16">${ic('alert')}<div><b>This event is full.</b> Eligible participants can join the waitlist and get a time-limited offer when a seat opens.${P()}</div></div>`:''}
+  <div class="formsec">Participants</div>
+  <div class="col">${people().map(p=>{const is=elig(e,p.adult?'self':p);const ok=allowed(p);const sel=r.sel.includes(p.id);const blocked=is.some(i=>i.t!=='doc')||!ok;
    return `<label class="pcard ${sel?'sel':''} ${blocked?'bad':''}" style="cursor:${blocked?'not-allowed':'pointer'}">
-    <input type="checkbox" style="margin-top:8px;width:18px;height:18px;accent-color:var(--primary)" ${sel?'checked':''} ${blocked?'disabled':''} onchange="selP('${p.id}')">
-    <div class="avatar" style="background:${p.adult?'var(--amber-50)':'var(--primary-50)'};color:${p.adult?'var(--amber)':'var(--primary)'}">${p.ini}</div>
-    <div style="flex:1"><div class="row between wrap"><b>${p.name}${p.adult?' (You)':''}</b>${blocked?pill(ic('x',11)+' Not eligible','red'):is.length?pill(ic('alert',11)+' Action required','amber'):pill(ic('check',11)+' Eligible','green')}</div>
+    <input type="checkbox" style="margin-top:9px;width:18px;height:18px;accent-color:var(--primary)" ${sel?'checked':''} ${blocked?'disabled':''} onchange="selP('${p.id}')">
+    <div class="avatar" style="background:${p.adult?'var(--pink-50)':'var(--primary-50)'};color:${p.adult?'var(--pink)':'var(--primary)'}">${p.ini}</div>
+    <div style="flex:1"><div class="row between wrap"><b style="font-weight:500">${p.name}${p.adult?' (You)':''}</b>${blocked?pill(ic('x',11)+' Not eligible','red'):is.length?pill(ic('alert',11)+' Action required','amber'):pill(ic('check',11)+' Eligible','green')}</div>
     <div class="small muted">${p.adult?'Parent / guardian':`Grade ${p.grade} · Age ${p.age} · ${p.adm}`}</div>
-    ${is.map(i=>`<div class="issue" style="color:${i.t==='doc'?'var(--amber)':'var(--red)'}">${ic('alert',13)}${i.m}${i.act?`<button class="btn btn-o btn-sm" onclick="event.preventDefault();uploadDoc()">${ic('upload',13)}Upload now</button>`:''}</div>`).join('')}
-    ${!is.length?`<div class="issue" style="color:var(--green)">${ic('check',13)}${p.adult?'Audience check passed':'Age/grade, audience &amp; consent checks passed'} · ${full?'Waitlist available':'Seat available'}</div>`:''}
+    ${!ok&&!is.length?`<div class="issue muted">${ic('ticket',13)}No ${p.adult?'parent':'student'} pass selected · <a onclick="event.preventDefault();go('#/event/${e.id}')">Add pass</a></div>`:''}
+    ${is.map(i=>`<div class="issue" style="color:${i.t==='doc'?'var(--amber)':'#C0322B'}">${ic('alert',13)}${i.m}${i.act?`<button class="btn btn-o btn-sm" onclick="event.preventDefault();uploadDoc()">${ic('upload',13)}Upload now</button>`:''}</div>`).join('')}
+    ${!is.length&&ok?`<div class="issue" style="color:var(--green)">${ic('check',13)}${p.adult?'Audience check passed':'Age/grade, audience &amp; consent checks passed'} · ${full?'Waitlist available':'Seat available'}</div>`:''}
     </div></label>`}).join('')}</div>
-  ${people().some(p=>elig(e,p.adult?'self':p).some(i=>i.t==='doc'))?`<div class="alert warn mt16">${ic('file')}<div><b>Required actions</b><div class="small">Upload the missing document to continue, or save this registration as a draft and come back later.${P()}</div></div></div>`:''}`;
+  ${people().some(p=>elig(e,p.adult?'self':p).some(i=>i.t==='doc'))?`<div class="alert warn mt16">${ic('file')}<div><b>Required actions</b><div class="small">Upload the missing document to continue, or save as a draft and come back later.${P()}</div></div></div>`:''}
+  ${r.vars.includes('work')?`<div class="pcard mt16" style="align-items:center"><div style="flex:1"><b style="font-weight:500">Workshop add-on</b>${P()}<div class="small muted">Day 3 art workshop · ${inr(350)} each</div></div><div class="qty"><button onclick="S.reg.addon=Math.max(0,S.reg.addon-1);render()">−</button><span>${r.addon}</span><button onclick="S.reg.addon=Math.min(2,S.reg.addon+1);render()">+</button></div></div>`:''}
+  ${c.n>4?`<div class="alert err mt16">${ic('alert')}<span>Family cap reached — max 4 passes per event. Remove a participant or add-on.${P()}</span></div>`:''}`;
  }
  if(r.step===1){
-  body=`<h2>Choose tickets / passes${P()}</h2><p class="muted mt8 mb16">Family cap: max 4 passes per event. ${r.sel.length} participant(s) selected.</p>
-  <div class="col">${ticketTypes(e).map(t=>`<div class="pcard" style="align-items:center"><div style="flex:1"><b>${t.n}</b>${t.partial?P():''}<div class="small muted">${t.desc} · max ${t.cap} per family</div></div><div class="price" style="min-width:80px;text-align:right">${t.p?inr(t.p):'Free'}</div>
-  <div class="qty"><button onclick="qty('${t.k}',-1,${t.cap})">−</button><span>${r.tix[t.k]||0}</span><button onclick="qty('${t.k}',1,${t.cap})">+</button></div></div>`).join('')}</div>
-  <div class="alert info mt16">${ic('alert')}<span class="small">Passes are auto-suggested based on the participants you selected. Each participant receives their own QR pass.</span></div>`;
- }
- if(r.step===2){
   const ps=people().filter(p=>r.sel.includes(p.id));
-  body=`<h2>Participant details</h2><p class="muted mt8 mb16">Details are auto-filled from your Osehub profile. Edit in Profile if anything is incorrect.</p>
-  <div class="col">${ps.map(p=>`<div class="card pad"><div class="row between"><b>${p.name}</b>${pill(ic('check',11)+' Auto-filled','green')}</div><div class="grid g3 mt12">
+  const C=(k,t,d,part)=>`<label class="pcard ${r.cons[k]?'sel':''}"><input type="checkbox" style="margin-top:3px;width:18px;height:18px;accent-color:var(--primary)" ${r.cons[k]?'checked':''} onchange="S.reg.cons.${k}=this.checked;render()"><div style="flex:1"><b style="font-weight:500">${t}</b>${part?P():''}${k!=='media'?' <span class="req">*</span>':''}<div class="small muted mt8">${d}</div><a class="small" onclick="event.preventDefault();modal('${t}','<p style=&quot;color:#4A4F57&quot;>Full text of the ${t.toLowerCase()} appears here. Version 2026.3, last updated 01 Nov 2026.</p>')">Read full text</a></div></label>`;
+  body=`<p class="muted mb16">Details are auto-filled from your OSE Hub profile. Update your profile if anything is incorrect.</p>
+  <div class="formsec">Participant details</div>
+  <div class="col">${ps.map(p=>`<div class="card pad"><div class="row between"><b style="font-weight:500">${p.name}</b>${pill(ic('check',11)+' Auto-filled','green')}</div><div class="grid g3 mt12">
    ${p.adult?`<div class="field"><label>Relation</label><input class="inp" value="Mother" disabled></div><div class="field"><label>Mobile</label><input class="inp" value="+91 98200 54321" disabled></div><div class="field"><label>Email</label><input class="inp" value="neha.sharma@example.com" disabled></div>`:
    `<div class="field"><label>Admission no.</label><input class="inp" value="${p.adm}" disabled></div><div class="field"><label>Date of birth</label><input class="inp" value="${p.dob}" disabled></div><div class="field"><label>Grade / Campus</label><input class="inp" value="Grade ${p.grade} · ${p.campus}" disabled></div>
    <div class="field"><label>T-shirt size</label><select class="inp"><option>S</option><option selected>M</option><option>L</option></select></div><div class="field"><label>Medical notes / allergies</label><input class="inp" placeholder="Optional"></div>`}
-  </div></div>`).join('')}
-  ${ps.some(p=>!p.adult)?`<div class="card pad"><b>Emergency contact (required for minors)</b><div class="grid g3 mt12"><div class="field"><label>Name</label><input class="inp" value="${r.em.name}" oninput="S.reg.em.name=this.value"></div><div class="field"><label>Relationship</label><input class="inp" value="${r.em.rel}" oninput="S.reg.em.rel=this.value"></div><div class="field"><label>Phone</label><input class="inp" value="${r.em.ph}" oninput="S.reg.em.ph=this.value"></div></div></div>`:''}
-  </div>`;
+  </div></div>`).join('')}</div>
+  ${ps.some(p=>!p.adult)?`<div class="formsec mt24">Emergency contact <span class="small muted" style="font-weight:400">(required for minors)</span></div><div class="grid g3"><div class="field"><label>Name<span class="req">*</span></label><input class="inp" value="${r.em.name}" oninput="S.reg.em.name=this.value"></div><div class="field"><label>Relationship<span class="req">*</span></label><input class="inp" value="${r.em.rel}" oninput="S.reg.em.rel=this.value"></div><div class="field"><label>Contact No.<span class="req">*</span></label><input class="inp" value="${r.em.ph}" oninput="S.reg.em.ph=this.value"></div></div>`:''}
+  <div class="formsec mt24">Consents &amp; waivers</div><p class="small muted mb12">Acceptance is recorded with date, time and version — view it any time in My Events.</p>
+  <div class="col">${C('tc','Terms & conditions','I agree to the event terms, refund policy and registration rules.')}${C('waiver','Liability waiver','I understand the nature of the event and release the organisers from liability for incidental injuries.')}${C('coc','Code of conduct','My ward and I will follow the event code of conduct and staff instructions.')}${C('media','Media / photo consent (optional)','Allow photos/videos featuring my ward in school publications. Required for gallery access after the event.',true)}</div>`;
  }
- if(r.step===3){
-  const C=(k,t,d,part)=>`<label class="pcard ${r.cons[k]?'sel':''}"><input type="checkbox" class="" style="margin-top:3px;width:18px;height:18px;accent-color:var(--primary)" ${r.cons[k]?'checked':''} onchange="S.reg.cons.${k}=this.checked;render()"><div style="flex:1"><b>${t}</b>${part?P():''}${k!=='media'?' <span class="down">*</span>':''}<div class="small muted mt8">${d}</div><a class="small" onclick="event.preventDefault();modal('${t}','<p style=&quot;color:#475467&quot;>Full text of the ${t.toLowerCase()} appears here. Version 2026.3, last updated 01 Nov 2026.</p>')">Read full text</a></div></label>`;
-  body=`<h2>Consents &amp; waivers</h2><p class="muted mt8 mb16">Your acceptance is recorded with date, time and version. You can review it any time in My Events.</p>
-  <div class="col">${C('tc','Terms & conditions','I agree to the event terms, refund policy and registration rules.')}${C('waiver','Liability waiver','I understand the physical nature of the event and release the organisers from liability for incidental injuries.')}${C('coc','Code of conduct','My ward and I will follow the event code of conduct and staff instructions.')}${C('media','Media / photo consent (optional)','Allow photos/videos featuring my ward to be used in school publications. Required for gallery access after the event.',true)}</div>`;
+ if(r.step===2){
+  body=`<div class="grid g2" style="align-items:start"><div>
+  <div class="formsec">Order summary</div><div class="card pad"><div class="small muted mb8">${people().filter(p=>r.sel.includes(p.id)).map(p=>p.name).join(', ')}${S.sess&&SESS[e.id]?' · '+S.sess:''}</div>
+  ${T.filter(t=>tx[t.k]).map(t=>`<div class="sumline"><span>${tx[t.k]} × ${t.n}</span><span>${inr(t.p*tx[t.k])}</span></div>`).join('')}
+  ${c.disc?`<div class="sumline" style="color:var(--green)"><span>Discount (${r.promoOk})</span><span>−${inr(c.disc)}</span></div>`:''}
+  <div class="divider" style="margin:8px 0"></div><div class="sumline b"><span>Total</span><span>${inr(c.total)}</span></div>${r.plan==='part'?`<div class="sumline small"><span>Due now</span><span>${inr(c.now)}</span></div>`:''}</div>
+  <div class="mt16"><div class="status-track"><span class="s on"><i></i>Draft${P()}</span><span class="ln"></span><span class="s cur"><i></i>Submitted (Pending Payment)</span><span class="ln"></span><span class="s"><i></i>Confirmed</span></div></div></div>
+  <div>${S.role==='student'?`<div class="alert info">${ic('users')}<div><b>Payment by parent</b>${P()}<div class="small">Your parent gets a request to review and pay. Your registration stays <i>Submitted (Pending Payment)</i> until then.</div></div></div>`:
+  e.left===0?`<div class="alert warn">${ic('clock')}<div><b>Joining the waitlist</b><div class="small">No payment now. If a seat opens you’ll get 24 hours to confirm and pay.</div></div></div>`:
+  c.total?`
+  <div class="formsec">Promo code${P()}</div><div class="row"><input class="inp" id="promo" placeholder="EARLY10, REF100, SIB15" value="${r.promo}"><button class="btn btn-o" onclick="applyPromo()">Apply</button></div>
+  ${r.promoOk?`<div class="small mt8" style="color:var(--green)">${ic('check',12)} ${r.promoOk} applied – you save ${inr(c.disc)}</div>`:r.promoOk===false?`<div class="small mt8 down">${ic('x',12)} Invalid or expired code</div>`:''}
+  ${e.instal?`<div class="formsec mt16">Payment plan${P()}</div><div class="seg" style="display:flex"><button style="flex:1" class="${r.plan==='full'?'on':''}" onclick="S.reg.plan='full';render()">Pay in full</button><button style="flex:1" class="${r.plan==='part'?'on':''}" onclick="S.reg.plan='part';render()">Part-pay 40% now</button></div>${r.plan==='part'?`<p class="small muted mt8">Balance ${inr(c.total-c.now)} due by 15 Dec 2026. Reminder 3 days before.</p>`:''}`:''}
+  <div class="formsec mt16">Payment method</div><div class="paym">${[['UPI','phone'],['Card','ticket'],['Net Banking','home']].map(([m,i])=>`<button class="${r.pay===m?'on':''}" onclick="S.reg.pay='${m}';render()">${ic(i,20)}${m}</button>`).join('')}</div>
+  ${r.pay==='UPI'?`<div class="field mt12"><label>UPI ID</label><input class="inp" placeholder="name@bank"></div>`:r.pay==='Card'?`<div class="alert info mt12 small">${ic('lock')}You’ll enter card details on the secure payment gateway page.</div>`:`<div class="field mt12"><label>Bank</label><select class="inp"><option>HDFC Bank</option><option>ICICI Bank</option><option>State Bank of India</option><option>Axis Bank</option></select></div>`}
+  <p class="small mt12"><a onclick="pay(false)">Simulate payment failure</a></p>`:`<div class="alert ok">${ic('check')}<span>This is a free event — confirm to get your passes.</span></div>`}</div></div>`;
  }
- if(r.step===4){
-  const T=ticketTypes(e).filter(t=>r.tix[t.k]);
-  body=`<h2>Review &amp; ${e.fee?'pay':'confirm'}</h2>
-  <div class="card pad mt16"><div class="row between"><div><b>${e.title}</b><div class="small muted">${e.date} · ${e.venue}</div></div><a class="small" onclick="S.reg.step=0;render()">Edit</a></div>
-  <div class="divider"></div><div class="small">${people().filter(p=>r.sel.includes(p.id)).map(p=>p.name).join(', ')}</div>
-  ${T.map(t=>`<div class="sumline"><span>${r.tix[t.k]} × ${t.n}</span><span>${inr(t.p*r.tix[t.k])}</span></div>`).join('')}</div>
-  ${S.role==='student'?`<div class="alert info mt16">${ic('users')}<div><b>Payment by parent</b>${P()}<div class="small">Your parent will receive a request to review and pay. Your registration stays as <i>Submitted (Pending Payment)</i> until then.</div></div></div>`:
-  e.fee?`
-  <div class="mt16"><label class="small b">Promo code${P()}</label><div class="row mt8"><input class="inp" id="promo" placeholder="EARLY10, REF100, SIB15" value="${r.promo}"><button class="btn btn-o" onclick="applyPromo()">Apply</button></div>
-  ${r.promoOk?`<div class="small mt8" style="color:var(--green)">${ic('check',12)} ${r.promoOk} applied – you save ${inr(c.disc)}</div>`:r.promoOk===false?`<div class="small mt8 down">${ic('x',12)} Invalid or expired code</div>`:''}</div>
-  ${e.instal?`<div class="mt16"><label class="small b">Payment plan${P()}</label><div class="seg mt8" style="display:flex"><button class="${r.plan==='full'?'on':''}" onclick="S.reg.plan='full';render()">Pay in full</button><button class="${r.plan==='part'?'on':''}" onclick="S.reg.plan='part';render()">Part-pay 40% now</button></div>${r.plan==='part'?`<p class="small muted mt8">Balance ${inr(c.total-c.now)} due by 15 Dec 2026. Reminder sent 3 days before.</p>`:''}</div>`:''}
-  <div class="mt16"><label class="small b">Payment method</label><div class="paym mt8">${[['UPI','phone'],['Card','ticket'],['Net Banking','home']].map(([m,i])=>`<button class="${r.pay===m?'on':''}" onclick="S.reg.pay='${m}';render()">${ic(i,20)}${m}</button>`).join('')}</div>
-  ${r.pay==='UPI'?`<div class="field mt12"><label>UPI ID</label><input class="inp" placeholder="name@bank"></div>`:r.pay==='Card'?`<div class="alert info mt12 small">${ic('lock')}You’ll enter card details on the secure payment gateway page.</div>`:`<div class="field mt12"><label>Bank</label><select class="inp"><option>HDFC Bank</option><option>ICICI Bank</option><option>State Bank of India</option><option>Axis Bank</option></select></div>`}</div>`:''}`;
- }
- const canNext=[r.sel.length>0&&!people().filter(p=>r.sel.includes(p.id)).some(p=>elig(e,p.adult?'self':p).length),Object.values(r.tix).reduce((a,b)=>a+b,0)>0,true,r.cons.tc&&r.cons.waiver&&r.cons.coc,true][r.step];
- const T=ticketTypes(e);
- const side=`<div class="card pad-l sticky"><h3>Order summary</h3><div class="small muted mt8">${e.title}</div><div class="small muted">${e.date}</div><div class="divider"></div>
- ${T.filter(t=>r.tix[t.k]).map(t=>`<div class="sumline small"><span>${r.tix[t.k]} × ${t.n}</span><span>${inr(t.p*r.tix[t.k])}</span></div>`).join('')||'<div class="small muted">No passes selected yet</div>'}
- ${c.disc?`<div class="sumline small" style="color:var(--green)"><span>Discount (${r.promoOk})</span><span>−${inr(c.disc)}</span></div>`:''}
- <div class="divider"></div><div class="sumline b"><span>Total</span><span>${inr(c.total)}</span></div>${r.plan==='part'?`<div class="sumline small"><span>Due now</span><span>${inr(c.now)}</span></div>`:''}
- <div class="mt16">${status}</div>
- <div class="divider"></div>
- ${r.step===4?(e.left===0?`<button class="btn btn-p w100 btn-lg" onclick="joinWait()">Join waitlist</button>`:S.role==='student'?`<button class="btn btn-p w100 btn-lg" onclick="studentSubmit()">Send to parent for payment</button>`:`<button class="btn btn-p w100 btn-lg" onclick="pay(true)">${c.total?`Pay ${inr(c.now)}`:'Confirm registration'}</button>${c.total?`<button class="btn btn-g w100 mt8 small" onclick="pay(false)">Simulate payment failure</button>`:''}`):
- `<button class="btn btn-p w100" ${canNext?'':'disabled'} onclick="nextStep()">Continue</button>`}
- <div class="row between mt12">${r.step>0?`<button class="btn btn-g" onclick="S.reg.step--;render()">${ic('back',14)}Back</button>`:'<span></span>'}<button class="btn btn-g" onclick="saveDraft()">${ic('file',14)}Save as draft${P()}</button></div>
- </div>`;
- return shell('Register · '+e.title,`<a class="small" onclick="go('#/event/${e.id}')">${ic('back',13)} ${e.title}</a><h1 class="mt8 mb16">Registration</h1>${steps}<div class="detail" style="margin-top:0"><div class="card pad-l">${body}</div><div>${side}</div></div>`);
+ const canNext=[r.sel.length>0&&c.n>0&&c.n<=4&&!people().filter(p=>r.sel.includes(p.id)).some(p=>elig(e,p.adult?'self':p).length),r.cons.tc&&r.cons.waiver&&r.cons.coc,true][r.step];
+ const next=r.step<2?`<button class="btn btn-p btn-lg" ${canNext?'':'disabled'} onclick="S.reg.step++;render();scrollTo(0,0)">Next: ${REG_STEPS[r.step+1]}</button>`:
+  e.left===0?`<button class="btn btn-p btn-lg" onclick="joinWait()">Join waitlist</button>`:S.role==='student'?`<button class="btn btn-p btn-lg" onclick="studentSubmit()">Send to parent for payment</button>`:`<button class="btn btn-p btn-lg" id="paybtn" onclick="pay(true)">${c.total?`Pay ${inr(c.now)}`:'Confirm registration'}</button>`;
+ return shell('Registration',`${crumbs([['Home',HOME[S.role]],[e.cat,'#/events'],[e.title,'#/event/'+e.id],['Registration']])}
+ <div class="card pad-l" style="padding:22px 24px">${evsum}${steps}${body}</div>
+ <div style="height:90px"></div>
+ <div class="regbar"><div class="in">${r.step>0?`<button class="btn btn-o" onclick="S.reg.step--;render();scrollTo(0,0)">Back</button>`:''}<button class="btn btn-g" onclick="saveDraft()">${ic('file',14)}Save as draft${P()}</button><span style="flex:1"></span>
+ <div class="tot"><b>${inr(c.now)}</b><small>${c.n} pass${c.n===1?'':'es'}${c.disc?' · promo applied':''}</small></div>${next}</div></div>`);
 }
 function selP(id){const a=S.reg.sel;const i=a.indexOf(id);i>-1?a.splice(i,1):a.push(id);render()}
-function uploadDoc(){modal('Upload medical fitness certificate',`<div class="card pad" style="border-style:dashed;text-align:center">${ic('upload',28)}<p class="mt8"><b>Drop file here</b> or click to browse</p><p class="small muted">PDF/JPG up to 5 MB · signed by a registered medical practitioner</p></div><div class="row mt12">${pill(ic('file',12)+' fitness_cert_aarav.pdf','blue')}<span class="small muted">Ready to upload</span></div>`,`<button class="btn btn-o" onclick="closeModal()">Cancel</button><button class="btn btn-p" onclick="S.docs.k1=true;closeModal();toast('Document uploaded · eligibility re-checked');render()">Upload</button>`)}
-function qty(k,d,cap){const r=S.reg;const total=Object.values(r.tix).reduce((a,b)=>a+b,0);const v=(r.tix[k]||0)+d;if(v<0)return;if(d>0&&(v>cap||total>=4)){toast('Family cap reached (max 4 passes)','alert');return}r.tix[k]=v;render()}
-function nextStep(){const r=S.reg,e=ev(r.ev);if(r.step===0&&!Object.keys(r.tix).length){const kids=r.sel.filter(x=>x!=='self').length,adults=r.sel.includes('self')?1:0;const T=ticketTypes(e);if(kids&&T.find(t=>t.k==='student'))r.tix.student=kids;if(adults){if(T.find(t=>t.k==='parent'))r.tix.parent=adults;else r.tix.student=(r.tix.student||0)+adults}}r.step++;render();scrollTo(0,0)}
+function uploadDoc(){modal('Upload medical fitness certificate',`<div class="dashed">${ic('upload',28)}<p class="mt8"><b>Drop file here</b> or click to browse</p><p class="small muted">PDF/JPG up to 5 MB · signed by a registered medical practitioner</p></div><div class="row mt12">${pill(ic('file',12)+' fitness_cert_aarav.pdf','blue')}<span class="small muted">Ready to upload</span></div>`,`<button class="btn btn-o" onclick="closeModal()">Cancel</button><button class="btn btn-p" onclick="S.docs.k1=true;closeModal();toast('Document uploaded · eligibility re-checked');render()">Upload</button>`)}
 function applyPromo(){const v=$('#promo').value.trim().toUpperCase();S.reg.promo=v;S.reg.promoOk=['EARLY10','REF100','SIB15'].includes(v)?v:false;render()}
-function saveDraft(){toast('Saved as draft – resume from Discover or My Events','file');const r=S.reg;if(!S.drafts.find(d=>d.ev===r.ev))S.drafts.unshift({id:'D-'+(1050+S.drafts.length),ev:r.ev,who:people().filter(p=>r.sel.includes(p.id)).map(p=>p.name),step:REG_STEPS[r.step],saved:'just now',amt:calc().total})}
-function pay(ok){const btns=document.querySelectorAll('.sticky .btn-p');btns.forEach(b=>{b.disabled=true;b.textContent='Processing…'});setTimeout(()=>{S.reg.result=ok?'ok':'fail';S.reg.txn='TXN'+(8823410000+Math.floor(Math.random()*99999));if(ok){const e=ev(S.reg.ev);S.myRegs.unshift({id:'R-'+(24900+S.myRegs.length),ev:e.id,who:people().filter(p=>S.reg.sel.includes(p.id)).map(p=>p.name),status:'Confirmed',tickets:Object.entries(S.reg.tix).filter(x=>x[1]).map(([k,v])=>v+' × '+ticketTypes(e).find(t=>t.k===k).n).join(', '),amt:calc().now,txn:S.reg.txn,seat:'Zone 3 · Gate B'});S.drafts=S.drafts.filter(d=>d.ev!==e.id)}else{saveDraftSilent()}render();scrollTo(0,0)},900)}
-function saveDraftSilent(){const r=S.reg;if(!S.drafts.find(d=>d.ev===r.ev))S.drafts.unshift({id:'D-'+(1050+S.drafts.length),ev:r.ev,who:people().filter(p=>r.sel.includes(p.id)).map(p=>p.name),step:'Payment',saved:'just now',amt:calc().total})}
+function draftEntry(step){const r=S.reg;if(!S.drafts.find(d=>d.ev===r.ev))S.drafts.unshift({id:'D-'+(1050+S.drafts.length),ev:r.ev,who:people().filter(p=>r.sel.includes(p.id)).map(p=>p.name),step,saved:'just now',amt:calc().total})}
+function saveDraft(){draftEntry(REG_STEPS[S.reg.step]);toast('Saved as draft – resume from Home or My Events','file')}
+function ticketsText(){const e=ev(S.reg.ev),tx=regTix();return ticketTypes(e).filter(t=>tx[t.k]).map(t=>tx[t.k]+' × '+t.n).join(', ')}
+function pay(ok){const b=$('#paybtn');if(b){b.disabled=true;b.textContent='Processing…'}setTimeout(()=>{const r=S.reg;r.result=ok?'ok':'fail';r.txn='TXN'+(8823410000+Math.floor(Math.random()*99999));
+ if(ok){const e=ev(r.ev);S.myRegs.unshift({id:'R-'+(24900+S.myRegs.length),ev:e.id,who:people().filter(p=>r.sel.includes(p.id)).map(p=>p.name),status:'Confirmed',tickets:ticketsText(),amt:calc().now,txn:r.txn,seat:'Zone 3 · Gate B'});S.drafts=S.drafts.filter(d=>d.ev!==e.id)}else draftEntry('Payment');
+ render();scrollTo(0,0)},900)}
 function joinWait(){const r=S.reg;S.waitlist.unshift({ev:r.ev,who:people().filter(p=>r.sel.includes(p.id)).map(p=>p.name).join(', '),pos:15,promo:false});toast('Added to waitlist · position #15','clock');S.reg=null;S.myTab='waitlist';go('#/my')}
 function studentSubmit(){toast('Payment request sent to your parent','send');S.reg=null;go('#/my')}
 function vConfirm(){
  const r=S.reg,e=ev(r.ev),c=calc();const ps=people().filter(p=>r.sel.includes(p.id));
- return shell('Registration confirmed',`
- <div class="card pad-l" style="text-align:center;max-width:760px;margin:0 auto">
-  <div style="width:60px;height:60px;border-radius:50%;background:var(--green-50);color:var(--green);display:grid;place-items:center;margin:0 auto">${ic('check',30)}</div>
+ return shell('Registration confirmed',`${crumbs([['Home',HOME[S.role]],[e.title,'#/event/'+e.id],['Confirmed']])}
+ <div class="card pad-l" style="text-align:center;max-width:780px;margin:0 auto">
+  <div style="width:64px;height:64px;border-radius:50%;background:var(--green-50);color:var(--green);display:grid;place-items:center;margin:0 auto">${ic('check',30)}</div>
   <h1 class="mt12">You’re registered!</h1><p class="muted mt8">${e.title} · ${e.date}</p>
   <div class="status-track mt16" style="justify-content:center"><span class="s on"><i></i>Draft</span><span class="ln"></span><span class="s on"><i></i>Submitted</span><span class="ln"></span><span class="s on"><i></i>Confirmed</span></div>
-  ${c.total?`<div class="grid g3 mt24" style="text-align:left"><div class="card pad"><div class="small muted">Transaction ID</div><b>${r.txn}</b></div><div class="card pad"><div class="small muted">Amount paid</div><b>${inr(c.now)}</b> <span class="small muted">via ${r.pay}</span></div><div class="card pad"><div class="small muted">Receipt</div><a onclick="toast('Receipt PDF downloaded','download')">${ic('download',13)} Download PDF</a></div></div>`:''}
+  ${c.total?`<div class="grid g3 mt24" style="text-align:left"><div class="card pad"><div class="small muted">Transaction ID</div><b style="font-weight:600">${r.txn}</b></div><div class="card pad"><div class="small muted">Amount paid</div><b style="font-weight:600">${inr(c.now)}</b> <span class="small muted">via ${r.pay}</span></div><div class="card pad"><div class="small muted">Receipt</div><a onclick="toast('Receipt PDF downloaded','download')">${ic('download',13)} Download PDF</a></div></div>`:''}
   <p class="small muted mt16">Confirmation sent by Email, SMS &amp; WhatsApp to parent${ps.some(p=>!p.adult)?' and student':''}. Reminders scheduled for T–7, T–1 and 1 hour before.</p>
  </div>
- <h2 class="mt24 mb12">E-tickets / passes</h2>
+ <h2 class="mt24 mb12" style="font-size:22px">E-tickets / passes</h2>
  <div class="row wrap" style="align-items:flex-start;gap:18px">${ps.map(p=>passHTML(e,p.name,p.adult?'Parent pass':'Student pass')).join('')}</div>
  <div class="row wrap mt24"><button class="btn btn-p" onclick="S.reg=null;go('#/my')">Go to My Events</button><button class="btn btn-o" onclick="S.reg=null;go('#/events')">Discover more events</button></div>`);
 }
-function passHTML(e,name,type,seat){return `<div class="pass"><div class="pass-top"><div class="small" style="opacity:.8">${type}</div><b>${e.title||e}</b><div class="small" style="opacity:.8">${e.date||''}</div></div>
+function passHTML(e,name,type,seat){return `<div class="pass"><div class="pass-top" style="background:linear-gradient(140deg,${(POSTER[e.id]||{bg:['#2F55E4','#5B36E8']}).bg.join(',')})"><div class="small" style="opacity:.85">${type}</div><b style="font-weight:600">${e.title||e}</b><div class="small" style="opacity:.85">${e.date||''}</div></div>
  <div class="pass-mid">${qr(name+(e.id||e))}<div class="small muted">Show this QR at entry · Pass #${(hash(name+(e.id||e))%900000+100000)}</div></div>
  <div class="pass-bot"><div><span class="muted">Attendee</span><b>${name}</b></div><div><span class="muted">Entry</span><b>Gate B · 7:45 AM</b></div><div><span class="muted">Seat / Zone${P()}</span><b>${seat||'Zone 3'}</b></div><div><span class="muted">Emergency</span><b>+91 22 4000 1234</b></div></div>
  <div style="padding:0 18px 16px" class="row"><button class="btn btn-o btn-sm" onclick="toast('Pass downloaded','download')">${ic('download',13)}Download</button><button class="btn btn-o btn-sm" onclick="toast('Added to wallet')">Add to wallet</button></div></div>`}
 function vFail(){const r=S.reg,e=ev(r.ev);
- return shell('Payment failed',`<div class="card pad-l" style="max-width:620px;margin:0 auto;text-align:center">
- <div style="width:60px;height:60px;border-radius:50%;background:var(--red-50);color:var(--red);display:grid;place-items:center;margin:0 auto">${ic('x',30)}</div>
+ return shell('Payment failed',`${crumbs([['Home',HOME[S.role]],[e.title,'#/event/'+e.id],['Payment']])}<div class="card pad-l" style="max-width:640px;margin:0 auto;text-align:center">
+ <div style="width:64px;height:64px;border-radius:50%;background:var(--red-50);color:var(--red);display:grid;place-items:center;margin:0 auto">${ic('x',30)}</div>
  <h1 class="mt12">Payment didn’t go through</h1><p class="muted mt8">Your bank declined the transaction or the session timed out. No money was deducted.</p>
  <div class="alert info mt16" style="text-align:left">${ic('file')}<div><b>Your registration is saved as a draft</b>${P()}<div class="small">Participants, passes and consents are preserved. Seats are held for 15 minutes.</div></div></div>
  <div class="card pad mt16" style="text-align:left"><div class="sumline small"><span>Reference</span><b>${r.txn}</b></div><div class="sumline small"><span>Status</span>${pill('Submitted (Pending Payment)','amber')}</div><div class="sumline small"><span>Amount</span><b>${inr(calc().now)}</b></div></div>
  <div class="row mt16" style="justify-content:center"><button class="btn btn-p" onclick="S.reg.result=null;render()">${ic('refresh')}Retry payment</button><button class="btn btn-o" onclick="S.reg.result=null;S.reg.pay=S.reg.pay==='UPI'?'Card':'UPI';render()">Try another method</button></div></div>`)}
+
+/* ================= PROFILE ================= */
+function vProfile(){const r=ROLES[S.role];const isPar=S.role==='parent';
+ const tile=(l,v)=>`<div class="card pad" style="padding:12px 14px"><div class="small muted" style="letter-spacing:.05em;font-size:11px">${l.toUpperCase()}</div><div>${v}</div></div>`;
+ return shell('Profile',`<div style="max-width:940px;margin:0 auto">${crumbs([['Home',HOME[S.role]],['Profile']])}<h1>Profile</h1><p class="muted mt8">${r.label} account</p>
+ <div class="card pad-l mt16"><h2 class="mb16">Account details</h2><div class="grid g3" style="gap:10px">${tile('Name',r.name)}${tile('Account type',r.label)}${tile('Phone','+91 98200 54321')}${tile('Email',isPar?'neha.sharma@example.com':'user@osehub.in')}${tile('Campus','Andheri Campus, Mumbai')}</div></div>
+ ${isPar?`<div class="card pad-l mt16"><div class="row between mb16"><h2>Family members</h2><button class="btn btn-o btn-sm">${ic('plus',13)}Add child</button></div><div class="grid g2">${KIDS.map(k=>`<div class="pcard"><div class="avatar" style="background:var(--primary-50);color:var(--primary)">${k.ini}</div><div><b style="font-weight:500">${k.name}</b><div class="small muted">Grade ${k.grade} · ${k.adm} · DOB ${k.dob}</div><div class="row mt8" style="gap:6px">${pill('Media consent: '+(k.id==='k1'?'Yes':'No'),k.id==='k1'?'green':'')}${k.id==='k1'?pill('Medical cert '+(S.docs.k1?'on file':'missing'),S.docs.k1?'green':'amber'):''}</div></div></div>`).join('')}</div></div>`:''}
+ <div class="card pad-l mt16"><h2 class="mb16">My bookings</h2><div class="grid g3" style="gap:10px">${[['Upcoming events','Passes, venue maps and join links','#/my','upcoming'],['Receipts','Payments, receipts and refunds','#/my','receipts'],['Certificates & gallery','Certificates, photos and feedback','#/my','past'],['Waitlist','Seat offers and positions','#/my','waitlist'],['Requests','Refunds, re-issues and reschedules','#/requests',''],['Notifications','Email, SMS, WhatsApp & in-portal','#/notifications','']].map(([t,d,u,tab])=>`<div class="card pad" style="cursor:pointer" onclick="${tab?`S.myTab='${tab}';`:''}go('${u}')"><b style="font-weight:500">${t}</b><div class="small muted">${d}</div></div>`).join('')}</div></div></div>`)}
+
 
 /* ================= MY EVENTS (Parent / Student) ================= */
 function vMy(){
@@ -777,7 +1001,7 @@ function refundModal(id){const r=S.myRegs.find(x=>x.id===id);const e=ev(r.ev);co
  <div class="field mt12"><label>Reason</label><select class="inp"><option>Schedule conflict</option><option>Illness</option><option>Other</option></select></div>`,`<button class="btn btn-o" onclick="closeModal()">Cancel</button><button class="btn btn-d" onclick="S.refunds.unshift({id:'RF-3'+(30+S.refunds.length),ev:'${e.title}',amt:${amt},pol:'Cancelled 19 days before · 100% refund',status:'Under review',date:'25 Nov 2026'});closeModal();toast('Refund request submitted');go('#/requests')">Submit request</button>`)}
 function reissueModal(){modal('Re-issue lost pass',`<p class="muted">For security, confirm the attendee’s identity. The old QR will stop working immediately.</p><div class="field mt16"><label>ID type</label><select class="inp"><option>School ID card</option><option>Aadhaar (last 4 digits)</option></select></div><div class="field mt12"><label>ID number</label><input class="inp" placeholder="e.g. VIB-2019-0456"></div><div class="field mt12"><label>Send new pass to</label><div class="row wrap">${pill('Email','blue')}${pill('SMS','blue')}${pill('WhatsApp','blue')}</div></div>`,`<button class="btn btn-o" onclick="closeModal()">Cancel</button><button class="btn btn-p" onclick="closeModal();toast('New pass issued · old QR invalidated')">Verify &amp; re-issue</button>`)}
 function resched(id,ok){const r=S.myRegs.find(x=>x.id===id);if(ok){r.status='Confirmed';ev(r.ev).date=r.newDate;toast('New date accepted · pass updated')}else{S.myRegs=S.myRegs.filter(x=>x.id!==id);toast('Declined · refund initiated')}render()}
-function acceptWait(i){const w=S.waitlist[i];S.waitlist.splice(i,1);startReg(w.ev);S.reg.sel=['k1'];S.reg.tix={student:1};S.reg.step=4;ev(w.ev).left=1;render()}
+function acceptWait(i){const w=S.waitlist[i];S.waitlist.splice(i,1);ev(w.ev).left=1;startReg(w.ev,['student']);S.reg.sel=['k1'];S.reg.step=2;render()}
 function certModal(who,evn){modal('Certificate of participation',`<div style="border:6px double #c7a54a;padding:28px;text-align:center;border-radius:6px;background:#fffdf6"><div class="small" style="letter-spacing:.2em;color:#8a6d1f">CERTIFICATE OF PARTICIPATION</div><h2 class="mt12" style="font-family:Georgia,serif;font-size:24px">${who}</h2><p class="muted mt8">for participating in</p><b>${evn}</b><div class="row between mt24 small muted"><span>Program Office</span><span>Verify: OSE-CRT-${hash(who)%99999}</span></div></div>`,`<button class="btn btn-p" onclick="toast('Certificate downloaded','download')">${ic('download')}Download PDF</button>`)}
 function fbModal(){modal('Event feedback',`<p class="muted">How was your experience?</p><div class="row mt12" style="gap:6px">${[1,2,3,4,5].map(i=>`<button class="iconbtn" style="color:var(--accent)">${ic('star',18)}</button>`).join('')}</div><div class="field mt16"><label>What did you enjoy most?</label><textarea class="inp"></textarea></div>`,`<button class="btn btn-p" onclick="closeModal();toast('Thanks for your feedback!')">Submit</button>`)}
 
@@ -1022,6 +1246,8 @@ function render(){
  if(h==='#/login'){$('#root').innerHTML=vLogin();return}
  const [,a,b,c]=h.split('/');let out;
  switch(a){
+  case 'home':out=vHome();break;
+  case 'profile':out=vProfile();break;
   case 'events':out=vEvents();break;
   case 'event':out=vEvent(b);break;
   case 'register':out=vRegister();break;
@@ -1038,12 +1264,12 @@ function render(){
   case 'live':out=vLive();break;
   case 'guide':out=vGuide();break;
   case 'admin':out=!b?vAdmin():b==='events'?vAdminEvents():b==='create'?vCreate():b==='comms'?vComms():b==='post'?vPost():b==='exceptions'?vExceptions():b==='reports'?vReports():b==='settings'?vSettings():vAdmin();break;
-  default:out=vEvents();
+  default:out=vHome();
  }
  $('#root').innerHTML=out;
  document.body.classList.toggle('show-scope',S.scope);
 }
-window.addEventListener('hashchange',()=>{agendaDay=0;render();window.scrollTo(0,0)});
+window.addEventListener('hashchange',()=>{agendaDay=0;S.mega=S.um=false;render();window.scrollTo(0,0)});
 render();
 </script>
 </body>
