@@ -725,11 +725,12 @@ function setF(k,v){S.f[k]=v;render()}
 function evCard(e){
  return `<article class="ecard" onclick="go('#/event/${e.id}')">${poster(e)}
  <div class="eb"><div class="ttl-row"><h3>${e.title}</h3>${icoBtns(e.id)}</div>
-  <div class="row wrap" style="gap:6px">${audPills(e)}</div>
+  <div class="row wrap" style="gap:6px">${pill(e.cat,'blue')}${pill(e.mode,e.mode==='Online'?'violet':'green')}</div>
   <div class="meta">
-   <div>${ic('calendar')}<span>Event Date: ${e.date}${e.days>1?P():''}</span></div>
+   <div>${ic('calendar')}<span>${e.date} · ${e.time.split(' – ')[0]}${e.days>1?P():''}</span></div>
    <div>${ic('calendar')}<span>Register by ${e.deadline}</span></div>
-   <div>${ic(e.mode==='Online'?'video':'pin')}<span>${e.mode==='Online'?e.venue:e.city+' · '+e.mode}</span></div>
+   <div>${ic(e.mode==='Online'?'video':'pin')}<span>${e.mode==='Online'?e.venue:(venuesOf(e).length>1?venuesOf(e)[0][0].split(' – ')[0]+' + '+(venuesOf(e).length-1)+' more venue':venuesOf(e)[0][0].split(' – ')[0])}</span></div>
+   <div>${ic('users')}<span>Eligibility: ${e.grades?`Grades ${e.grades[0]} – ${e.grades[1]}`:'All ages'} · ${e.aud.join(', ')}</span></div>
    ${e.left>0&&e.left<40?`<div style="color:#C2410C">${ic('trend')}<span>Only ${e.left} seats left${P()}</span></div>`:''}
   </div>
   <div class="pr"><span class="price">${e.fee?inr(e.fee):'Free'}</span><small>${e.fee?'onwards '+unitOf(e):'registration required'}</small></div>
@@ -802,17 +803,23 @@ function vEvent(id){
     <div class="row wrap mt12 small" style="gap:18px">${ic('calendar',14)} ${e.date} <span>${ic('clock',14)} ${e.time} IST</span> <span>${ic('users',14)} Reporting 45 min before</span></div></div>`
     :`<p class="small muted mt8">${V.length>1?`Held at ${V.length} venues — select one to see seats, timings and register.`:''}</p>`}
   </div>
-  <div class="sec mt24"><h2>About</h2><p>${descr(e)}</p>
+  <div class="sec mt24"><h2>Overview &amp; purpose</h2><p>${descr(e)}</p><p class="mt8"><b style="color:var(--text);font-weight:500">Purpose:</b> ${purpose(e)}</p>
    <h3 class="mt16">Who should attend</h3><p class="mt8">${e.aud.join(', ')}${e.grades?` in Grades ${e.grades[0]} – ${e.grades[1]}`:''}. ${e.aud.includes('Parents')?'Parents and guardians who want to engage with the school community.':'Students keen to showcase their talent and learn from peers.'}</p>
    <h3 class="mt16">What participants get</h3><ul><li>E-pass with QR code for quick entry</li><li>Reminders 7 days, 1 day and 1 hour before the event</li><li>E-certificate of participation${e.cat==='Competition'?', merit certificates for winners':''}</li><li>Photo gallery access (with media consent)${P()}</li></ul></div>
-  <div class="sec"><h2>Eligibility &amp; fees</h2><div class="card tbl-wrap"><table class="t"><tr><th>Participant</th><th>Eligibility</th><th>Includes</th><th>Fee</th></tr>${T.map(t=>`<tr><td><b style="font-weight:500">${t.n}</b></td><td>${t.sub}</td><td>${t.inc}</td><td>${t.p?inr(t.p):'Free'}</td></tr>`).join('')}</table></div>
+  <div class="sec"><h2>Eligibility criteria</h2><div class="card tbl-wrap"><table class="t"><tr><th>Participant</th><th>Eligibility</th><th>Includes</th><th>Fee</th></tr>${T.map(t=>`<tr><td><b style="font-weight:500">${t.n}</b></td><td>${t.sub}</td><td>${t.inc}</td><td>${t.p?inr(t.p):'Free'}</td></tr>`).join('')}</table></div>
    <dl class="kv mt16"><dt>Category / Theme</dt><dd>${e.cat} · ${e.theme}</dd><dt>Mode</dt><dd>${e.mode}</dd><dt>Registration type</dt><dd>${e.reg}${P()}</dd><dt>Student category</dt><dd>${e.vis==='Internal'?'VIBGYOR students only':'VIBGYOR and non-VIBGYOR students'}</dd>${e.docs.length?`<dt>Required documents</dt><dd>${e.docs.join(', ')}</dd>`:''}</dl></div>
   <div class="sec"><h2>Schedule &amp; agenda${e.days>1?P():''}</h2>
    ${ag.length>1?`<div class="seg mb12">${ag.map((_,i)=>`<button class="${agendaDay===i?'on':''}" onclick="agendaDay=${i};render()">Day ${i+1}</button>`).join('')}</div>`:''}
    ${(ag[agendaDay]||ag[0]).map(a=>`<div class="agenda-item"><b>${a[0]}</b><div>${a[1]}</div><span class="muted small">${a[2]}</span></div>`).join('')}
    <button class="btn btn-o btn-sm mt12" onclick="toast('Programme brochure (PDF) downloaded','download')">${ic('download')}Programme brochure (PDF)</button></div>
   <div class="sec"><h2>Speakers &amp; hosts${P()}</h2><div class="grid g2">${e.hosts.map(h=>`<div class="row" style="align-items:flex-start"><div class="avatar" style="background:var(--violet-50);color:var(--violet)">${h[0].split(' ').map(x=>x[0]).slice(0,2).join('')}</div><div><b style="font-weight:500">${h[0]}</b><div class="small muted">${h[1]}</div></div></div>`).join('')}</div></div>
-  ${e.bring.length?`<div class="sec"><h2>What to bring</h2><div class="grid g2">${e.bring.map(b=>`<div class="row">${ic('check')}<span>${b}</span></div>`).join('')}</div></div>`:''}
+  <div class="sec"><h2>${e.mode==='Online'?'Online joining details':'Venue &amp; access'}${P()}</h2>
+   ${e.mode==='Online'?`<div class="alert info">${ic('lock')}<div><b>Secure join link</b><div class="small">Platform: ${e.venue.replace('Online · ','')}. The join link appears in My Bookings after registration and is shared in your confirmation and the 1-hour reminder. Join 10 minutes early to test audio and video.</div></div></div>`:
+   `<div class="grid g2"><div class="mapbox"><div class="pin"></div></div><dl class="kv" style="grid-template-columns:110px 1fr"><dt>Venue${venuesOf(e).length>1?'s':''}</dt><dd>${venuesOf(e).map(v=>v[0]).join('<br>')}</dd><dt>Entry gates</dt><dd>Gate A (parents), Gate B (participants)</dd><dt>Reporting</dt><dd>45 min before start</dd><dt>Parking</dt><dd>Basement P2 · limited</dd><dt>Access</dt><dd>Ramp access, wheelchair seating</dd></dl></div>`}</div>
+  <div class="sec"><h2>Fees &amp; discounts</h2>
+   ${e.fee?`<div class="card tbl-wrap"><table class="t"><tr><th>Pass</th><th>Fee</th><th>Includes</th></tr><tr><td>Standard pass</td><td>${inr(e.fee)}</td><td>Participation + certificate</td></tr><tr><td>Premium pass</td><td>${inr(e.fee+250)}</td><td>Front-row seating + event kit</td></tr>${specPrice(e)?`<tr><td>Spectator / parent pass</td><td>${inr(specPrice(e))}</td><td>Entry for one adult</td></tr>`:''}${addonsOf(e).map(a=>`<tr><td>Add-on: ${a[1]}</td><td>${inr(a[2])}</td><td>Optional</td></tr>`).join('')}</table></div>
+   <div class="row wrap mt12" style="gap:6px">${e.disc.map(d=>pill(ic('tag',11)+' '+d,'amber')).join('')}${e.instal?pill('Instalments available'+P(),'violet'):''}</div><p class="small muted mt8">Early-bird applies automatically. Referral (REF100) and sibling (SIB15) codes are entered at registration.</p>`:`<p>This event is <b>free</b>. Registration is still required to confirm your seat.${addonsOf(e).length?' Optional add-ons: '+addonsOf(e).map(a=>a[1]+' ('+inr(a[2])+')').join(', ')+'.':''}</p>`}</div>
+  ${e.bring.length?`<div class="sec"><h2>Requirements — what to bring</h2><div class="grid g2">${e.bring.map(b=>`<div class="row">${ic('check')}<span>${b}</span></div>`).join('')}</div></div>`:''}
   <div class="sec"><h2>Policies &amp; FAQs</h2>
    <details class="faq"><summary>Refund &amp; cancellation</summary><p>100% refund up to 7 days before the event; 50% between 3–7 days; event credit within 72 hours. No-shows are non-refundable.</p></details>
    <details class="faq"><summary>Media &amp; photography</summary><p>Galleries are shared only with families who gave media consent.</p></details>
@@ -837,16 +844,24 @@ function vEvent(id){
   <p class="small muted mt12">${!ven?(V.length>1?`Held at ${V.length} venues — select a venue to register.`:'Select a venue to register.'):left===0?'All seats are booked at this venue. You can join the waitlist on the next step.':'Registration is made from a Parent or Student account.'}</p>
  </div></aside></div>`);
 }
+function purpose(e){return {Competition:'Build sporting excellence, teamwork and resilience through fair, certified inter-school competition.',Seminar:'Equip parents with practical tools to support their child’s digital wellbeing.',Festival:'Celebrate culture and creativity while bringing families and the community together.',Showcase:'Give students a stage to present their learning and receive expert feedback.',Webinar:'Help parents and coaches plan nutrition that supports young athletes’ growth and performance.','Open House':'Help prospective families experience the campus and make informed admission decisions.','Community Service':'Instil civic responsibility and environmental awareness through hands-on action.',Fundraiser:'Raise funds for student scholarships while promoting fitness.','Engagement Activity':'Strengthen the parent community through wellness and connection.'}[e.cat]}
 function descr(e){return {Competition:'A full-day inter-school competition bringing together young athletes across campuses. Students compete in age-group categories with certified officials, medals and certificates for every participant.',Seminar:'An interactive session on raising balanced, digitally healthy children. Learn practical strategies on screen-time, online safety and emotional wellbeing from an expert child psychologist.',Festival:'Three days of music, dance, drama, food and crafts celebrating our diverse cultures. Open to families and the wider community, with performances by students from all grades.',Showcase:'Students present their creations to peers, parents and an expert jury — a celebration of learning-by-doing with feedback from mentors.',Webinar:'A practical webinar for parents and coaches on everyday nutrition, hydration and recovery for school-age athletes.','Open House':'Tour the campus, meet faculty, and learn about curriculum, co-curriculars and admissions for the upcoming academic year.','Community Service':'Join students and parents for a morning of cleaning our shoreline and learning about marine conservation.',Fundraiser:'A fun 5K run open to all, with proceeds supporting scholarships for underprivileged students.','Engagement Activity':'A relaxed morning yoga session for parents to unwind, connect and recharge.'}[e.cat]}
 
-/* ================= REGISTRATION (Summer-Camp style) ================= */
-function startReg(id){const e=ev(id);S.reg={ev:id,venue:venueIx(id)||0,sel:S.role==='student'?['k1']:[],cons:{tc:false,media:false},result:null,pay:'UPI',gw:'Razorpay',conv:0};go('#/register')}
-function resumeDraft(){const d=S.drafts[0];startReg(d.ev);S.reg.sel=['k1','k2'];S.reg.cons.tc=true;render();toast('Draft restored – continue where you left off','file')}
+/* ================= REGISTRATION ================= */
+const ADDONS={1:[['tee','Event T-shirt',350],['lunch','Lunch box',150],['bus','Two-way transport',400]],3:[['work','Day 3 art workshop',350],['food','Food coupons',300]],4:[['kit','Robotics component kit',600],['lunch','Lunch box',150]],8:[['tee','Run T-shirt',350],['medal','Finisher medal engraving',200]],9:[['photo','Professional photo pack',499]]};
+function addonsOf(e){return ADDONS[e.id]||(e.mode==='Online'?[['rec','Session recording access',199]]:e.fee?[['tee','Event T-shirt',350]]:[])}
+function passesFor(e,p){if(p.adult)return [['parent',e.aud.includes('Students')?'Parent / guardian pass':'Attendee pass',e.aud.includes('Students')?Math.round(e.fee*.4):e.fee,'Entry for one adult']];
+ if(!e.fee)return [['gen','General pass',0,'Free entry']];
+ return [['std','Standard pass',e.fee,'Participation + certificate'],['prem','Premium pass',e.fee+250,'Front-row seating + event kit']]}
+const specPrice=e=>e.aud.includes('Students')?Math.round(e.fee*.4):e.fee;
+const FAMILY_CAP=4;
+function startReg(id){S.reg={ev:id,venue:venueIx(id)||0,sel:S.role==='student'?['k1']:[],pass:{},spec:0,add:{},promo:'',promoOk:null,info:{},acc:{},em:{name:'Rohit Sharma',rel:'Father',ph:'+91 98200 12345'},cons:{tc:false,waiver:false,media:false},status:'Draft',result:null,pay:'UPI',gw:'Razorpay',conv:0};go('#/register')}
+function resumeDraft(){const d=S.drafts[0];startReg(d.ev);S.reg.sel=['k1','k2'];render();toast('Draft restored – continue where you left off','file')}
 function people(){const r=S.reg,e=r?ev(r.ev):null;if(S.role==='student')return [KIDS[0]];const list=[];
  if(!e||e.aud.includes('Students')||e.aud.includes('Public'))list.push(...KIDS);
  if(e&&(e.aud.includes('Parents')||(e.aud.includes('Public')&&!e.aud.includes('Students'))))list.push({id:'self',name:ROLES.parent.name,ini:'NS',adult:true});
  return list}
-function priceFor(e,p){return p.adult&&e.aud.includes('Students')?Math.round(e.fee*.4):e.fee}
+function priceFor(e,p){const P=passesFor(e,p);const k=(S.reg&&S.reg.pass[p.id])||P[0][0];return (P.find(q=>q[0]===k)||P[0])[2]}
 function checks(e,p){const r=S.reg;const V=venuesOf(e)[r.venue];const C=[];const reg=S.myRegs.some(x=>x.ev===e.id&&x.who.includes(p.name));
  if(p.adult){C.push({l:'Audience',ok:e.aud.includes('Parents')||e.aud.includes('Public'),m:e.aud.includes('Parents')?'Open to parents / guardians.':'Not open to parents.'})}
  else{
@@ -854,51 +869,89 @@ function checks(e,p){const r=S.reg;const V=venuesOf(e)[r.venue];const C=[];const
   C.push({l:'Age / grade',ok:inG,m:e.grades?(inG?`Grade ${p.grade} is within Grades ${e.grades[0]} – ${e.grades[1]}.`:`Grade ${p.grade} is outside Grades ${e.grades[0]} – ${e.grades[1]}.`):'Open to all grades.'});
   C.push({l:'Audience',ok:e.aud.includes('Students')||e.aud.includes('Public'),m:e.aud.includes('Students')?'Open to students.':'Not open to students.'});
   C.push({l:'Student category',ok:!(e.vis==='Internal'&&!p.vib),m:e.vis==='Internal'?(p.vib?'Open to VIBGYOR students only.':'Open to VIBGYOR students only — not eligible.'):'Open to VIBGYOR and non-VIBGYOR students.'});
-  if(e.docs.length){const has=p.id==='k1'?S.docs.k1:true;C.push({l:'Required documents',ok:has,m:has?`${e.docs[0]} on file.`:`${e.docs[0]} required.`,act:has?'':'upload'})}
+  if(e.docs.length){const has=p.id==='k1'?S.docs.k1:true;C.push({l:'Consent & documents',ok:has,m:has?`Parent consent and ${e.docs[0].toLowerCase()} on file.`:`${e.docs[0]} required.`,act:has?'':'upload'})}
+  else C.push({l:'Consent & documents',ok:true,m:'Parent consent on file. No documents required.'});
  }
  C.push({l:'Registration window',ok:daysLeft(e)>=0,m:daysLeft(e)>=0?`Registration is open till ${e.deadline}.`:'Registration has closed.'});
- C.push({l:'Venue',ok:true,m:`Runs at ${V[0]}.`});
  C.push({l:'Existing registration',ok:!reg,m:reg?'Already registered for this event.':'No earlier registration for this event.'});
- C.push({l:'Seat availability',ok:V[2]>0,m:V[2]>0?`${V[2]} seats available at this venue.`:'All seats are booked — you can join the waitlist.',wait:true});
+ C.push({l:'Seat availability',ok:V[2]>0,m:V[2]>0?`${V[2]} seats available at ${V[0].split(' – ')[0]}.`:'All seats are booked — you can join the waitlist.',wait:true});
  return C}
 function pStatus(e,p){const C=checks(e,p);if(C.find(c=>c.l==='Existing registration'&&!c.ok))return ['Registered','blue'];const bad=C.filter(c=>!c.ok&&!c.wait);if(bad.some(c=>!c.act))return ['Not Eligible','red'];if(bad.length)return ['Action needed','amber'];if(C.find(c=>c.wait&&!c.ok))return ['Waitlist','amber'];return ['Eligible','green']}
-function calc(){const r=S.reg,e=ev(r.ev);const ps=people().filter(p=>r.sel.includes(p.id));let sub=0;ps.forEach(p=>sub+=priceFor(e,p));
- const disc=e.disc.includes('Early-bird 10%')?Math.round(sub*.1):0;const total=sub-disc;return {sub,disc,total,n:ps.length,now:total}}
+function alternates(e,p){return EVENTS.filter(x=>x.status==='Published'&&x.id!==e.id&&x.left>0&&daysLeft(x)>=0&&(p.adult?x.aud.includes('Parents'):((x.aud.includes('Students')||x.aud.includes('Public'))&&(!x.grades||(p.grade>=x.grades[0]&&p.grade<=x.grades[1]))&&!(x.vis==='Internal'&&!p.vib)))).slice(0,3)}
+function lines(){const r=S.reg,e=ev(r.ev);const L=[];
+ people().filter(p=>r.sel.includes(p.id)&&pStatus(e,p)[0]==='Eligible').forEach(p=>{const P=passesFor(e,p);const k=r.pass[p.id]||P[0][0];const x=P.find(q=>q[0]===k)||P[0];L.push([`${p.name} · ${x[1]}`,x[2],'pass'])});
+ if(r.spec)L.push([`${r.spec} × Spectator pass`,r.spec*specPrice(e),'pass']);
+ addonsOf(e).forEach(([k,n,pr])=>{if(r.add[k])L.push([`${r.add[k]} × ${n}`,r.add[k]*pr,'addon'])});return L}
+function calc(){const r=S.reg,e=ev(r.ev);const L=lines();const passes=L.filter(l=>l[2]==='pass').reduce((a,l)=>a+l[1],0);const sub=L.reduce((a,l)=>a+l[1],0);
+ let disc=0;const dl=[];if(e.disc.includes('Early-bird 10%')&&passes){disc+=Math.round(passes*.1);dl.push('Early bird 10%')}
+ if(r.promoOk==='SIB15'){disc+=Math.round(passes*.15);dl.push('SIB15')}if(r.promoOk==='REF100'){disc+=Math.min(100,sub-disc);dl.push('REF100')}
+ const n=people().filter(p=>r.sel.includes(p.id)).length;return {sub,disc,dl:dl.join(' + '),total:sub-disc,n,now:sub-disc,L,passCount:L.filter(l=>l[2]==='pass').length-(r.spec?1:0)+r.spec}}
+function statusTrack(cur){const S3=['Draft','Submitted / Pending Payment','Confirmed'];const i=S3.indexOf(cur);return `<div class="status-track">${S3.map((s,k)=>`<span class="s ${k<i?'on':k===i?(cur==='Confirmed'?'on':'cur'):''}"><i></i>${s}</span>`).join('<span class="ln"></span>')}</div>`}
+function qtyCtl(get,set,max){return `<div class="qty"><button onclick="${set}(-1)">−</button><span>${get}</span><button onclick="${set}(1)">+</button></div>`}
+function chSpec(d){const r=S.reg,c=calc();const v=r.spec+d;if(v<0)return;if(d>0&&c.passCount>=FAMILY_CAP){toast(`Family cap reached — max ${FAMILY_CAP} passes`,'alert');return}r.spec=v;render()}
+function chAdd(k,d){const r=S.reg;const v=(r.add[k]||0)+d;if(v<0||v>4)return;r.add[k]=v;render()}
 function vRegister(){
  const r=S.reg;if(!r)return shell('Registration',`<div class="card empty">No registration in progress. <a onclick="pickCat('')">Browse events</a></div>`);
  const e=ev(r.ev);if(r.result)return r.result==='ok'?vConfirm():vFail();
  const V=venuesOf(e)[r.venue];const PP=people();const ps=PP.filter(p=>r.sel.includes(p.id));const c=calc();
- const st=ps.map(p=>pStatus(e,p)[0]);const allOk=ps.length&&st.every(s=>s==='Eligible');const wait=ps.length&&st.every(s=>s==='Waitlist');
- const canPay=(allOk||wait)&&r.cons.tc;
+ const st=ps.map(p=>pStatus(e,p)[0]);const allOk=ps.length>0&&st.every(s=>s==='Eligible');const wait=ps.length>0&&st.every(s=>s==='Waitlist');
+ const eligible=ps.filter(p=>pStatus(e,p)[0]==='Eligible');const minors=eligible.filter(p=>!p.adult).length||(wait&&ps.some(p=>!p.adult));
+ const emOk=!minors||(r.em.name.trim()&&r.em.ph.trim().length>=10);
+ const ready=(allOk||wait)&&r.cons.tc&&r.cons.waiver&&emOk&&c.passCount<=FAMILY_CAP;
+ const SEC=(n,t,sub,body)=>`<div class="card pad-l"><div class="row" style="gap:12px;align-items:flex-start"><span class="avatar" style="width:28px;height:28px;font-size:12px;background:var(--primary);color:#fff">${n}</span><div style="flex:1"><h2 style="font-weight:500">${t}</h2>${sub?`<p class="small muted mt8">${sub}</p>`:''}</div></div><div class="mt16">${body}</div></div>`;
  const card=p=>{const [s,sc]=pStatus(e,p);const on=r.sel.includes(p.id);const dis=s==='Registered';
   return `<label class="pcard ${on?'sel':''}" style="cursor:${dis?'not-allowed':'pointer'};align-items:center"><input type="checkbox" style="width:18px;height:18px;accent-color:var(--primary)" ${on?'checked':''} ${dis?'disabled':''} onchange="selP('${p.id}')">
    <div class="avatar" style="background:${p.adult?'var(--pink-50)':'var(--primary-50)'};color:${p.adult?'var(--pink)':'var(--primary)'}">${p.ini}</div>
    <div style="flex:1;min-width:0"><b style="font-weight:500">${p.name}${p.adult?' (You)':''}</b><div class="small muted">${p.adult?'Parent / guardian':`Grade ${p.grade} · Age ${p.age} · ${p.vib?'VIBGYOR student':'Non-VIBGYOR · '+p.school}`}</div></div>
-   ${pill(s,sc)}${!p.adult&&!p.vib?`<button class="btn btn-g btn-sm" onclick="event.preventDefault();addStudent('${p.id}')">${ic('edit',13)}</button>`:''}</label>`};
- const detail=p=>{const C=checks(e,p);return `<div class="card pad-l mt12"><div class="row between wrap"><div class="row"><div class="avatar" style="background:var(--primary-50);color:var(--primary)">${p.ini}</div><div><b style="font-weight:500">${p.name}</b><div class="small muted">${p.adult?'Parent / guardian · +91 98200 54321':`${p.adm||'—'} · DOB ${p.dob} · Grade ${p.grade}`}</div></div></div>${pill(...pStatus(e,p))}</div>
-  <p class="small muted mt12">${p.adult?'Update these details from your profile.':p.vib?'Details come from the school record. Contact the school office to change them.':'Update these details from your profile.'}</p>
-  <div class="grid g2 mt12" style="gap:8px 24px">${C.map(x=>`<div class="row" style="align-items:flex-start;gap:10px"><span style="color:${x.ok?'var(--green)':x.wait?'var(--amber)':'var(--red)'};margin-top:2px">${ic(x.ok?'check':x.wait?'clock':'x',16)}</span><div><div class="small b">${x.l}</div><div class="small muted">${x.m}</div>${x.act?`<button class="btn btn-o btn-sm mt8" onclick="uploadDoc()">${ic('upload',13)}Upload now</button>`:''}</div></div>`).join('')}</div>
-  ${!p.adult?`<div class="row wrap mt16 small muted" style="gap:14px"><span>${ic('phone',13)} Emergency contact: Rohit Sharma (Father) · +91 98200 12345</span><span>T-shirt: M</span></div>`:''}</div>`};
+   ${pill(s,sc)}${!p.adult&&!p.vib?`<button class="btn btn-g btn-sm" title="Edit participant" onclick="event.preventDefault();addStudent('${p.id}')">${ic('edit',13)}</button>`:''}</label>`};
+ const eligBlock=p=>{const C=checks(e,p);const [s,sc]=pStatus(e,p);const alt=s==='Not Eligible'?alternates(e,p):[];
+  return `<div class="card pad mt12"><div class="row between wrap"><b style="font-weight:500">${p.name}</b>${pill(s,sc)}</div>
+  <div class="grid g2 mt12" style="gap:8px 24px">${C.map(x=>`<div class="row" style="align-items:flex-start;gap:10px"><span style="color:${x.ok?'var(--green)':x.wait?'var(--amber)':'var(--red)'};margin-top:2px">${ic(x.ok?'check':x.wait?'clock':'x',16)}</span><div><div class="small b">${x.l}</div><div class="small muted">${x.m}</div>${x.act?`<button class="btn btn-o btn-sm mt8" onclick="uploadDoc()">${ic('upload',13)}Required action: upload</button>`:''}</div></div>`).join('')}</div>
+  ${s==='Not Eligible'?`<div class="alert warn mt12">${ic('alert')}<div style="flex:1"><b>${p.name.split(' ')[0]} can’t register for this event.</b> Untick to continue with others, or try one of these instead:
+   <div class="grid g3 mt12" style="gap:10px">${alt.length?alt.map(x=>`<div class="card" style="overflow:hidden;cursor:pointer" onclick="go('#/event/${x.id}')"><div style="height:70px;overflow:hidden">${poster(x,'sm')}</div><div style="padding:8px 10px"><div class="small b" style="color:var(--text)">${x.title}</div><div class="small muted">${x.date} · ${x.fee?inr(x.fee):'Free'}</div></div></div>`).join(''):'<span class="small">No alternate events right now.</span>'}</div></div></div>`:''}
+  ${s==='Waitlist'?`<div class="alert warn mt12">${ic('clock')}<span class="small">All seats are booked. Join the waitlist — if a seat opens you’ll get 24 hours to confirm and pay.</span></div>`:''}</div>`};
+ const passBlock=eligible.map(p=>{const P=passesFor(e,p);const k=r.pass[p.id]||P[0][0];
+  return `<div class="mb16"><div class="small b mb8">${p.name}</div><div class="vgrid">${P.map(([pk,n,pr,inc])=>`<label class="vcard ${k===pk?'on':''}"><div class="top"><input type="radio" name="pass-${p.id}" ${k===pk?'checked':''} onchange="S.reg.pass['${p.id}']='${pk}';render()"><b>${n}</b></div><div class="sub">${inc}</div><div class="bot"><span>Per person</span><span><b>${pr?inr(pr):'Free'}</b></span></div></label>`).join('')}</div></div>`}).join('');
+ const addBlock=addonsOf(e).map(([k,n,pr])=>`<div class="row between" style="padding:10px 0;border-bottom:1px solid var(--divider)"><div><b style="font-weight:500">${n}</b><div class="small muted">${inr(pr)} each · optional</div></div>${qtyCtl(r.add[k]||0,`(d=>chAdd('${k}',d))`)}</div>`).join('');
+ const detBlock=eligible.map(p=>{const I=r.info[p.id]||(r.info[p.id]={tee:'M',med:''});const A=r.acc[p.id]||(r.acc[p.id]={wheel:false,sign:false,sensory:false,notes:''});
+  return `<div class="card pad mb12"><div class="row between wrap"><b style="font-weight:500">${p.name}</b>${pill(ic('check',11)+' Auto-filled','green')}</div>
+  <div class="grid g3 mt12">${p.adult?`<div class="field"><label>Mobile</label><input class="inp" value="+91 98200 54321" disabled></div><div class="field"><label>Email</label><input class="inp" value="neha.sharma@example.com" disabled></div><div class="field"><label>Relation</label><input class="inp" value="Mother" disabled></div>`:
+  `<div class="field"><label>${p.vib?'Admission no.':'School'}</label><input class="inp" value="${p.vib?p.adm:p.school}" disabled></div><div class="field"><label>Date of birth</label><input class="inp" value="${p.dob}" disabled></div><div class="field"><label>Grade</label><input class="inp" value="Grade ${p.grade}" disabled></div>
+  <div class="field"><label>T-shirt size</label><select class="inp" onchange="S.reg.info['${p.id}'].tee=this.value">${['XS','S','M','L','XL'].map(z=>`<option ${I.tee===z?'selected':''}>${z}</option>`).join('')}</select></div><div class="field" style="grid-column:span 2"><label>Medical notes / allergies</label><input class="inp" placeholder="Optional" value="${I.med}" oninput="S.reg.info['${p.id}'].med=this.value"></div>`}</div>
+  <div class="small b mt16 mb8">Accessibility requirements</div><div class="row wrap" style="gap:18px">${[['wheel','Wheelchair access'],['sign','Sign-language interpreter'],['sensory','Sensory-friendly seating']].map(([k,l])=>`<label class="check small"><input type="checkbox" ${A[k]?'checked':''} onchange="S.reg.acc['${p.id}'].${k}=this.checked">${l}</label>`).join('')}</div>
+  <input class="inp mt8" placeholder="Any other requirement (e.g. dietary, mobility, medication timing)" value="${A.notes}" oninput="S.reg.acc['${p.id}'].notes=this.value"></div>`}).join('');
+ const C=(k,t,d,req,part)=>`<label class="pcard ${r.cons[k]?'sel':''}"><input type="checkbox" style="margin-top:3px;width:18px;height:18px;accent-color:var(--primary)" ${r.cons[k]?'checked':''} onchange="S.reg.cons.${k}=this.checked;render()"><div style="flex:1"><b style="font-weight:500">${t}</b>${part?P():''}${req?' <span class="req">*</span>':' <span class="small muted">(optional)</span>'}<div class="small muted mt8">${d}</div></div></label>`;
+ const ok=allOk||wait;
  return shell('Registration',`${crumbs([['Home',HOME[S.role]],['Events & Engagements',"!pickCat('')"],[e.title,'#/event/'+e.id],['Registration']])}
- <div class="grid" style="grid-template-columns:minmax(0,1fr);gap:16px;max-width:1100px">
- <div class="card pad-l"><div class="row between wrap"><h2 style="font-weight:500">Venue &amp; event</h2><a class="small" onclick="go('#/event/${e.id}')">Change venue</a></div>
-  <div class="row mt16" style="align-items:flex-start;gap:18px;flex-wrap:wrap"><div style="width:180px">${poster(e,'sm')}</div>
-  <div style="flex:1;min-width:240px"><h3>${e.title}</h3><div class="meta mt8"><div>${ic('calendar')}${e.date} · ${e.time} IST</div><div>${ic('file')}Register before ${e.deadline}</div></div></div>
-  <div class="meta" style="flex:1;min-width:240px"><div>${ic(e.mode==='Online'?'video':'pin')}<span>${V[0]}</span></div>${e.mode!=='Online'?`<div>${ic('map')}<span>Address: ${V[1]}<br><a class="small" onclick="toast('Opening maps…','map')">Get directions ↗</a></span></div>`:''}</div></div></div>
- <div class="card pad-l"><div class="row between wrap"><div><h2 style="font-weight:500">Participants</h2><p class="small muted mt8">${S.role==='student'?'You are registering yourself. Your parent completes payment.':`${PP.filter(p=>!p.adult).length} student${PP.filter(p=>!p.adult).length===1?'':'s'} added to your account. Select who is attending.`}</p></div>${S.role==='parent'?`<button class="btn btn-o" onclick="addStudent()">${ic('plus',14)}Add Participant</button>`:''}</div>
-  <div class="col mt16">${PP.map(card).join('')}</div></div>
- <div><h2 style="font-weight:500;margin:8px 0 0">Participant details &amp; eligibility</h2>
-  ${ps.length?ps.map(detail).join(''):`<div class="card empty mt12">${ic('users',26)}<p class="mt8"><b style="color:var(--text);font-weight:500">Select a participant to continue</b></p><p class="small">Tick who is attending above to see their details, eligibility and price.</p></div>`}</div>
- ${ps.length?`<div class="card pad-l"><h2 style="font-weight:500" class="mb12">Consents</h2>
-  <label class="check"><input type="checkbox" ${r.cons.tc?'checked':''} onchange="S.reg.cons.tc=this.checked;render()"><span>I agree to the <a onclick="event.preventDefault();modal('Terms, waiver & code of conduct','<p class=&quot;muted&quot;>Event terms, refund policy, liability waiver and code of conduct (v2026.3).</p>')">terms, liability waiver and code of conduct</a> <span class="req">*</span></span></label>
-  <label class="check mt8"><input type="checkbox" ${r.cons.media?'checked':''} onchange="S.reg.cons.media=this.checked;render()"><span>Media / photo consent (optional) — needed for gallery access${P()}</span></label></div>`:''}
+ <div class="col" style="gap:16px;max-width:1100px">
+ <div class="card pad-l"><div class="row between wrap"><h2 style="font-weight:500">Venue &amp; event</h2><div class="row"><span class="small muted">Status</span>${statusTrack(r.status)}</div></div>
+  <div class="row mt16" style="align-items:flex-start;gap:18px;flex-wrap:wrap"><div style="width:170px">${poster(e,'sm')}</div>
+  <div style="flex:1;min-width:220px"><h3>${e.title}</h3><div class="meta mt8"><div>${ic('calendar')}${e.date} · ${e.time} IST</div><div>${ic('file')}Register before ${e.deadline}</div></div></div>
+  <div class="meta" style="flex:1;min-width:220px"><div>${ic(e.mode==='Online'?'video':'pin')}<span>${V[0]}</span></div>${e.mode!=='Online'?`<div>${ic('map')}<span>${V[1]}<br><a class="small" onclick="go('#/event/${e.id}')">Change venue</a></span></div>`:''}</div></div></div>
+ ${SEC(1,'Participants',S.role==='student'?'You are registering yourself. Your parent completes payment.':`${PP.filter(p=>!p.adult).length} students added to your account. Select who is attending.`,
+  `${S.role==='parent'?`<div class="row" style="justify-content:flex-end;margin-top:-52px;margin-bottom:16px"><button class="btn btn-o" onclick="addStudent()">${ic('plus',14)}Add Participant</button></div>`:''}<div class="col">${PP.map(card).join('')}</div>`)}
+ ${SEC(2,'Eligibility check','Age/grade, audience, seats and required consent/documents are checked for each participant.',
+  ps.length?ps.map(eligBlock).join(''):`<div class="empty" style="padding:24px">${ic('users',24)}<p class="mt8"><b style="color:var(--text);font-weight:500">Select a participant to continue</b></p><p class="small">Tick who is attending above to run the eligibility check.</p></div>`)}
+ ${allOk?SEC(3,'Passes, quantity &amp; add-ons',`Choose a pass for each participant. Family cap: max ${FAMILY_CAP} passes per event.${P()}`,
+  `${passBlock}
+  ${specPrice(e)||!e.fee?`<div class="row between" style="padding:12px 0;border-top:1px solid var(--divider);border-bottom:1px solid var(--divider)"><div><b style="font-weight:500">Additional spectator passes</b><div class="small muted">${specPrice(e)?inr(specPrice(e))+' each':'Free'} · for family members not participating</div></div>${qtyCtl(r.spec,'chSpec')}</div>`:''}
+  ${addBlock?`<div class="small b mt16">Optional add-ons</div>${addBlock}`:''}
+  ${c.total||c.sub?`<div class="row mt16" style="max-width:460px"><input class="inp" id="promo" placeholder="Promo / referral code (REF100, SIB15)" value="${r.promo}"><button class="btn btn-o" onclick="applyPromo()">Apply</button></div>${r.promoOk?`<div class="small mt8" style="color:var(--green)">${ic('check',12)} ${r.promoOk} applied</div>`:r.promoOk===false?`<div class="small mt8" style="color:var(--red)">${ic('x',12)} Invalid or expired code</div>`:''}`:''}
+  ${c.passCount>FAMILY_CAP?`<div class="alert err mt12">${ic('alert')}<span>Family cap is ${FAMILY_CAP} passes. Remove a spectator pass or participant.</span></div>`:''}`):''}
+ ${allOk?SEC(4,'Participant details','Auto-filled from your OSE Hub profile and school record. Add sizes, medical notes and accessibility needs.',
+  `${detBlock}${minors?`<div class="card pad"><b style="font-weight:500">Emergency contact <span class="small muted" style="font-weight:400">(required for minors)</span></b><div class="grid g3 mt12"><div class="field"><label>Name<span class="req">*</span></label><input class="inp" value="${r.em.name}" oninput="S.reg.em.name=this.value"></div><div class="field"><label>Relationship<span class="req">*</span></label><input class="inp" value="${r.em.rel}" oninput="S.reg.em.rel=this.value"></div><div class="field"><label>Contact No.<span class="req">*</span></label><input class="inp" value="${r.em.ph}" onchange="S.reg.em.ph=this.value;render()"></div></div></div>`:''}`):''}
+ ${ok?SEC(allOk?5:3,'Consents &amp; waivers','Recorded with date, time and version. View them any time in My Bookings.',
+  `<div class="col">${C('tc','Terms & conditions','I agree to the event terms, refund policy and registration rules.',1)}${C('waiver','Liability waiver','I understand the nature of the event and release the organisers from liability for incidental injuries.',1)}${C('media','Media / photo consent','Allow photos and videos featuring my ward in school publications. Needed for gallery access after the event.',0,1)}</div>`):''}
  </div>
  <div style="height:90px"></div>
- <div class="regbar"><div class="in">${ps.length&&!allOk&&!wait?`<span class="small" style="color:var(--red)">${ic('alert',13)} Remove participants who are not eligible to continue.</span>`:''}<span style="flex:1"></span>
-  <div class="tot">${c.disc?`<small style="text-decoration:line-through">${inr(c.sub)}</small>`:''}<b>${inr(c.total)}</b><small>${c.n} participant${c.n===1?'':'s'}${c.disc?' · early bird applied':''}</small></div>
-  ${wait?`<button class="btn btn-p btn-lg" ${canPay?'':'disabled'} onclick="joinWait()">Join waitlist</button>`:S.role==='student'?`<button class="btn btn-p btn-lg" ${canPay?'':'disabled'} onclick="studentSubmit()">Send to parent for payment</button>`:
-  `${c.total?`<button class="btn btn-o btn-lg" ${canPay?'':'disabled'} onclick="toast('Added to cart','ticket')">Add To Cart</button>`:''}<button class="btn btn-p btn-lg" ${canPay?'':'disabled'} onclick="${c.total?'payMethod()':'confirmPay(true)'}">${c.total?'Pay Now':'Register'}</button>`}</div></div>`);
+ <div class="regbar"><div class="in"><button class="btn btn-g" onclick="saveDraft()">${ic('file',14)}Save as draft</button>
+  ${ps.length&&!ok?`<span class="small" style="color:var(--red)">${ic('alert',13)} Untick participants who are not eligible to continue.</span>`:ok&&!ready?`<span class="small muted">${!r.cons.tc||!r.cons.waiver?'Accept the terms and liability waiver to continue.':!emOk?'Add an emergency contact to continue.':''}</span>`:''}<span style="flex:1"></span>
+  <div class="tot">${c.disc?`<small style="text-decoration:line-through">${inr(c.sub)}</small>`:''}<b>${inr(c.total)}</b><small>${c.passCount} pass${c.passCount===1?'':'es'}${c.dl?' · '+c.dl:''}</small></div>
+  ${wait?`<button class="btn btn-p btn-lg" ${ready?'':'disabled'} onclick="joinWait()">Join waitlist</button>`:S.role==='student'?`<button class="btn btn-p btn-lg" ${ready?'':'disabled'} onclick="studentSubmit()">Send to parent for payment</button>`:
+  `${c.total?`<button class="btn btn-o btn-lg" ${ready?'':'disabled'} onclick="toast('Added to cart','ticket')">Add To Cart</button>`:''}<button class="btn btn-p btn-lg" ${ready?'':'disabled'} onclick="S.reg.status='Submitted / Pending Payment';${c.total?'render();payMethod()':'confirmPay(true)'}">${c.total?'Pay Now':'Confirm registration'}</button>`}</div></div>`);
 }
+function applyPromo(){const v=$('#promo').value.trim().toUpperCase();S.reg.promo=v;S.reg.promoOk=['REF100','SIB15'].includes(v)?v:false;render()}
+function saveDraft(){draftEntry('Draft');toast('Saved as draft – resume from Home or My Bookings','file')}
 function selP(id){const a=S.reg.sel;const i=a.indexOf(id);i>-1?a.splice(i,1):a.push(id);render()}
 function addStudent(id){const k=id?KIDS.find(x=>x.id===id):null;
  modal(k?'Edit participant':'Add participant',`<p class="muted small mb16">Add a child to your parent account. VIBGYOR students are linked from the school record automatically.</p>
@@ -913,6 +966,7 @@ function saveStudent(id){const n=$('#ns-name').value.trim();if(!/^[A-Za-z ]{3,}$
  if(id){Object.assign(KIDS.find(x=>x.id===id),{name:n,grade:g,school:sch})}else{const kid={id:'k'+(KIDS.length+1),name:n,grade:g,age:g+5,dob:'10 Jun 2014',school:sch,vib:false,ini:n.split(' ').map(x=>x[0]).slice(0,2).join('').toUpperCase()};KIDS.push(kid);if(S.reg)S.reg.sel.push(kid.id)}
  closeModal();toast(id?'Participant details updated':'Participant added');render()}
 function uploadDoc(){modal('Upload medical fitness certificate',`<div class="dashed">${ic('upload',28)}<p class="mt8"><b>Drop file here</b> or click to browse</p><p class="small muted">PDF/JPG up to 5 MB · signed by a registered medical practitioner</p></div><div class="row mt12">${pill(ic('file',12)+' fitness_cert_aarav.pdf','blue')}<span class="small muted">Ready to upload</span></div>`,`<button class="btn btn-o" onclick="closeModal()">Cancel</button><button class="btn btn-p" onclick="S.docs.k1=true;closeModal();toast('Document uploaded · eligibility re-checked');render()">Upload</button>`)}
+
 /* ---- payment (same as Summer Camp) ---- */
 function payMethod(){modal('Select Payment Method',`<div class="col">
  <button class="pcard" style="text-align:left;align-items:center" onclick="chooseGateway()">${ic('ticket',24)}<div style="flex:1"><b style="font-weight:500">Pay Now</b><div class="small muted">Pay online via UPI, Cards, Net Banking</div></div>${ic('chev')}</button>
@@ -924,16 +978,16 @@ function checkout(){const r=S.reg,e=ev(r.ev),c=calc();const m=r.pay;const fee=co
   <div class="col" style="gap:8px">${['UPI','Cards','Net Banking','Wallet'].map(x=>`<button class="pcard ${m===x?'sel':''}" style="text-align:left;padding:10px 12px;align-items:center" onclick="S.reg.pay='${x}';checkout()">${ic(x==='UPI'?'phone':x==='Cards'?'ticket':x==='Wallet'?'brief':'home',18)}<span style="flex:1">${x}</span>${x==='UPI'?pill('No fee','green'):''}</button>`).join('')}</div>
   <div class="card pad mt12 small">${m==='UPI'?`<div class="row" style="align-items:flex-start">${qr('upi'+r.ev,90)}<div><b>UPI QR</b><div class="muted">Scan the QR using any UPI app (GPay, PhonePe, Paytm).</div></div></div>`:m==='Cards'?`<b>Pay with a test card</b><div class="muted">Visa ending 1111 (test card) · Visa · Mastercard · RuPay</div>`:m==='Net Banking'?`<select class="inp"><option>HDFC Bank</option><option>ICICI Bank</option><option>Axis Bank</option><option>Kotak</option><option>Yes Bank</option></select>`:`<div class="muted">PhonePe · Amazon Pay · Mobikwik · Airtel Money</div>`}</div></div>
   <div><div class="small b mb8">Price Summary</div><div class="card pad"><div class="small muted mb8">${e.title}</div>
-   ${people().filter(p=>r.sel.includes(p.id)).map(p=>`<div class="sumline small"><span>${p.name}</span><span>${inr(priceFor(e,p))}</span></div>`).join('')}
-   ${c.disc?`<div class="sumline small" style="color:var(--green)"><span>Early bird (10%)</span><span>−${inr(c.disc)}</span></div>`:''}
+   ${c.L.map(l=>`<div class="sumline small"><span>${l[0]}</span><span>${inr(l[1])}</span></div>`).join('')}
+   ${c.disc?`<div class="sumline small" style="color:var(--green)"><span>Discount (${c.dl})</span><span>−${inr(c.disc)}</span></div>`:''}
    <div class="sumline small"><span>Subtotal</span><span>${inr(c.total)}</span></div><div class="sumline small"><span>Convenience fee (${m})</span><span>${fee?inr(fee):'₹0'}</span></div>
    <div class="divider" style="margin:6px 0"></div><div class="sumline b"><span>Total</span><span>${inr(c.total+fee)}</span></div></div>
    <p class="small muted mt8">To avoid extra convenience charges, we recommend paying via UPI. Fees include GST.</p>
    <button class="btn btn-p w100 btn-lg mt12" onclick="confirmPay(true)">Continue &amp; Pay ${inr(c.total+fee)}</button>
    <div class="row between mt8 small"><span class="muted">${ic('lock',12)} Secured by ${r.gw} · Test Mode</span><a onclick="confirmPay(false)">Simulate failure</a></div></div></div>`)}
 function confirmPay(ok){modal('Confirming Payment',`<div style="text-align:center;padding:20px"><div class="live-dot" style="width:16px;height:16px;background:var(--primary)"></div><p class="mt12"><b>Confirming payment…</b></p><p class="small muted">This will only take a few seconds.</p></div>`);
- setTimeout(()=>{closeModal();const r=S.reg;r.result=ok?'ok':'fail';r.txn='TXN'+(8823410000+Math.floor(Math.random()*99999));
-  if(ok){const e=ev(r.ev);const ps=people().filter(p=>r.sel.includes(p.id));S.myRegs.unshift({id:'R-'+(24900+S.myRegs.length),ev:e.id,who:ps.map(p=>p.name),status:'Confirmed',tickets:ps.length+' participant'+(ps.length>1?'s':''),amt:calc().total+(r.conv||0),txn:r.txn,seat:'Zone 3 · Gate B'});S.drafts=S.drafts.filter(d=>d.ev!==e.id)}
+ setTimeout(()=>{closeModal();const r=S.reg;r.result=ok?'ok':'fail';r.status=ok?'Confirmed':'Submitted / Pending Payment';r.txn='TXN'+(8823410000+Math.floor(Math.random()*99999));
+  if(ok){const e=ev(r.ev);const ps=people().filter(p=>r.sel.includes(p.id));S.myRegs.unshift({id:'R-'+(24900+S.myRegs.length),ev:e.id,who:ps.map(p=>p.name),status:'Confirmed',tickets:calc().passCount+' pass'+(calc().passCount>1?'es':'')+(calc().L.some(l=>l[2]==='addon')?' + add-ons':''),amt:calc().total+(r.conv||0),txn:r.txn,seat:'Zone 3 · Gate B'});S.drafts=S.drafts.filter(d=>d.ev!==e.id)}
   else draftEntry('Payment');render();scrollTo(0,0)},1200)}
 function payLink(){const r=S.reg,c=calc();const link='https://pay.osehub.com/l/'+(hash(r.ev+''+Date.now())%999999);
  modal('Payment Link',`<p class="muted">Share this link to pay ${inr(c.total)} for ${ev(r.ev).title}. The registration stays <b>Submitted (Pending Payment)</b> until it is paid.</p><div class="row mt16"><input class="inp" value="${link}" readonly><button class="btn btn-o" onclick="toast('Payment link copied','copy')">${ic('copy',14)}Copy</button></div>`,
@@ -948,24 +1002,29 @@ function vConfirm(){
  <div class="card pad-l" style="text-align:center;max-width:780px;margin:0 auto">
   <div style="width:64px;height:64px;border-radius:50%;background:var(--green-50);color:var(--green);display:grid;place-items:center;margin:0 auto">${ic('check',30)}</div>
   <h1 class="mt12">Registration confirmed!</h1><p class="muted mt8">${e.title} · ${e.date} · ${V[0]}</p>
-  <div class="status-track mt16" style="justify-content:center"><span class="s on"><i></i>Submitted</span><span class="ln"></span><span class="s on"><i></i>Paid</span><span class="ln"></span><span class="s on"><i></i>Confirmed</span></div>
-  ${paid?`<div class="grid g3 mt24" style="text-align:left"><div class="card pad"><div class="small muted">Transaction ID</div><b style="font-weight:600">${r.txn}</b></div><div class="card pad"><div class="small muted">Amount paid</div><b style="font-weight:600">${inr(paid)}</b> <span class="small muted">via ${r.pay} · ${r.gw}</span></div><div class="card pad"><div class="small muted">Payment receipt</div><a onclick="toast('Receipt PDF downloaded','download')">${ic('download',13)} Download PDF</a></div></div>`:''}
+  <div class="mt16" style="display:flex;justify-content:center">${statusTrack('Confirmed')}</div>
+  ${paid?`<div class="grid g3 mt24" style="text-align:left"><div class="card pad"><div class="small muted">Transaction ID</div><b style="font-weight:600">${r.txn}</b></div><div class="card pad"><div class="small muted">Amount paid</div><b style="font-weight:600">${inr(paid)}</b> <span class="small muted">via ${r.pay} · ${r.gw}</span></div><div class="card pad"><div class="small muted">Payment receipt</div><a onclick="receipt()">${ic('download',13)} Download PDF</a></div></div>`:''}
   <p class="small muted mt16">Confirmation sent by Email, SMS &amp; WhatsApp to parent${ps.some(p=>!p.adult)?' and student':''}. Reminders scheduled for T–7, T–1 and 1 hour before.</p>
  </div>
  <h2 class="mt24 mb12" style="font-size:22px">Event pass</h2><p class="small muted mb12">Show this pass (printed or on your phone) at the event desk.</p>
- <div class="row wrap" style="align-items:flex-start;gap:18px">${ps.map(p=>passHTML(e,p.name,p.adult?'Parent pass':'Student pass')).join('')}</div>
+ <div class="row wrap" style="align-items:flex-start;gap:18px">${ps.map(p=>passHTML(e,p.name,p.adult?'Parent pass':((passesFor(e,p).find(q=>q[0]===r.pass[p.id])||passesFor(e,p)[0])[1]))).join('')}${[...Array(r.spec||0)].map((_,i)=>passHTML(e,'Spectator '+(i+1),'Spectator pass')).join('')}</div>
  <div class="row wrap mt24"><button class="btn btn-p" onclick="S.reg=null;go('#/my')">Go to My Bookings</button><button class="btn btn-o" onclick="S.reg=null;pickCat('')">Explore more events</button></div>`);
 }
 function passHTML(e,name,type,seat){return `<div class="pass"><div class="pass-top" style="background:linear-gradient(140deg,${(POSTER[e.id]||{bg:['#2F55E4','#5B36E8']}).bg.join(',')})"><div class="small" style="opacity:.85">OSE Hub · ${type}</div><b style="font-weight:600">${e.title||e}</b><div class="small" style="opacity:.85">${e.date||''}</div></div>
- <div class="pass-mid">${qr(name+(e.id||e))}<div class="small muted">Show this QR at entry · Pass #${(hash(name+(e.id||e))%900000+100000)}</div></div>
+ <div class="pass-mid">${qr(name+(e.id||e))}${barcode(name+(e.id||e))}<div class="small muted">Show the QR or barcode at entry · Pass #${(hash(name+(e.id||e))%900000+100000)}</div></div>
  <div class="pass-bot"><div><span class="muted">Attendee</span><b>${name}</b></div><div><span class="muted">Entry</span><b>Gate B · 7:45 AM</b></div><div><span class="muted">Seat / Zone${P()}</span><b>${seat||'Zone 3'}</b></div><div><span class="muted">Emergency</span><b>+91 22 4000 1234</b></div></div>
  <div style="padding:0 18px 16px" class="row"><button class="btn btn-o btn-sm" onclick="toast('Pass downloaded','download')">${ic('download',13)}Download</button><button class="btn btn-o btn-sm" onclick="toast('Added to wallet')">Add to wallet</button></div></div>`}
+function barcode(seed){let h=hash(seed),x=0,o='';for(let i=0;i<46;i++){h=Math.imul(h^h>>>13,2654435761)>>>0;const w=1+h%3;if(i%2===0)o+=`<rect x="${x}" y="0" width="${w}" height="34"/>`;x+=w}return `<svg width="${x}" height="34" viewBox="0 0 ${x} 34" style="max-width:220px;width:100%"><g fill="#111">${o}</g></svg>`}
+function receipt(){const r=S.reg,e=ev(r.ev),c=calc();modal('Payment receipt',`<div style="border:1px solid var(--border);border-radius:12px;padding:20px"><div class="row between"><span class="logo" style="font-size:26px">OS<i>E</i><small>HUB</small></span><div class="small muted" style="text-align:right">Receipt #RC-${hash(r.txn)%99999}<br>26 Nov 2026</div></div>
+ <div class="divider"></div><div class="small"><b>${e.title}</b><br>${e.date} · ${venuesOf(e)[r.venue][0]}<br>Paid by ${ROLES.parent.name} · ${r.pay} via ${r.gw}<br>Transaction ID: ${r.txn}</div><div class="divider"></div>
+ ${c.L.map(l=>`<div class="sumline small"><span>${l[0]}</span><span>${inr(l[1])}</span></div>`).join('')}${c.disc?`<div class="sumline small"><span>Discount (${c.dl})</span><span>−${inr(c.disc)}</span></div>`:''}<div class="sumline small"><span>Convenience fee</span><span>${inr(r.conv||0)}</span></div>
+ <div class="divider" style="margin:6px 0"></div><div class="sumline b"><span>Total paid</span><span>${inr(c.total+(r.conv||0))}</span></div><p class="small muted mt12">Fees include GST. This is a computer-generated receipt.</p></div>`,`<button class="btn btn-p" onclick="toast('Receipt PDF downloaded','download')">${ic('download')}Download PDF</button>`)}
 function vFail(){const r=S.reg,e=ev(r.ev);
  return shell('Payment failed',`${crumbs([['Home',HOME[S.role]],[e.title,'#/event/'+e.id],['Payment']])}<div class="card pad-l" style="max-width:640px;margin:0 auto;text-align:center">
  <div style="width:64px;height:64px;border-radius:50%;background:var(--red-50);color:var(--red);display:grid;place-items:center;margin:0 auto">${ic('x',30)}</div>
  <h1 class="mt12">Payment didn’t go through</h1><p class="muted mt8">Your bank declined the transaction or the session timed out. No money was deducted.</p>
  <div class="alert info mt16" style="text-align:left">${ic('file')}<div><b>Your registration is saved</b>${P()}<div class="small">Participants and consents are preserved. Seats are held for 15 minutes.</div></div></div>
- <div class="card pad mt16" style="text-align:left"><div class="sumline small"><span>Reference</span><b>${r.txn}</b></div><div class="sumline small"><span>Status</span>${pill('Submitted (Pending Payment)','amber')}</div><div class="sumline small"><span>Amount</span><b>${inr(calc().total)}</b></div></div>
+ <div class="mt16" style="display:flex;justify-content:center">${statusTrack('Submitted / Pending Payment')}</div><div class="card pad mt16" style="text-align:left"><div class="sumline small"><span>Reference</span><b>${r.txn}</b></div><div class="sumline small"><span>Status</span>${pill('Submitted / Pending Payment','amber')}</div><div class="sumline small"><span>Amount</span><b>${inr(calc().total)}</b></div></div>
  <div class="row mt16" style="justify-content:center"><button class="btn btn-p" onclick="S.reg.result=null;render();checkout()">${ic('refresh')}Retry payment</button><button class="btn btn-o" onclick="S.reg.result=null;render();payMethod()">Try another method</button></div></div>`)}
 
 
