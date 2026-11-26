@@ -890,7 +890,7 @@ function vEvent(id){
   <div class="mt24">
    <div class="field" style="max-width:420px"><label>Venue<span class="req">*</span></label>
     <select id="pdp-venue" class="inp" onchange="pdpPick(${e.id})"><option value="">Search &amp; Select Venue</option>${V.map((v,i)=>`<option value="${i}" ${vi===i?'selected':''}>${v[0]}</option>`).join('')}</select></div>
-   ${ven?`<p class="small muted mt8">${e.mode==='Online'?ven[1]:`${ven[1]} · ${left===0?'all seats booked':left+' seats left'}`}</p>`:`<div class="dashed mt16" style="text-align:left;padding:16px 18px">${ic('pin',16)} <span>${V.length>1?`This event runs at <b style="color:var(--text);font-weight:500">${V.length} venues</b>. Select a venue to see highlights, schedule, inclusions, terms and seats there.`:'Select the venue to see highlights, schedule, inclusions, terms and seats.'}</span></div>`}
+   ${ven?`<p class="small muted mt8">${e.mode==='Online'?ven[1]:`${ven[1]} · ${left===0?'all seats booked':left+' seats left'}`}</p>`:''}
   </div>
   <div class="sec mt24"><h2>About</h2><p>${descr(e)}</p><p class="mt8">${purpose(e)}</p></div>
   ${details}
