@@ -626,7 +626,7 @@ function hdr(){
   <label class="hsearch">${ic('search')}<input id="hq" placeholder="Search for events" value="${S.f.q.replace(/"/g,'&quot;')}" oninput="hsearch(this.value)"></label>
   <nav class="hnav">
    <div class="dd hide-sm"><button class="${onEv?'on':''}" onclick="event.stopPropagation();S.um=false;S.mega=!S.mega;render()">All Programmes <svg class="svg" style="width:14px;transform:rotate(${S.mega?180:0}deg)" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>${mega}</div>
-   ${links.slice(0,back?0:3).map(([l,u])=>`<a href="${u}" class="${h===u||h.startsWith(u+'/')?'on':''}">${l}</a>`).join('')}
+   ${links.filter(([,u])=>u!=='#/my').slice(0,back?0:3).map(([l,u])=>`<a href="${u}" class="${h===u||h.startsWith(u+'/')?'on':''}">${l}</a>`).join('')}
    ${back?'':`<a onclick="toast('Enquiry form opened','msg')">Enquire Now</a>`}
    ${back?'':`<button class="bellbtn" onclick="go('#/notifications')" title="Notifications">${ic('bell')}<span class="dot"></span></button>`}
    <div class="dd"><button class="uchip" onclick="event.stopPropagation();S.mega=false;S.um=!S.um;render()"><span class="av">${r.ini}</span><span class="nm">${r.name}</span><svg class="svg" style="width:14px" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>${um}</div>
