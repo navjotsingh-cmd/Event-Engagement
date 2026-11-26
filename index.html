@@ -809,9 +809,7 @@ function vEvents(){
  <div class="lbar"><button class="fbtn" onclick="openFilters()">${ic('sliders')}Filters${nF?`<span class="n">${nF}</span>`:''}</button>
   <div class="catchips" id="cc">${OPTS.cat.map(c=>`<button class="${f.cat.includes(c)?'on':''}" onclick="S.f.cat=S.f.cat.includes('${c}')?[]:['${c}'];render()">${ic(CATICON[c])}${c}</button>`).join('')}</div>
   <button class="chev" onclick="$('#cc').scrollBy({left:300})">${ic('chev',20)}</button></div>
- <div class="row between mb16 wrap"><span class="muted">Showing ${list.length} event${list.length===1?'':'s'}${f.q?` for “${f.q}”`:''}</span>
-  <div class="row"><div class="seg">${['','Featured','Popular','Trending'].map(q=>`<button class="${f.quick===q?'on':''}" onclick="setF('quick','${q}')">${q||'All'}</button>`).join('')}</div>
-  <select class="inp" style="width:auto;min-height:36px;padding:6px 10px" onchange="S.sort=this.value;render()"><option value="date" ${S.sort==='date'?'selected':''}>Sort: Date</option><option value="popular" ${S.sort==='popular'?'selected':''}>Sort: Most popular</option><option value="price" ${S.sort==='price'?'selected':''}>Sort: Price</option></select></div></div>
+ <div class="row between mb16 wrap"><span class="muted">Showing ${list.length} event${list.length===1?'':'s'}${f.q?` for “${f.q}”`:''}</span></div>
  ${list.length?`<div class="ev-grid">${list.map(evCard).join('')}</div>`:`<div class="card empty">${ic('search',28)}<p class="mt8">No events match these filters.</p><button class="btn btn-o mt12" onclick="S.f=EMPTYF();render()">Clear filters</button></div>`}
  ${S.role==='parent'&&list.length?`<p class="small muted mt24" style="text-align:center">${ic('users',13)} 120 people from your school showed interest in events this week${P()}</p>`:''}`);
 }
@@ -872,7 +870,7 @@ function vEvent(id){
   <div class="sec"><h2>Highlights</h2><div class="tiles">${(HIGHLIGHTS[e.cat]||HIGHLIGHTS.Competition).map(([i,t])=>tile(i,t)).join('')}</div></div>
   <div class="sec"><h2>Programme details</h2><div class="col" style="gap:10px">
    ${prow('calendar','Schedule & agenda'+(e.days>1?P():''),`${e.days>1?e.days+'-day programme':'Day programme'} · ${e.time} · ${vshort}`,'sch')}
-   ${prow(e.mode==='Online'?'video':'map',e.mode==='Online'?'Online joining details':'Venue & access'+P(),e.mode==='Online'?'Secure join link after registration · join 10 min early':`Gates, reporting time, parking and accessibility at ${vshort}`,'ven')}
+   ${e.mode==='Online'?prow('video','Online joining details','Secure join link after registration · join 10 min early','ven'):''}
    ${prow('file','Programme brochure','PDF · full agenda, rules and contacts','pdf')}</div></div>
   <div class="sec"><h2>Speakers &amp; hosts</h2><div class="spk-grid">${e.hosts.map(h=>`<div class="spk"><div class="avatar">${h[0].split(" ").map(x=>x[0]).slice(0,2).join("")}</div><div style="min-width:0"><b>${h[0]}</b><div class="small muted">${h[1]}</div></div></div>`).join("")}</div></div>
   <div class="sec"><h2>Inclusions</h2><div class="tiles">${(INCL[e.cat]||INCL.def).map(t=>tile('check',t,'grn')).join('')}</div></div>
