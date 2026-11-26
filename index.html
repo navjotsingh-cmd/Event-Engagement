@@ -551,7 +551,7 @@ const ev=id=>EVENTS.find(e=>e.id==id);
 const thc=t=>'th-'+t.replace(/\s/g,'');
 function toast(m,i='check'){const t=document.createElement('div');t.className='toast';t.innerHTML=ic(i)+m;$('#toasts').appendChild(t);setTimeout(()=>t.remove(),2800)}
 function modal(title,body,foot){$('#modal').innerHTML=`<div class="modal-h"><h2>${title}</h2><button class="iconbtn" onclick="closeModal()">${ic('x')}</button></div><div class="modal-b">${body}</div>${foot?`<div class="modal-f">${foot}</div>`:''}`;$('#modalBg').classList.add('on')}
-function closeModal(){$('#modalBg').classList.remove('on');$('#modal').style.maxWidth=''}
+function closeModal(){$('#modalBg').classList.remove('on');const m=$('#modal');m.style.maxWidth=m.style.maxHeight=m.style.overflow=m.style.borderRadius=''}
 function go(h){location.hash=h}
 function hash(s){let h=2166136261;for(const c of String(s)){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0}
 function qr(seed,px=150){const n=25,c=px/n;let r=hash(seed);const rnd=()=>{r=Math.imul(r^r>>>15,2246822507)^Math.imul(r^r>>>13,3266489909);r>>>=0;return r%100};
@@ -730,12 +730,12 @@ function drawLogin(){
  ${otp?`<p class="muted" style="text-align:center;margin-top:6px">We've sent a 6-digit code to +91 ${lgMask(LG.phone)}</p>`:(LG.msg?`<p class="small muted" style="text-align:center;margin-top:6px">${LG.msg}</p>`:'')}
  <div class="divider"></div>${body}<div style="flex:1;min-height:24px"></div><div class="divider"></div>
  <div class="row" style="justify-content:flex-end"><button id="lg-go" class="btn btn-p btn-lg" disabled onclick="${otp?'lgOtp()':'lgPhone()'}">${otp?'Verify &amp; Continue':'Continue'}</button></div></div></div>
- <style>.lgwrap{display:grid;grid-template-columns:290px minmax(0,1fr);gap:24px;min-height:520px}.lgart{position:relative;border:2px solid #1B2550;border-radius:22px;overflow:hidden}.lglogo{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:#fff;border-radius:10px;padding:10px 14px;box-shadow:0 6px 18px rgba(20,30,80,.18)}
+ <style>.lgwrap{display:grid;grid-template-columns:288px minmax(0,1fr);gap:20px;padding:20px;height:min(650px,calc(100vh - 48px))}.lgwrap>div:last-child{overflow:auto;padding:0 0 0 0}.lgart{position:relative;border:2px solid #1B2550;border-radius:22px;overflow:hidden}.lglogo{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:#fff;border-radius:10px;padding:10px 14px;box-shadow:0 6px 18px rgba(20,30,80,.18)}
  .lgph:focus-within{border-color:var(--primary)!important;box-shadow:0 0 0 3px var(--primary-50)}
  .otpb{width:46px;height:50px;border:1px solid var(--border);border-radius:10px;text-align:center;font-size:20px;font-family:inherit;outline:0;background:#fff}.otpb::placeholder{color:#C4C8D4}.otpb:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-50)}.otpb.bad{border-color:var(--red)}
  #lg-go:disabled{background:#F1F2F6;color:#9AA0B0;border-color:#F1F2F6}
- @media(max-width:700px){.lgwrap{grid-template-columns:1fr;min-height:0}.lgart{display:none}.otpb{width:40px;height:46px}}</style>`;
- $('#modal').style.maxWidth='860px';$('#modalBg').classList.add('on');
+ @media(max-height:560px){.lgart{display:none}.lgwrap{grid-template-columns:1fr}}@media(max-width:700px){.lgwrap{grid-template-columns:1fr;height:auto;max-height:calc(100vh - 48px)}.lgart{display:none}.otpb{width:40px;height:46px}}</style>`;
+ $('#modal').style.maxWidth='812px';$('#modal').style.maxHeight='calc(100vh - 32px)';$('#modal').style.overflow='hidden';$('#modal').style.borderRadius='24px';$('#modalBg').classList.add('on');
  if(!otp){document.getElementById('lg-go').disabled=LG.phone.length!==10}else lgTick();
  const fi=otp?document.querySelector('.otpb'):document.getElementById('lg-phone');if(fi)fi.focus()}
 function lgPhone(){const p=($('#lg-phone')||{}).value||LG.phone;LG.phone=p;if(!/^\d{10}$/.test(p)){LG.err='Enter a valid 10-digit mobile number.';drawLogin();return}
