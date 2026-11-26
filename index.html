@@ -843,6 +843,7 @@ const HIGHLIGHTS={
 };
 const INCL={def:['Entry pass with QR code','Certified staff and first-aid on site','E-certificate of participation','Reminders before the event'],Competition:['Participation kit and bib','Certified officials and timing','E-certificate of participation, merit certificates for winners','Water and first-aid on site','Photo highlights (with media consent)'],Festival:['Entry for the selected day(s)','All performances and fair access','Participation certificate for performers','Water and first-aid on site'],Webinar:['Live session access','Downloadable resources','E-certificate of attendance'],Seminar:['Live session access','Practical toolkit (PDF)','E-certificate of attendance']};
 const EXCL=['Transport, unless opted for at registration','Meals not listed under inclusions','Personal sports kit and equipment','Personal expenses','Medical expenses or medicines','Any services not listed under inclusions'];
+function venueFirst(id){if(S.ven&&S.ven[id]!=null)return true;const s=document.getElementById('pdp-venue');if(s){s.scrollIntoView({behavior:'smooth',block:'center'});s.style.borderColor='var(--red)';s.style.boxShadow='0 0 0 3px #fde2e2';setTimeout(()=>s.focus(),300)}toast('Please select a venue first','pin');return false}
 function pdpPick(id){if(!S.ven)S.ven={};const v=document.getElementById('pdp-venue').value;S.ven[id]=v===''?null:+v;render()}
 function pdpModal(id,k){const e=ev(id);const V=venuesOf(e)[S.ven[id]];const ag=AGENDA[e.id]||[[['Reporting','Check-in & seating','Entrance'],[e.time.split('–')[0].trim(),'Main session','Main hall'],['Close','Q&A and closing','Main hall']]];
  const M={
@@ -856,12 +857,12 @@ function vEvent(id){
  if(!S.ven)S.ven={};const V=venuesOf(e);const vi=S.ven[e.id];const ven=vi!=null?V[vi]:null;const [st,sc]=regStatus(e);const T=ticketTypes(e);
  const consumer=['parent','student','guest'].includes(S.role);const left=ven?ven[2]:e.left;const minP=Math.min(...T.map(t=>t.p));
  const eb=e.disc.includes('Early-bird 10%');
- const cta=()=>{const dis=ven?'':'disabled';
-  if(S.role==='coach')return `<button class="btn btn-o btn-lg" style="flex:1" onclick="like(${e.id},event)">Interested</button><button class="btn btn-p btn-lg" style="flex:1" ${dis} onclick="go('#/bulk/${e.id}')">Register students</button>`;
-  if(S.role==='partner')return `<button class="btn btn-p btn-lg w100" ${dis} onclick="go('#/bulk/${e.id}')">Register a group</button>`;
+ const cta=()=>{const dis='';
+  if(S.role==='coach')return `<button class="btn btn-o btn-lg" style="flex:1" onclick="like(${e.id},event)">Interested</button><button class="btn btn-p btn-lg" style="flex:1" ${dis} onclick="if(venueFirst(${e.id}))go('#/bulk/${e.id}')">Register students</button>`;
+  if(S.role==='partner')return `<button class="btn btn-p btn-lg w100" ${dis} onclick="if(venueFirst(${e.id}))go('#/bulk/${e.id}')">Register a group</button>`;
   if(S.role==='admin')return `<button class="btn btn-p btn-lg w100" onclick="S.createStep=0;go('#/admin/create')">Edit event</button>`;
   if(!consumer)return `<div class="alert info small w100">${ic('alert')}Registration is made from a Parent or Student account.</div>`;
-  return `<button class="btn ${LIKED.has(e.id)?'btn-p':'btn-o'} btn-lg" style="flex:1;${LIKED.has(e.id)?'':'border-color:var(--primary);color:var(--primary)'}" onclick="like(${e.id},event)">${LIKED.has(e.id)?'✓ Interested':'Interested'}</button><button class="btn btn-p btn-lg" style="flex:1" ${dis} onclick="${S.role==='guest'?`needLogin('startReg(${e.id})')`:`startReg(${e.id})`}">${left===0&&ven?'Join waitlist':'Register'}</button>`;
+  return `<button class="btn ${LIKED.has(e.id)?'btn-p':'btn-o'} btn-lg" style="flex:1;${LIKED.has(e.id)?'':'border-color:var(--primary);color:var(--primary)'}" onclick="like(${e.id},event)">${LIKED.has(e.id)?'✓ Interested':'Interested'}</button><button class="btn btn-p btn-lg" style="flex:1" ${dis} onclick="if(venueFirst(${e.id}))${S.role==='guest'?`needLogin('startReg(${e.id})')`:`startReg(${e.id})`}">${left===0&&ven?'Join waitlist':'Register'}</button>`;
  };
  const tile=(i,t,tone)=>`<div class="tile"><span class="ti ${tone||''}">${ic(i,15)}</span><span>${t}</span></div>`;
  const prow=(i,t,sub,k)=>`<div class="prow" onclick="${k==='pdf'?`toast('Programme brochure (PDF) downloaded','download')`:`pdpModal(${e.id},'${k}')`}"><span class="pi">${ic(i,20)}</span><div style="flex:1;min-width:0"><b>${t}</b><div class="small muted">${sub}</div></div><span class="pv">${k==='pdf'?'Download':'View'}</span></div>`;
@@ -910,7 +911,7 @@ function vEvent(id){
   <div class="row" style="align-items:baseline;gap:8px">${minP?`<span class="price" style="font-size:24px">${inr(eb?Math.round(minP*.9):minP)}</span>${eb?`<s class="small muted">${inr(minP)}</s>`:''}<span class="small">onwards</span>`:`<span class="price" style="font-size:24px">Free</span><span class="small">registration required</span>`}</div>
   ${e.disc.length?`<div class="small mt8" style="color:var(--green)">${eb?'Early Bird 10% off till '+e.deadline:e.disc.join(' · ')}</div>`:''}
   <div class="row mt16" style="gap:10px">${cta()}</div>
-  <p class="small muted mt12">${!ven?(V.length>1?`Held at ${V.length} venues — select a venue to register.`:'Select the venue to register.'):left===0?'All seats are booked at this venue. Register to join the waitlist.':e.fee?`Includes ${(INCL[e.cat]||INCL.def)[0].toLowerCase()}.`:'Free event — registration confirms your seat.'}</p>
+  <p class="small muted mt12">${!ven?'':left===0?'All seats are booked at this venue. Register to join the waitlist.':e.fee?`Includes ${(INCL[e.cat]||INCL.def)[0].toLowerCase()}.`:'Free event — registration confirms your seat.'}</p>
   <p class="small muted mt8">Registration is made from a Parent or Student account.</p>
  </div></aside></div>`);
 }
