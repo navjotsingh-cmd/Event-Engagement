@@ -461,6 +461,7 @@ const P=t=>`<span class="scope" title="Partially in scope per E&E Scope Mapping"
 
 /* ================= DATA ================= */
 const ROLES={
+ guest:{label:'Guest',name:'Guest',ini:''},
  parent:{label:'Parent',name:'Neha Sharma',ini:'NS'},
  student:{label:'Student',name:'Aarav Sharma (Gr 6)',ini:'AS'},
  coach:{label:'Coach / Teacher',name:'Rahul Menon',ini:'RM'},
@@ -470,6 +471,7 @@ const ROLES={
  admin:{label:'Event / Program Admin',name:'Program Office',ini:'PA'}
 };
 const NAV={
+ guest:[],
  parent:[['Discover Events','#/events','grid'],['My Events','#/my','ticket'],['Requests','#/requests','inbox'],['Notifications','#/notifications','bell',3]],
  student:[['Discover Events','#/events','grid'],['My Events','#/my','ticket'],['Notifications','#/notifications','bell',2]],
  coach:[['Dashboard','#/coach','home'],['Discover Events','#/events','grid'],['Bulk Registration','#/bulk','users'],['Rosters & Check-in','#/rosters','file'],['Notifications','#/notifications','bell',2]],
@@ -478,7 +480,7 @@ const NAV={
  volunteer:[['Check-in','#/checkin','scan'],['Roster Lookup','#/lookup','search'],['Live Monitor','#/live','activity']],
  admin:[['Dashboard','#/admin','home'],['Events','#/admin/events','grid'],['Create Event','#/admin/create','plus'],['Communications','#/admin/comms','send'],['Live Event Control','#/live','activity'],['Post-Event','#/admin/post','award'],['Exceptions','#/admin/exceptions','refresh',6],['Reports & Audit','#/admin/reports','chart'],['Settings','#/admin/settings','sliders']]
 };
-const HOME={parent:'#/home',student:'#/home',coach:'#/coach',partner:'#/coach',speaker:'#/speaker',volunteer:'#/checkin',admin:'#/admin'};
+const HOME={guest:'#/home',parent:'#/home',student:'#/home',coach:'#/coach',partner:'#/coach',speaker:'#/speaker',volunteer:'#/checkin',admin:'#/admin'};
 
 const EVENTS=[
  {id:1,title:'VIVA Inter-School Athletics Meet 2026',cat:'Competition',theme:'Sports',mode:'Offline',aud:['Students'],grades:[4,10],reg:'Paid',fee:750,disc:['Early-bird 10%','Referral ₹100'],date:'Sat, 14 Dec 2026',d:'2026-12-14',days:1,time:'7:30 AM – 5:00 PM',venue:'Andheri Campus, Mumbai',city:'Mumbai',cap:400,left:38,hosts:[['Rahul Menon','Head Coach · AFI Level-2 certified'],['Sunita Pillai','Former national 400m finalist']],deadline:'08 Dec 2026',bring:['School ID card','Sports kit & spikes','Water bottle','Cap / sunscreen'],flags:['Featured','Trending'],vis:'Public',docs:['Medical fitness certificate'],interest:120,status:'Published',regs:362},
@@ -500,7 +502,7 @@ const KIDS=[{id:'k1',name:'Aarav Sharma',grade:6,age:11,adm:'VIB-2019-0456',dob:
 const ROSTER=[['Aarav Sharma',6,'B',11],['Diya Patel',6,'B',11],['Kabir Singh',6,'B',12],['Ananya Iyer',6,'B',11],['Vihaan Gupta',6,'B',11],['Sara Khan',6,'B',12],['Reyansh Nair',6,'B',11],['Ishita Das',6,'B',11],['Arjun Reddy',3,'A',8],['Zara Mehta',6,'B',11],['Rohan Joshi',6,'B',12],['Tara Bose',6,'B',11]];
 
 const S={
- role:'parent', scope:false, mopen:{},
+ role:'guest', scope:false, mopen:{},
  f:{q:'',cat:[],theme:[],mode:[],aud:[],grade:'',city:'',price:'',avail:'',quick:'',from:'',to:''},
  sort:'date',
  docs:{k1:false}, // medical cert uploaded?
@@ -526,7 +528,7 @@ const ev=id=>EVENTS.find(e=>e.id==id);
 const thc=t=>'th-'+t.replace(/\s/g,'');
 function toast(m,i='check'){const t=document.createElement('div');t.className='toast';t.innerHTML=ic(i)+m;$('#toasts').appendChild(t);setTimeout(()=>t.remove(),2800)}
 function modal(title,body,foot){$('#modal').innerHTML=`<div class="modal-h"><h2>${title}</h2><button class="iconbtn" onclick="closeModal()">${ic('x')}</button></div><div class="modal-b">${body}</div>${foot?`<div class="modal-f">${foot}</div>`:''}`;$('#modalBg').classList.add('on')}
-function closeModal(){$('#modalBg').classList.remove('on')}
+function closeModal(){$('#modalBg').classList.remove('on');$('#modal').style.maxWidth=''}
 function go(h){location.hash=h}
 function hash(s){let h=2166136261;for(const c of String(s)){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0}
 function qr(seed,px=150){const n=25,c=px/n;let r=hash(seed);const rnd=()=>{r=Math.imul(r^r>>>15,2246822507)^Math.imul(r^r>>>13,3266489909);r>>>=0;return r%100};
@@ -619,7 +621,7 @@ function hdr(){
   <a onclick="go('#/profile')">${ic('user')}Profile</a>
   ${links.map(([l,u,i])=>`<a onclick="go('${u}')">${ic(i)}${l}</a>`).join('')}
   ${!back?`<a onclick="go('#/notifications')">${ic('bell')}Notifications</a>`:''}
-  <a onclick="go('#/guide')">${ic('book')}Flow guide</a></div>`:'';
+  <a onclick="go('#/guide')">${ic('book')}Flow guide</a><hr><a onclick="logout()">${ic('back')}Logout</a></div>`:'';
  return `<header class="hdr"><div class="hdr-in">
   ${back?`<button class="menu-btn" onclick="$('#side').classList.toggle('open')">${ic('menu',22)}</button>`:''}
   <a class="logo" onclick="go(HOME[S.role])" title="OSE Hub">OS<i>E</i><small>HUB</small></a>
@@ -628,8 +630,8 @@ function hdr(){
    <div class="dd hide-sm"><button class="${onEv?'on':''}" onclick="event.stopPropagation();S.um=false;S.mega=!S.mega;render()">All Programmes <svg class="svg" style="width:14px;transform:rotate(${S.mega?180:0}deg)" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>${mega}</div>
    ${links.filter(([,u])=>u!=='#/my').slice(0,back?0:3).map(([l,u])=>`<a href="${u}" class="${h===u||h.startsWith(u+'/')?'on':''}">${l}</a>`).join('')}
    ${back?'':`<a onclick="toast('Enquiry form opened','msg')">Enquire Now</a>`}
-   ${back?'':`<button class="bellbtn" onclick="go('#/notifications')" title="Notifications">${ic('bell')}<span class="dot"></span></button>`}
-   <div class="dd"><button class="uchip" onclick="event.stopPropagation();S.mega=false;S.um=!S.um;render()"><span class="av">${r.ini}</span><span class="nm">${r.name}</span><svg class="svg" style="width:14px" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>${um}</div>
+   ${S.role==='guest'?`<button class="btn btn-p" style="padding:8px 20px" onclick="event.stopPropagation();openLogin()">Login</button>`:`${back?'':`<button class="bellbtn" onclick="go('#/notifications')" title="Notifications">${ic('bell')}<span class="dot"></span></button>`}
+   <div class="dd"><button class="uchip" onclick="event.stopPropagation();S.mega=false;S.um=!S.um;render()"><span class="av">${r.ini}</span><span class="nm">${r.name}</span><svg class="svg" style="width:14px" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>${um}</div>`}
   </nav></div></header>`;
 }
 function footer(){return `<footer class="foot"><div class="cols"><div><span class="logo">OS<i>E</i><small>HUB</small></span><p class="mt12" style="max-width:320px;font-size:13.5px">Events, competitions and engagement programmes for students, parents and schools across India.</p><p class="mt12 small">support@osehub.com · +91 22 4000 1234</p></div>
@@ -637,7 +639,7 @@ function footer(){return `<footer class="foot"><div class="cols"><div><span clas
  <div><h4>For you</h4><a onclick="go('#/my')">My events</a><a onclick="go('#/profile')">Profile</a><a onclick="go('#/notifications')">Notifications</a></div>
  <div><h4>Help</h4><a>FAQs</a><a>Refund policy</a><a>Code of conduct</a><a>Privacy</a></div></div>
  <div class="small mt24" style="opacity:.6">© 2026 OSE Hub · Events &amp; Engagements prototype</div></footer>`}
-function dock(){return `<div class="dock ${S.dockMin?'min':''}"><b style="cursor:pointer" onclick="S.dockMin=!S.dockMin;render()" title="Collapse">⚙ Prototype</b>
+function dock(){return '';return `<div class="dock ${S.dockMin?'min':''}"><b style="cursor:pointer" onclick="S.dockMin=!S.dockMin;render()" title="Collapse">⚙ Prototype</b>
  <span class="opt row" style="gap:10px"><select onchange="setRole(this.value)" title="Switch role">${Object.entries(ROLES).map(([k,v])=>`<option value="${k}" ${k===S.role?'selected':''}>${v.label}</option>`).join('')}</select>
  <label><span class="toggle"><input type="checkbox" ${S.scope?'checked':''} onchange="S.scope=this.checked;document.body.classList.toggle('show-scope',S.scope)"><span></span></span>Scope tags</label>
  <a onclick="go('#/guide')">Flow guide</a></span></div>`}
@@ -650,11 +652,37 @@ function shell(crumb,body){
  return `${hdr()}<main class="wrap-c page">${body}</main>${footer()}${dock()}`;
 }
 function setRole(r){S.role=r;S.reg=null;S.mega=S.um=false;go(HOME[r]);render()}
-function logout(){setRole('parent')}
+function logout(){S.um=false;setRole('guest');toast('Logged out','back')}
 function hsearch(v){S.f.q=v;clearTimeout(window._qt);window._qt=setTimeout(()=>{if(!location.hash.startsWith('#/events'))go('#/events');else render();setTimeout(()=>{const i=$('#hq');if(i){i.focus();i.setSelectionRange(i.value.length,i.value.length)}},0)},250)}
 function pickCat(c){S.f.cat=c?[c]:[];S.mega=false;if(location.hash==='#/events')render();else go('#/events')}
 window.addEventListener('click',()=>{if(S.mega||S.um){S.mega=S.um=false;render()}});
 
+/* ================= LOGIN (phone + OTP) ================= */
+const USERS={'8888888888':{otp:'888888',role:'parent'},'7777777777':{otp:'777777',role:'student'},'9999999999':{otp:'999999',role:'coach'}};
+let LG={step:'phone',phone:'',err:'',after:null,timer:30};
+function needLogin(after){openLogin(after,'Log in to register for this event.')}
+function openLogin(after,msg){LG={step:'phone',phone:'',err:'',after:after||null,msg:msg||'',timer:30};drawLogin()}
+function drawLogin(){
+ const art=`<div style="background:repeating-conic-gradient(from 0deg at 50% 50%,#E8ECFF 0deg 10deg,#F4F6FF 10deg 20deg);border:2px solid #C9D2FF;border-radius:14px;display:grid;place-items:center;min-height:300px;position:relative">${['20%:18%','78%:18%','16%:62%','82%:82%','30%:88%'].map((p,i)=>{const [x,y]=p.split(':');return `<span style="position:absolute;left:${x};top:${y};color:#5B6BD8">${ic(['award','star','activity','users','trend'][i],26)}</span>`}).join('')}<div style="background:#fff;border-radius:10px;padding:8px 12px;box-shadow:var(--shadow)"><span class="logo" style="font-size:28px">OS<i>E</i><small>HUB</small></span></div></div>`;
+ const body=LG.step==='phone'?`<div class="field"><label>Phone number<span class="req">*</span></label><div class="row" style="gap:0;border:1px solid ${LG.err?'var(--red)':'var(--primary)'};border-radius:10px;overflow:hidden;box-shadow:0 0 0 3px var(--primary-50)"><span style="padding:0 12px;color:var(--muted)">+91</span><input id="lg-phone" class="inp" style="border:0;box-shadow:none;padding-left:0" inputmode="numeric" maxlength="10" placeholder="Enter" value="${LG.phone}" oninput="this.value=this.value.replace(/\\D/g,'');LG.phone=this.value;LG.err='';document.getElementById('lg-go').disabled=this.value.length!==10" onkeydown="if(event.key==='Enter')lgPhone()"></div>${LG.err?`<div class="small" style="color:var(--red)">${LG.err}</div>`:''}</div>
+  <p class="small mt8">New here? <a onclick="toast('Sign-up opens the OSE Hub registration form','user')">Sign up</a></p>`
+ :`<div class="field"><label>Enter the 6-digit OTP sent to +91 ${LG.phone.slice(0,5)} ${LG.phone.slice(5)}</label><input id="lg-otp" class="inp" inputmode="numeric" maxlength="6" placeholder="••••••" style="letter-spacing:.4em;font-size:18px;${LG.err?'border-color:var(--red)':''}" oninput="this.value=this.value.replace(/\\D/g,'');LG.err='';document.getElementById('lg-go').disabled=this.value.length!==6" onkeydown="if(event.key==='Enter')lgOtp()">${LG.err?`<div class="small" style="color:var(--red)">${LG.err}</div>`:''}</div>
+  <div class="row between mt8 small"><a onclick="LG.step='phone';LG.err='';drawLogin()">Change number</a><a onclick="toast('OTP resent','send')">Resend OTP</a></div>`;
+ $('#modal').innerHTML=`<div style="display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:0;min-height:380px" class="lgwrap"><div style="padding:16px">${art}</div>
+ <div style="display:flex;flex-direction:column;padding:16px 22px 16px 10px"><div class="row" style="justify-content:flex-end"><button class="iconbtn" style="border:0" onclick="closeModal()">${ic('x')}</button></div>
+ <h2 style="text-align:center;font-weight:500;font-size:20px">${LG.step==='phone'?'Welcome to OSE Hub!':'Verify OTP'}</h2>${LG.msg?`<p class="small muted" style="text-align:center;margin-top:6px">${LG.msg}</p>`:''}
+ <div class="divider"></div>${body}<div style="flex:1"></div><div class="divider"></div>
+ <div class="row" style="justify-content:flex-end"><button id="lg-go" class="btn btn-p" ${(LG.step==='phone'?LG.phone.length!==10:true)?'disabled':''} onclick="${LG.step==='phone'?'lgPhone()':'lgOtp()'}">${LG.step==='phone'?'Continue':'Verify &amp; Login'} ${ic('chev',14)}</button></div></div></div>
+ <style>@media(max-width:640px){.lgwrap{grid-template-columns:1fr!important}.lgwrap>div:first-child{display:none}}</style>`;
+ $('#modal').style.maxWidth='720px';$('#modalBg').classList.add('on');setTimeout(()=>{const i=document.getElementById(LG.step==='phone'?'lg-phone':'lg-otp');if(i)i.focus()},30)}
+function lgPhone(){const p=($('#lg-phone')||{}).value||LG.phone;LG.phone=p;if(!/^\d{10}$/.test(p)){LG.err='Enter a valid 10-digit mobile number.';drawLogin();return}
+ if(!USERS[p]){LG.err='This number is not registered with OSE Hub. Please sign up.';drawLogin();return}
+ LG.step='otp';LG.err='';drawLogin();toast('OTP sent to +91 '+p.slice(0,2)+'••••••'+p.slice(8),'send')}
+function lgOtp(){const o=$('#lg-otp').value;const u=USERS[LG.phone];if(o!==u.otp){LG.err='Incorrect OTP. Please try again.';drawLogin();return}
+ const after=LG.after;closeModal();$('#modal').style.maxWidth='';S.role=u.role;S.reg=null;S.mega=S.um=false;toast('Welcome, '+ROLES[u.role].name.split(' (')[0],'check');
+ if(after){if(u.role==='coach'){const m=after.match(/startReg\((\d+)\)/);go(m?'#/bulk/'+m[1]:HOME.coach)}else{try{eval(after)}catch(e){go(HOME[u.role])}}}
+ else if(PROTECTED(location.hash))go(HOME[u.role]);else render()}
+const PROTECTED=h=>/^#\/(my|requests|notifications|profile|register|bulk|rosters|coach|speaker|slots|checkin|lookup|live|admin)/.test(h||'');
 /* ================= LOGIN ================= */
 let loginRole='parent';
 function vLogin(){
@@ -706,7 +734,8 @@ function visibleEvents(){
  const f=S.f;let list=EVENTS.filter(e=>e.status==='Published');
  if(S.role==='student')list=list.filter(e=>e.aud.includes('Students')&&(!e.grades||(6>=e.grades[0]&&6<=e.grades[1])));
  if(S.role==='partner')list=list.filter(e=>e.vis==='Public');
- if(S.role!=='parent'&&S.role!=='admin')list=list.filter(e=>e.vis!=='Parents-only');
+ if(S.role==='guest')list=list.filter(e=>e.vis!=='Internal');
+ if(!['parent','admin','guest'].includes(S.role))list=list.filter(e=>e.vis!=='Parents-only');
  if(f.q){const q=f.q.toLowerCase();list=list.filter(e=>(e.title+e.cat+e.theme+e.venue+e.hosts.map(h=>h[0]).join()).toLowerCase().includes(q))}
  ['cat','theme','mode'].forEach(k=>{if(f[k].length)list=list.filter(e=>f[k].includes(e[k]))});
  if(f.aud.length)list=list.filter(e=>e.aud.some(a=>f.aud.includes(a)));
@@ -784,14 +813,14 @@ function vEvent(id){
  const e=ev(id);if(!e)return shell('Event',`<div class="card empty">Event not found</div>`);
  const V=venuesOf(e);const vi=venueIx(e.id);const ven=vi!=null?V[vi]:null;const [st,sc]=regStatus(e);const T=ticketTypes(e);
  const ag=AGENDA[e.id]||[[['Reporting','Check-in & seating','Entrance'],[e.time.split('–')[0].trim(),'Main session','Main hall'],['Close','Q&A and closing','Main hall']]];
- const consumer=['parent','student'].includes(S.role);const left=ven?ven[2]:e.left;
+ const consumer=['parent','student','guest'].includes(S.role);const left=ven?ven[2]:e.left;
  const minP=Math.min(...T.map(t=>t.p));
  const cta=()=>{
   if(S.role==='coach')return `<button class="btn btn-p btn-lg" ${ven?'':'disabled'} onclick="go('#/bulk/${e.id}')">Register students</button><button class="btn btn-o mt8" onclick="toast('Volunteer request sent for admin approval')">Volunteer at this event${P()}</button>`;
   if(S.role==='partner')return `<button class="btn btn-p btn-lg" ${ven?'':'disabled'} onclick="go('#/bulk/${e.id}')">Register a group</button>`;
   if(S.role==='admin')return `<button class="btn btn-p btn-lg" onclick="S.createStep=0;go('#/admin/create')">Edit event</button>`;
   if(!consumer)return `<div class="alert info small">${ic('alert')}Registration is made from a Parent or Student account.</div>`;
-  return `<button class="btn btn-p btn-lg" style="min-width:180px" ${ven?'':'disabled'} onclick="startReg(${e.id})">Register</button>`;
+  return `<button class="btn btn-p btn-lg" style="min-width:180px" ${ven?'':'disabled'} onclick="${S.role==='guest'?`needLogin('startReg(${e.id})')`:`startReg(${e.id})`}">Register</button>`;
  };
  return shell(e.title,`${crumbs([['Home',HOME[S.role]],['Events & Engagements',"!pickCat('')"],[e.cat,`!pickCat('${e.cat}')`],[e.title]])}
  <div class="detail"><div>
@@ -1326,6 +1355,7 @@ function vGuide(){const F=(steps)=>`<div class="flow">${steps.map(([l,h,r])=>`<a
 function render(){
  const h=location.hash||'#/home';
  if(h==='#/login'||!location.hash){location.replace('#/home');return}
+ if(S.role==='guest'&&PROTECTED(h)){location.replace('#/home');setTimeout(()=>openLogin(null,'Log in to continue.'),50);return}
  const [,a,b,c]=h.split('/');let out;
  switch(a){
   case 'home':out=vHome();break;
