@@ -52,16 +52,20 @@ code{background:var(--soft);padding:1px 5px;border-radius:4px}
 .menu a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;color:var(--text)}
 .menu a:hover{background:var(--soft)}
 .menu hr{border:0;border-top:1px solid var(--border);margin:6px 0}
-.mega{position:absolute;top:56px;left:50%;transform:translateX(-62%);width:min(940px,92vw);background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:0 18px 40px rgba(20,30,60,.16);padding:24px;display:grid;grid-template-columns:1fr 1fr;gap:6px 36px;z-index:50}
-.mega h4{font-size:15px;font-weight:600;margin-bottom:2px}
-.mega .grp{padding:8px 0}
-.mega .grp p{color:var(--muted);font-size:12.5px}
-.mega a.it{display:block;padding:9px 12px;border-radius:8px;color:var(--text)}
-.mega a.it:hover,.mega a.it.on{background:var(--primary-50)}
-.mega a.it b{display:flex;align-items:center;gap:6px;font-weight:500;font-size:14px}
-.mega a.it.on b{color:var(--primary)}
-.mega a.it span{display:block;color:var(--muted);font-size:12px}
-.new{background:var(--orange);color:#fff;font-size:9.5px;font-weight:700;border-radius:4px;padding:0 5px;letter-spacing:.02em}
+.mega{position:absolute;top:60px;left:50%;transform:translateX(-58%);width:min(1250px,94vw);max-height:calc(100vh - 80px);overflow:auto;background:#fff;border:1px solid var(--border);border-radius:16px;box-shadow:0 18px 44px rgba(20,30,60,.16);padding:44px 62px;display:grid;grid-template-columns:1fr 1fr;gap:0 64px;z-index:50}
+.mega .mg{padding:0 0 26px}
+.mega .mg-h{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;cursor:pointer}
+.mega .mg-h h3{font-size:21px;font-weight:400;display:flex;align-items:center;gap:8px;letter-spacing:-.01em}
+.mega .mg-h p{color:#2B2F36;font-size:15.5px;margin-top:10px;line-height:1.55}
+.mega .mg-h:hover h3{color:var(--primary)}
+.mega .mg-c{width:20px;height:20px;margin-top:28px;flex:none;transition:transform .15s}
+.mega .mg-kids{margin-top:12px;border-left:2px solid var(--border);padding-left:10px;display:flex;flex-direction:column;gap:2px}
+.mega a.mg-k{display:block;padding:9px 12px;border-radius:8px;color:var(--text)}
+.mega a.mg-k:hover,.mega a.mg-k.on{background:var(--primary-50)}
+.mega a.mg-k b{display:flex;align-items:center;gap:6px;font-weight:500;font-size:14.5px}
+.mega a.mg-k.on b{color:var(--primary)}
+.mega a.mg-k span{display:block;color:var(--muted);font-size:12.5px}
+.new{background:var(--orange);color:#fff;font-size:11px;font-weight:700;border-radius:999px;padding:1px 8px;letter-spacing:.02em}
 .menu-btn{display:none;border:0;background:none;padding:6px}
 
 /* ---------- Page / layout ---------- */
@@ -378,7 +382,7 @@ table.t{width:100%;border-collapse:collapse}
   .stats{grid-template-columns:repeat(2,1fr)}
   .foot .cols{grid-template-columns:1fr 1fr}
   .slide p{max-width:70%}
-  .mega{grid-template-columns:1fr;transform:translateX(-50%);left:50%;position:fixed;top:56px}
+  .mega{grid-template-columns:1fr;transform:translateX(-50%);left:50%;position:fixed;top:60px;padding:24px}
 }
 @media (max-width:600px){
   .hdr-in{gap:12px}
@@ -496,7 +500,7 @@ const KIDS=[{id:'k1',name:'Aarav Sharma',grade:6,age:11,adm:'VIB-2019-0456',dob:
 const ROSTER=[['Aarav Sharma',6,'B',11],['Diya Patel',6,'B',11],['Kabir Singh',6,'B',12],['Ananya Iyer',6,'B',11],['Vihaan Gupta',6,'B',11],['Sara Khan',6,'B',12],['Reyansh Nair',6,'B',11],['Ishita Das',6,'B',11],['Arjun Reddy',3,'A',8],['Zara Mehta',6,'B',11],['Rohan Joshi',6,'B',12],['Tara Bose',6,'B',11]];
 
 const S={
- role:'parent', scope:false,
+ role:'parent', scope:false, mopen:{},
  f:{q:'',cat:[],theme:[],mode:[],aud:[],grade:'',city:'',price:'',avail:'',quick:'',from:'',to:''},
  sort:'date',
  docs:{k1:false}, // medical cert uploaded?
@@ -593,11 +597,24 @@ function hdr(){
  const r=ROLES[S.role];const h=location.hash||'';const back=BACK(S.role);
  const links=NAV[S.role].filter(([,u])=>u!=='#/events'&&u!=='#/notifications');
  const onEv=h.startsWith('#/events')||h.startsWith('#/event/')||h.startsWith('#/register');
+ const ext=n=>`toast('${n} opens in its own programme module','chev')`;
+ const grp=(k,title,desc,kids)=>{const open=S.mopen[k];return `<div class="mg"><div class="mg-h" onclick="S.mopen['${k}']=!S.mopen['${k}'];render()"><div><h3>${title}</h3><p>${desc}</p></div>${kids?`<svg class="svg mg-c" style="transform:rotate(${open?180:0}deg)" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>`:''}</div>${kids&&open?`<div class="mg-kids">${kids}</div>`:''}</div>`};
+ const leaf=(t,d,act,on,isNew)=>`<a class="mg-k ${on?'on':''}" onclick="${act}"><b>${t}${isNew?' <span class="new">NEW</span>':''}</b><span>${d}</span></a>`;
+ const plain=(t,d,isNew)=>`<div class="mg"><div class="mg-h" onclick="${ext(t)}"><div><h3>${t}${isNew?' <span class="new">NEW</span>':''}</h3><p>${d}</p></div></div></div>`;
  const mega=S.mega?`<div class="mega" onclick="event.stopPropagation()">
-  <div><div class="grp"><h4>Events &amp; Engagements</h4><p>Competitions, showcases, seminars and community events across campuses.</p></div>
-  ${OPTS.cat.slice(0,5).map(c=>`<a class="it ${S.f.cat.includes(c)?'on':''}" onclick="pickCat('${c}')"><b>${c}${c==='Festival'?' <span class="new">NEW</span>':''}</b><span>${CATDESC[c]}</span></a>`).join('')}</div>
-  <div>${OPTS.cat.slice(5).map(c=>`<a class="it ${S.f.cat.includes(c)?'on':''}" onclick="pickCat('${c}')"><b>${c}</b><span>${CATDESC[c]}</span></a>`).join('')}
-  <a class="it" onclick="pickCat('')"><b>View all events →</b><span>Browse every upcoming event</span></a></div></div>`:'';
+  <div>
+  ${grp('academy','OSE Academy','OSE Academy’s year-round sports, arts and academic enrichment programmes.',
+    leaf('Competitions &amp; Tournaments','Leagues, championships and olympiads',ext('Competitions & Tournaments'),0,1)+leaf('Certification Programmes','Belt exams, music grades and more',ext('Certification Programmes'))+leaf('After School Programmes','Year-round skill development',ext('After School Programmes'))+leaf('Coach Development Program','Coach training and assessment',ext('Coach Development Program')))}
+  ${grp('ee','Events &amp; Engagements','Competitions, showcases, seminars, festivals and community events.',
+    leaf('All events','Browse every upcoming event',"pickCat('')",onEv&&!S.f.cat.length)+OPTS.cat.map(c=>leaf(c,CATDESC[c],`pickCat('${c}')`,onEv&&S.f.cat.includes(c),c==='Festival')).join(''))}
+  ${plain('My careerZ','Unlock your potential with our career guidance and development programs.')}
+  ${grp('tours','Tours','Guiding future career paths',leaf('Global Immersion Tours','International exposure and cultural learning',ext('Global Immersion Tours'))+leaf('Learning Tours','Curiosity, resilience and teamwork beyond the classroom',ext('Learning Tours')))}
+  </div><div>
+  ${plain('Summer Camp','Holiday camps for VIBGYOR and non-VIBGYOR students.',1)}
+  ${plain('Training &amp; Camps','Sports training, performing arts, workshops, masterclasses and camps.',1)}
+  ${plain('EMBARK','Embark on a journey of discovery with our immersive learning experiences.')}
+  ${plain('Junior Model UN Conference','A Young Diplomat Programme')}
+  </div></div>`:'';
  const um=S.um?`<div class="menu" onclick="event.stopPropagation()">
   <a onclick="go('#/profile')">${ic('user')}Profile</a>
   ${links.map(([l,u,i])=>`<a onclick="go('${u}')">${ic(i)}${l}</a>`).join('')}
@@ -608,7 +625,7 @@ function hdr(){
   <a class="logo" onclick="go(HOME[S.role])" title="OSE Hub">OS<i>E</i><small>HUB</small></a>
   <label class="hsearch">${ic('search')}<input id="hq" placeholder="Search for events" value="${S.f.q.replace(/"/g,'&quot;')}" oninput="hsearch(this.value)"></label>
   <nav class="hnav">
-   <div class="dd hide-sm"><button class="${onEv?'on':''}" onclick="event.stopPropagation();S.um=false;S.mega=!S.mega;render()">All Events <svg class="svg" style="width:14px" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>${mega}</div>
+   <div class="dd hide-sm"><button class="${onEv?'on':''}" onclick="event.stopPropagation();S.um=false;S.mega=!S.mega;render()">All Programmes <svg class="svg" style="width:14px;transform:rotate(${S.mega?180:0}deg)" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>${mega}</div>
    ${links.slice(0,back?0:3).map(([l,u])=>`<a href="${u}" class="${h===u||h.startsWith(u+'/')?'on':''}">${l}</a>`).join('')}
    ${back?'':`<a onclick="toast('Enquiry form opened','msg')">Enquire Now</a>`}
    ${back?'':`<button class="bellbtn" onclick="go('#/notifications')" title="Notifications">${ic('bell')}<span class="dot"></span></button>`}
